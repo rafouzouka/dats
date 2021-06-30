@@ -2,11 +2,11 @@
 
 Compilation of various widely used data structures implemented in C for generic like data types.
 
-*How can you achieve generics like C++ or Java in C ?*
+***How can you achieve generics like C++ or Java in C ?***
 
 **Dats** uses a combinason of *void pointer* and *function pointer* to abstract the data type it really uses.
 
-*Is there some overhead using this trick ?*
+***Is there some overhead using this trick ?***
 
 Yes, the data pointed by void pointer must be heap allocated and often manipulated with pointer arithmetics. 
 
@@ -16,17 +16,17 @@ This various data structures are designed with reading simplicity in mind first.
 
 **Data Structures:**
 
-- Dynamic Array [ ]
-- Linked List   [ ]
-- Binary Tree   [ ]
+- [] Dynamic Array 
+- [] Linked List   
+- [] Binary Tree   
 
 **Abstract Data Types:**
 
-- Stack         [ ]
-- Queue         [ ]
-- PriorityQueue [ ]
-- Hash Table    [ ]
-- Sparse Table  [ ]
+- [] Stack         
+- [] Queue         
+- [] PriorityQueue 
+- [x] Hash Table    
+- [] Sparse Table  
 
 ## Examples
 
