@@ -24,6 +24,11 @@ obj/%.o: src/%.c folders
 
 val: sandbox
 	valgrind --leak-check=full --track-origins=yes ./bin/sandbox
+ 
+test: lib 
+	@cmake -S test/ -B test/build
+	@cmake --build test/build
+	ctest --test-dir test/build/
 
 .PHONY: clean folders help
 
@@ -41,6 +46,7 @@ folders:
 clean:
 	$(DELETE_FOLDER) bin
 	$(DELETE_FOLDER) obj
+	$(DELETE_FOLDER) test/build
 
 # $(EXEC): $(OBJ)
 # 	$(CC) $^ -o bin/$@ $(CFLAGS)

@@ -6,6 +6,6 @@
 int main()
 {
     DAprint();
-    printf("Salut les gens :D\n");
+    salutLesGens();
     return EXIT_SUCCESS;
 }
