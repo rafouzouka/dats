@@ -16,17 +16,17 @@ This various data structures are designed with reading simplicity in mind first.
 
 **Data Structures:**
 
-- [] Dynamic Array 
-- [] Linked List   
-- [] Binary Tree   
+- [ ] Dynamic Array 
+- [ ] Linked List   
+- [ ] Binary Tree   
 
 **Abstract Data Types:**
 
-- [] Stack         
-- [] Queue         
-- [] PriorityQueue 
+- [ ] Stack         
+- [ ] Queue         
+- [ ] PriorityQueue 
 - [x] Hash Table    
-- [] Sparse Table  
+- [ ] Sparse Table  
 
 ## Examples
 
