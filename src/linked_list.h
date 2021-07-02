@@ -44,14 +44,25 @@ dats_linked_list_t dats_linked_list_new(const uint64_t data_size);
 const void *dats_linked_list_get_data(const dats_linked_list_t *self, const uint64_t index);
 
 /**
- * @brief Add a new node heap allocated node with data on the head of the linked list.
+ * @brief Add a new node heap allocated with data at the first position of the linked list.
  * 
- * @details If you append to the head of an empty linked list the head and the tail will point to the same new node.
+ * @details If you append to an empty linked list the head and the tail will point to the same new node.
  * 
  * @param self Pointer to the linked list waiting for the new node.
  * @param data Void pointer to the data that will copy to the new node data. You must provide data with the same type that you use for the creation of the linked list.
  */
 void dats_linked_list_insert_head(dats_linked_list_t *self, const void *data);
+
+
+/**
+ * @brief Add a new node heap allocated with data at the last position of the LinkedList.
+ *
+ * @details If you append to an empty linked list the head and the tail will point to the same new node.
+ *
+ * @param self Pointer to the linked list waiting for the new node.
+ * @param data Void pointer to the data that will copy to the new node data. You must provide data with the same type that you use for the creation of the linked list.
+ */
+void dats_linked_list_insert_tail(dats_linked_list_t *self, const void *data);
 
 /**
  * @brief Free an already existing linked_list. Freeing the every nodes and each correspondig data.

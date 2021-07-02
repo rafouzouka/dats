@@ -99,3 +99,60 @@ TEST(dats_linked_list_get_data, IndexParamOutOfRange)
 
     dats_linked_list_free(&ll);
 }
+
+TEST(dats_linked_list_insert_tail, InsertToEmptyLinkedList)
+{
+    short int data = 128;
+    dats_linked_list_t ll = dats_linked_list_new(sizeof(short int));
+
+    dats_linked_list_insert_tail(&ll, &data);
+
+    EXPECT_EQ(ll.head, ll.tail);
+    EXPECT_EQ(*((short int*)ll.head->data), data);
+    EXPECT_EQ(*((short int*)ll.tail->data), data);
+
+    EXPECT_EQ(ll.length, 1);
+    EXPECT_EQ(ll.data_size, sizeof(short int));
+    dats_linked_list_free(&ll);
+}
+
+TEST(dats_linked_list_insert_tail, InsertToOneNodesLinkedList)
+{
+    unsigned int data1 = 1111;
+    unsigned int data2 = 2222;
+    
+    dats_linked_list_t ll = dats_linked_list_new(sizeof(unsigned int));
+
+    dats_linked_list_insert_tail(&ll, &data1);
+    dats_linked_list_insert_tail(&ll, &data2);
+
+    EXPECT_NE(ll.tail, ll.head);
+    EXPECT_EQ(*((unsigned int*)ll.head->data), data1);
+    EXPECT_EQ(*((unsigned int*)ll.tail->data), data2);
+
+    EXPECT_EQ(ll.length, 2);
+    EXPECT_EQ(ll.data_size, sizeof(unsigned int));
+    dats_linked_list_free(&ll);
+}
+
+TEST(dats_linked_list_insert_tail, InsertToTwoNodesLinkedList)
+{
+    unsigned int data1 = 1111;
+    unsigned int data2 = 2222;
+    unsigned int data3 = 3333;
+    
+    dats_linked_list_t ll = dats_linked_list_new(sizeof(unsigned int));
+    dats_linked_list_insert_tail(&ll, &data1);
+    dats_linked_list_insert_head(&ll, &data2);
+
+    dats_linked_list_insert_tail(&ll, &data3);
+
+    EXPECT_EQ(*((unsigned int*)ll.head->data), data2);
+    EXPECT_EQ(*((unsigned int*)dats_linked_list_get_data(&ll, 1)), data1);
+    EXPECT_EQ(*((unsigned int*)ll.tail->data), data3);
+    EXPECT_NE(ll.tail, ll.head);
+
+    EXPECT_EQ(ll.length, 3);
+    EXPECT_EQ(ll.data_size, sizeof(unsigned int));
+    dats_linked_list_free(&ll);
+}

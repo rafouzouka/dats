@@ -5,6 +5,8 @@
 
 #include "linked_list.h"
 
+static dats_node_t *_alloc_node(const uint64_t data_size);
+
 dats_linked_list_t dats_linked_list_new(const uint64_t data_size)
 {
     assert(data_size > 0);
@@ -34,9 +36,7 @@ const void *dats_linked_list_get_data(const dats_linked_list_t *self, const uint
 
 void dats_linked_list_insert_head(dats_linked_list_t *self, const void *data)
 {
-    dats_node_t *node = malloc(sizeof(dats_node_t));
-    node->data = malloc(sizeof(self->data_size));
-
+    dats_node_t *node = _alloc_node(self->data_size);
     memcpy(node->data, data, self->data_size);
 
     node->next_node = self->head;
@@ -47,6 +47,23 @@ void dats_linked_list_insert_head(dats_linked_list_t *self, const void *data)
     {
         self->tail = self->head;
     }
+}
+
+void dats_linked_list_insert_tail(dats_linked_list_t *self, const void *data)
+{
+    dats_node_t *new_node = _alloc_node(self->data_size);
+    memcpy(new_node->data, data, self->data_size);
+    self->length++;
+
+    if (self->head == NULL)
+    {
+        self->head = new_node;
+        self->tail = new_node;
+        return;
+    }
+
+    self->tail->next_node = new_node;
+    self->tail = new_node;
 }
 
 void dats_linked_list_free(dats_linked_list_t *self)
@@ -67,4 +84,11 @@ void dats_linked_list_free(dats_linked_list_t *self)
     self->head = NULL;
     self->tail = NULL;
     self->length = 0;
+}
+
+static dats_node_t *_alloc_node(const uint64_t data_size)
+{
+    dats_node_t *node = malloc(sizeof(dats_node_t));
+    node->data = malloc(data_size);
+    return node;
 }
