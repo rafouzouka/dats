@@ -84,6 +84,36 @@ void dats_linked_list_remove_head(dats_linked_list_t *self)
     self->length--;
 }
 
+// assertion parler dans la doc
+// si ya q'un element faire un truc specifique
+// penser a retirer de 1 la length
+void dats_linked_list_remove_tail(dats_linked_list_t *self)
+{
+    assert(self->length > 0);
+
+    if (self->length == 1)
+    {
+        _free_node(self->tail);
+        self->tail = NULL;
+        self->head = NULL;
+        self->length--;
+        return;
+    }
+
+    dats_node_t *current_node = self->head;
+
+    for (uint64_t i = 0; i < self->length - 2; i++)
+    {
+        current_node = current_node->next_node;
+    }
+
+    _free_node(current_node->next_node);
+
+    current_node->next_node = NULL;
+    self->tail = current_node;
+    self->length--;
+}
+
 void dats_linked_list_map(const dats_linked_list_t *self, void (*func)(const void *data))
 {
     dats_node_t *current_node = self->head;

@@ -73,6 +73,15 @@ void dats_linked_list_insert_tail(dats_linked_list_t *self, const void *data);
 void dats_linked_list_remove_head(dats_linked_list_t *self);
 
 /**
+ * @brief Remove and free the last node of the Linked List. Therefore the tail node will be the nth - 1.
+ *
+ * @details If the Linked List is empty the function will throw a assertion. 
+ * 
+ * @param self Pointer to the existing linked list to perform the function. 
+ */
+void dats_linked_list_remove_tail(dats_linked_list_t *self);
+
+/**
  * @brief Map through all the nodes in passed the linked list and get back each time the data associated.
  * 
  * @param self Pointer to the existing linked list to perform the function.

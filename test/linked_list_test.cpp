@@ -268,6 +268,81 @@ TEST(dats_linked_list_remove_head, RemoveHeadInThreeodesLinkedList)
     dats_linked_list_free(&ll);
 }
 
+TEST(dats_linked_list_remove_tail, RemoveTailEmptyLinkedList)
+{
+    dats_linked_list_t ll = dats_linked_list_new(sizeof(char));
+
+    EXPECT_DEATH(dats_linked_list_remove_head(&ll), "Assertion");
+
+    dats_linked_list_free(&ll);
+}
+
+TEST(dats_linked_list_remove_tail, RemoveOneNodeLinkedList)
+{
+    float data1 = 128.1;
+
+    dats_linked_list_t ll = dats_linked_list_new(sizeof(float));
+    dats_linked_list_insert_head(&ll, &data1);
+
+    EXPECT_EQ(ll.length, 1);
+
+    dats_linked_list_remove_tail(&ll);
+
+    EXPECT_EQ(ll.head, nullptr);
+    EXPECT_EQ(ll.tail, nullptr);
+
+    EXPECT_EQ(ll.length, 0);
+
+    dats_linked_list_free(&ll);
+}
+
+TEST(dats_linked_list_remove_tail, RemoveHeadInTwoNodesLinkedList)
+{
+    _Fake_Position data1 = { 1234561, 6543211 };
+    _Fake_Position data2 = { 1234562, 6543212 };
+
+    dats_linked_list_t ll = dats_linked_list_new(sizeof(_Fake_Position));
+    dats_linked_list_insert_head(&ll, &data1);
+    dats_linked_list_insert_tail(&ll, &data2);
+
+    dats_linked_list_remove_tail(&ll);
+
+    EXPECT_EQ(ll.tail, ll.head);
+    EXPECT_EQ(ll.length, 1);
+    EXPECT_EQ(((_Fake_Position*)ll.head->data)->x, data1.x);
+    EXPECT_EQ(((_Fake_Position*)ll.head->data)->y, data1.y);
+
+    EXPECT_EQ(((_Fake_Position*)ll.tail->data)->x, data1.x);
+    EXPECT_EQ(((_Fake_Position*)ll.tail->data)->y, data1.y);
+
+    dats_linked_list_free(&ll);
+}
+
+TEST(dats_linked_list_remove_tail, RemoveHeadInThreeNodesLinkedList)
+{
+    _Fake_Position data1 = { 1234561, 6543211 };
+    _Fake_Position data2 = { 1234562, 6543212 };
+    _Fake_Position data3 = { 33, 33333 };
+
+    dats_linked_list_t ll = dats_linked_list_new(sizeof(_Fake_Position));
+    dats_linked_list_insert_head(&ll, &data1);
+    dats_linked_list_insert_tail(&ll, &data2);
+    dats_linked_list_insert_head(&ll, &data3);
+    EXPECT_EQ(ll.length, 3);
+
+    dats_linked_list_remove_tail(&ll);
+
+    EXPECT_NE(ll.tail, ll.head);
+    EXPECT_EQ(ll.length, 2);
+    EXPECT_EQ(((_Fake_Position*)ll.head->data)->x, data3.x);
+    EXPECT_EQ(((_Fake_Position*)ll.head->data)->y, data3.y);
+
+    EXPECT_EQ(((_Fake_Position*)ll.tail->data)->x, data1.x);
+    EXPECT_EQ(((_Fake_Position*)ll.tail->data)->y, data1.y);
+
+    dats_linked_list_free(&ll);
+}
+
 static void _test_MapToOneNodeLinkedList(const void *data)
 {
     EXPECT_EQ(*((const int*)data), 1111);

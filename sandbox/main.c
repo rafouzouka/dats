@@ -18,42 +18,16 @@ static void fn(const void* d)
 
 int main()
 {
-    // Position pos1 = { 81, 581 };
-    // Position pos2 = { 89832, 9654232 };
-    // Position pos3 = { 333353, 23 };
+    Position data1 = { 1234561, 6543211 };
+    Position data2 = { 1234562, 6543212 };
+    Position data3 = { 33, 33333 };
 
-    double pos1 = 128.1;
-    double pos2 = 5645.2;
-    double pos3 = 998.3;
+    dats_linked_list_t ll = dats_linked_list_new(sizeof(Position));
+    dats_linked_list_insert_head(&ll, &data1);
+    dats_linked_list_insert_tail(&ll, &data2);
+    dats_linked_list_insert_head(&ll, &data3);
 
-    double pos4 = 998.300001;
-
-    dats_linked_list_t ll = dats_linked_list_new(sizeof(double));
-    printf("=====================================\n");
-
-    dats_linked_list_insert_head(&ll, &pos1);
-    dats_linked_list_map(&ll, fn);
-    printf("=====================================\n");
-
-    dats_linked_list_insert_head(&ll, &pos2);
-    dats_linked_list_map(&ll, fn);
-    printf("=====================================\n");
-
-    dats_linked_list_insert_tail(&ll, &pos3);
-    dats_linked_list_map(&ll, fn);
-    printf("=====================================\n");
-
-    dats_linked_list_insert_tail(&ll, &pos4);
-    dats_linked_list_map(&ll, fn);
-    printf("=====================================\n");
-
-    dats_linked_list_remove_head(&ll);
-    dats_linked_list_map(&ll, fn);
-    printf("=====================================\n");
-
-    dats_linked_list_remove_head(&ll);
-    dats_linked_list_map(&ll, fn);
-    printf("=====================================\n");
+    dats_linked_list_remove_tail(&ll);
 
     dats_linked_list_free(&ll);
     return 0;
