@@ -41,7 +41,7 @@ dats_linked_list_t dats_linked_list_new(const uint64_t data_size);
  * @param index The index corresponding to the node position in the linked list, starting from 0.
  * @return const void* Pointer to the heap alocated data. Must not be changed or freed.
  */
-const void *dats_linked_list_get_data(const dats_linked_list_t *self, const uint64_t index);
+const void *dats_linked_list_get(const dats_linked_list_t *self, const uint64_t index);
 
 /**
  * @brief Add a new node heap allocated with data at the first position of the linked list.
@@ -53,7 +53,6 @@ const void *dats_linked_list_get_data(const dats_linked_list_t *self, const uint
  */
 void dats_linked_list_insert_head(dats_linked_list_t *self, const void *data);
 
-
 /**
  * @brief Add a new node heap allocated with data at the last position of the LinkedList.
  *
@@ -63,6 +62,14 @@ void dats_linked_list_insert_head(dats_linked_list_t *self, const void *data);
  * @param data Void pointer to the data that will copy to the new node data. You must provide data with the same type that you use for the creation of the linked list.
  */
 void dats_linked_list_insert_tail(dats_linked_list_t *self, const void *data);
+
+/**
+ * @brief Map through all the nodes in passed the linked list and get back each time the data associated.
+ * 
+ * @param self Pointer to the linked list waiting for the new node.
+ * @param func Pointer to a function that respect the signature with void* data the corresponding data for each crossed node. 
+ */
+void dats_linked_list_map(const dats_linked_list_t *self, void (*func)(const void *data));
 
 /**
  * @brief Free an already existing linked_list. Freeing the every nodes and each correspondig data.

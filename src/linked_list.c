@@ -20,7 +20,7 @@ dats_linked_list_t dats_linked_list_new(const uint64_t data_size)
     return ll;
 }
 
-const void *dats_linked_list_get_data(const dats_linked_list_t *self, const uint64_t index)
+const void *dats_linked_list_get(const dats_linked_list_t *self, const uint64_t index)
 {
     assert(index < self->length);
 
@@ -66,6 +66,20 @@ void dats_linked_list_insert_tail(dats_linked_list_t *self, const void *data)
     self->tail = new_node;
 }
 
+void dats_linked_list_map(const dats_linked_list_t *self, void (*func)(const void *data))
+{
+    dats_node_t *current_node = self->head;
+
+    while (current_node != NULL)
+    {
+        dats_node_t *next_node = current_node->next_node;
+
+        func(current_node->data);        
+
+        current_node = next_node;
+    }
+}
+
 void dats_linked_list_free(dats_linked_list_t *self)
 {
     dats_node_t *current_node = self->head;
@@ -90,5 +104,6 @@ static dats_node_t *_alloc_node(const uint64_t data_size)
 {
     dats_node_t *node = malloc(sizeof(dats_node_t));
     node->data = malloc(data_size);
+    node->next_node = NULL;
     return node;
 }

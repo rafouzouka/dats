@@ -74,13 +74,13 @@ TEST(dats_linked_list_free, FreeingOneItemLinkedList)
     EXPECT_EQ(ll.length, 0);
 }
 
-TEST(dats_linked_list_get_data, GetDataFromOneNodeInLinkedList)
+TEST(dats_linked_list_get, GetDataFromOneNodeInLinkedList)
 {
     long long data = 99999;
     dats_linked_list_t ll = dats_linked_list_new(sizeof(long long));
 
     dats_linked_list_insert_head(&ll, &data);
-    const long long *ptr = (long long*)dats_linked_list_get_data(&ll, 0);
+    const long long *ptr = (long long*)dats_linked_list_get(&ll, 0);
 
     EXPECT_EQ(data, *ptr);
     EXPECT_NE(&data, ptr);
@@ -88,14 +88,14 @@ TEST(dats_linked_list_get_data, GetDataFromOneNodeInLinkedList)
     dats_linked_list_free(&ll);
 }
 
-TEST(dats_linked_list_get_data, IndexParamOutOfRange)
+TEST(dats_linked_list_get, IndexParamOutOfRange)
 {
     long long data = 99999;
     dats_linked_list_t ll = dats_linked_list_new(sizeof(long long));
 
     dats_linked_list_insert_head(&ll, &data);
 
-    EXPECT_DEATH(dats_linked_list_get_data(&ll, 10), "Assertion");
+    EXPECT_DEATH(dats_linked_list_get(&ll, 10), "Assertion");
 
     dats_linked_list_free(&ll);
 }
@@ -148,11 +148,28 @@ TEST(dats_linked_list_insert_tail, InsertToTwoNodesLinkedList)
     dats_linked_list_insert_tail(&ll, &data3);
 
     EXPECT_EQ(*((unsigned int*)ll.head->data), data2);
-    EXPECT_EQ(*((unsigned int*)dats_linked_list_get_data(&ll, 1)), data1);
+    EXPECT_EQ(*((unsigned int*)dats_linked_list_get(&ll, 1)), data1);
     EXPECT_EQ(*((unsigned int*)ll.tail->data), data3);
     EXPECT_NE(ll.tail, ll.head);
 
     EXPECT_EQ(ll.length, 3);
     EXPECT_EQ(ll.data_size, sizeof(unsigned int));
+    dats_linked_list_free(&ll);
+}
+
+static void _test_MapToOneNodeLinkedList(const void *data)
+{
+    EXPECT_EQ(*((const int*)data), 1111);
+}
+
+TEST(dats_linked_list_map, MapToOneNodeLinkedList)
+{
+    int data1 = 1111;
+
+    dats_linked_list_t ll = dats_linked_list_new(sizeof(int));
+    dats_linked_list_insert_tail(&ll, &data1);
+
+    dats_linked_list_map(&ll, _test_MapToOneNodeLinkedList);
+
     dats_linked_list_free(&ll);
 }

@@ -10,6 +10,10 @@ Compilation of various widely used data structures implemented in C for generic 
 
 Yes, the data pointed by void pointer must be heap allocated and often manipulated with pointer arithmetics. 
 
+***Why is there C++ files if Dats is in pure C ?***
+
+Dats uses **googletest** or **gtest.h** for unit testing. This testing framework uses .cpp files to write C and C++ test unit. So, we only have .cpp files for testing the rest is pure C. 
+
 ## Current Implemented Data Structures
 
 This various data structures are designed with reading simplicity in mind first. 
