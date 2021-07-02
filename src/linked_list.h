@@ -35,6 +35,15 @@ typedef struct _dats_linked_list_t
 dats_linked_list_t dats_linked_list_new(const uint64_t data_size);
 
 /**
+ * @brief Getting a const pointer to the data associated to the node described by his index.
+ * 
+ * @param self Pointer to the existing linked list to perform the function.
+ * @param index The index corresponding to the node position in the linked list, starting from 0.
+ * @return const void* Pointer to the heap alocated data. Must not be changed or freed.
+ */
+const void *dats_linked_list_get_data(const dats_linked_list_t *self, const uint64_t index);
+
+/**
  * @brief Add a new node heap allocated node with data on the head of the linked list.
  * 
  * @details If you append to the head of an empty linked list the head and the tail will point to the same new node.
@@ -44,6 +53,11 @@ dats_linked_list_t dats_linked_list_new(const uint64_t data_size);
  */
 void dats_linked_list_insert_head(dats_linked_list_t *self, const void *data);
 
+/**
+ * @brief Free an already existing linked_list. Freeing the every nodes and each correspondig data.
+ * 
+ * @param self Pointer to existing Linked List already created with the dats_linked_list_new function.
+ */
 void dats_linked_list_free(dats_linked_list_t *self);
 
 #endif

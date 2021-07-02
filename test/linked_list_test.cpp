@@ -1,3 +1,4 @@
+#include <gtest/gtest-death-test.h>
 #include <gtest/gtest.h>
 
 extern "C"
@@ -5,9 +6,10 @@ extern "C"
     #include "../src/dats.h"
 }
 
+// c'est bien de tester les asserts
+
 // faudrait aussi tester pour les types floattant double et float
 // mais aussi les structs ou voir les unions
-
 TEST(dats_linked_list_new, CreateAnEmptyLinkedList) {
   
     dats_linked_list_t ll = dats_linked_list_new(sizeof(int));
@@ -58,3 +60,42 @@ TEST(dats_linked_list_insert_head, InsertNodeToAlreadyOneNodeLinkedList)
     dats_linked_list_free(&ll);
 }
 
+// essayer de chopper une valeur avant puis apr_s
+TEST(dats_linked_list_free, FreeingOneItemLinkedList)
+{
+    long data = 5555;
+    dats_linked_list_t ll = dats_linked_list_new(sizeof(long));
+    dats_linked_list_insert_head(&ll, &data);
+
+    dats_linked_list_free(&ll);
+
+    EXPECT_EQ(ll.head, nullptr);
+    EXPECT_EQ(ll.tail, nullptr);
+    EXPECT_EQ(ll.length, 0);
+}
+
+TEST(dats_linked_list_get_data, GetDataFromOneNodeInLinkedList)
+{
+    long long data = 99999;
+    dats_linked_list_t ll = dats_linked_list_new(sizeof(long long));
+
+    dats_linked_list_insert_head(&ll, &data);
+    const long long *ptr = (long long*)dats_linked_list_get_data(&ll, 0);
+
+    EXPECT_EQ(data, *ptr);
+    EXPECT_NE(&data, ptr);
+
+    dats_linked_list_free(&ll);
+}
+
+TEST(dats_linked_list_get_data, IndexParamOutOfRange)
+{
+    long long data = 99999;
+    dats_linked_list_t ll = dats_linked_list_new(sizeof(long long));
+
+    dats_linked_list_insert_head(&ll, &data);
+
+    EXPECT_DEATH(dats_linked_list_get_data(&ll, 10), "Assertion");
+
+    dats_linked_list_free(&ll);
+}

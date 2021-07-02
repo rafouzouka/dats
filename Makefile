@@ -1,7 +1,7 @@
 # -*- MakeFile -*-
 
 CC = gcc
-CFLAGS = -Wall -Wextra -std=c11 -g
+CFLAGS = -Wall -Wextra -std=c11 -g # -DNDEBUG
 INC = 
 EXEC = prog
 
@@ -15,25 +15,25 @@ DELETE_FOLDER = rm -rf
 lib: $(OBJ)
 	ar rcs bin/libdats.a $^
 
-sandbox: sandbox/main.c src/dats.h lib
+debug: sandbox/main.c src/dats.h lib
 	$(CC) $< -L/home/radam/repos/dats/bin -ldats -o bin/$@ $(CFLAGS)
 	./bin/$@
 
 obj/%.o: src/%.c folders
 	$(CC) -c $< -o $@ $(CFLAGS)
 
-val: sandbox
-	valgrind --leak-check=full --track-origins=yes ./bin/sandbox
+val: debug
+	valgrind --leak-check=full --track-origins=yes ./bin/debug
  
 test: lib 
-	@cmake -S test/ -B test/build
-	@cmake --build test/build
-	ctest --test-dir test/build/ --gtest_color --rerun-failed --output-on-failure
+	cmake -S test/ -B test/build
+	cmake --build test/build
+	ctest --test-dir test/build/ --output-on-failure
 
 .PHONY: clean folders help
 
 help:
-	@$(PRINT) "make sandbox : building the lib and execute and sandbox program for experimenting."
+	@$(PRINT) "make debug : building the lib and execute and debug program for experimenting."
 	@$(PRINT) "make lib     : creating a lib .a from sources."
 	@$(PRINT) "make clean   : deleting all non-source files."
 	@$(PRINT) "make folders : creating the necessary folders."
