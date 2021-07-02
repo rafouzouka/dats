@@ -3,16 +3,6 @@
 
 #include <stdint.h>
 
-typedef struct {
-    uint64_t id;
-} DA;
-
-int return4();
-
-char returnc();
-
-void salutLesGens();
-
-void DAprint();
+#include "linked_list.h"
 
 #endif

@@ -5,7 +5,8 @@
 
 int main()
 {
-    DAprint();
-    salutLesGens();
+    dats_linked_list_t *ll = dats_linked_list_new();
+
+    dats_linked_list_free(ll);
     return EXIT_SUCCESS;
 }

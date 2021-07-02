@@ -11,5 +11,10 @@ TEST(HelloTest, BasicAssertions) {
   EXPECT_STRNE("hello", "world");
 
   // Expect equality.
-  EXPECT_EQ(returnc(), 'c');
+  EXPECT_EQ('c', 'c');
+}
+
+TEST(Hello, BasicAssertionss)
+{
+    
 }
