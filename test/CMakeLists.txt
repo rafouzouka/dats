@@ -19,7 +19,7 @@ enable_testing()
 
 add_executable(
   dats_test
-  dats_test.cpp
+  linked_list_test.cpp
 )
 target_link_libraries(
   dats_test

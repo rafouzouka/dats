@@ -5,4 +5,6 @@
 
 #include "linked_list.h"
 
+// peut être faire une assert qu'en mode debug
+
 #endif
