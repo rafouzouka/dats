@@ -1,5 +1,6 @@
 #include <assert.h>
 #include <stdint.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -78,6 +79,32 @@ void dats_linked_list_map(const dats_linked_list_t *self, void (*func)(const voi
 
         current_node = next_node;
     }
+}
+
+// voir si y'a pas moyen de quitter de façon plus stylé
+// avec genre un enum 
+uint64_t dats_linked_list_find(const dats_linked_list_t *self, const void *data)
+{
+    assert(self->length > 0);
+
+    dats_node_t *current_node = self->head;
+    uint64_t index = 0;
+
+    while (current_node != NULL)
+    {
+        dats_node_t *next_node = current_node->next_node;
+
+        if (memcmp(current_node->data, data, self->data_size) == 0)
+        {
+            return index;
+        }
+
+        current_node = next_node;
+        index++;
+    }
+
+    fprintf(stderr, "[ERROR]: Unable to find the data in file: %s at line: %d.\n", __FILE__, __LINE__);
+    exit(EXIT_FAILURE);
 }
 
 void dats_linked_list_free(dats_linked_list_t *self)

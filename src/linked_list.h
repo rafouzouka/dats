@@ -66,10 +66,21 @@ void dats_linked_list_insert_tail(dats_linked_list_t *self, const void *data);
 /**
  * @brief Map through all the nodes in passed the linked list and get back each time the data associated.
  * 
- * @param self Pointer to the linked list waiting for the new node.
+ * @param self Pointer to the existing linked list to perform the function.
  * @param func Pointer to a function that respect the signature with void* data the corresponding data for each crossed node. 
  */
 void dats_linked_list_map(const dats_linked_list_t *self, void (*func)(const void *data));
+
+/**
+ * @brief Find the index position of the  first node in the linked list that match the corresponding given data. It starts at position 0.
+ *
+ * @details If you provide an empty linked list the function will assert. Else if the data don't match with any node the program exits and writes the error to stderr.  
+ *
+ * @param self Pointer to the existing linked list to perform the function.
+ * @param data The data that must match with at least one node data. We are not comparing the pointers but the real memory that is pointed.  
+ * @return uint64_t Index position, starting by 0, of the first node which the data associated match with the one provided in the params.
+ */
+uint64_t dats_linked_list_find(const dats_linked_list_t *self, const void *data);
 
 /**
  * @brief Free an already existing linked_list. Freeing the every nodes and each correspondig data.

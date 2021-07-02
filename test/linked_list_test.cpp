@@ -173,3 +173,41 @@ TEST(dats_linked_list_map, MapToOneNodeLinkedList)
 
     dats_linked_list_free(&ll);
 }
+
+TEST(dats_linked_list_find, FindOneItemThatExist)
+{
+    short data1 = 1111;
+    short data2 = 2222;
+
+    dats_linked_list_t ll = dats_linked_list_new(sizeof(short));
+    dats_linked_list_insert_tail(&ll, &data1);
+    dats_linked_list_insert_tail(&ll, &data2);
+
+    EXPECT_EQ(1, dats_linked_list_find(&ll, &data2));
+    EXPECT_EQ(0, dats_linked_list_find(&ll, &data1));
+
+    dats_linked_list_free(&ll);
+}
+
+TEST(dats_linked_list_find, AssertWhenLinkedListIsEmpty)
+{
+    short data1 = 1111;
+    dats_linked_list_t ll = dats_linked_list_new(sizeof(short));
+
+    EXPECT_DEATH(dats_linked_list_find(&ll, &data1), "Assertion");
+
+    dats_linked_list_free(&ll);
+}
+
+TEST(dats_linked_list_find, ExitWhenUnableToFindData)
+{
+    short data1 = 1111;
+    short data2 = 2222;
+
+    dats_linked_list_t ll = dats_linked_list_new(sizeof(short));
+    dats_linked_list_insert_head(&ll, &data1);
+
+    EXPECT_DEATH(dats_linked_list_find(&ll, &data2), "ERROR");
+
+    dats_linked_list_free(&ll);
+}
