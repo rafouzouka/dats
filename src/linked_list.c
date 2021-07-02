@@ -1,5 +1,4 @@
 #include <assert.h>
-#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -7,7 +6,7 @@
 #include "linked_list.h"
 
 static dats_node_t *_alloc_node(uint64_t data_size);
-static void _free_node(dats_node_t *node_to_free);
+static void *_free_node(dats_node_t *node_to_free);
 static dats_node_t *_get_node(dats_node_t *start, uint64_t index);
 
 dats_linked_list_t dats_linked_list_new(uint64_t data_size)
@@ -88,12 +87,13 @@ void dats_linked_list_insert_index(dats_linked_list_t *self, uint64_t index, con
     }
 }
 
-void dats_linked_list_remove_head(dats_linked_list_t *self)
+void *dats_linked_list_remove_head(dats_linked_list_t *self)
 {
     assert(self->length > 0);
 
     dats_node_t *next_node = self->head->next_node;
-    _free_node(self->head);
+
+    void *data = _free_node(self->head);
 
     if (self->length == 1)
     {
@@ -102,51 +102,53 @@ void dats_linked_list_remove_head(dats_linked_list_t *self)
 
     self->head = next_node;
     self->length--;
+    return data;
 }
 
-void dats_linked_list_remove_tail(dats_linked_list_t *self)
+void *dats_linked_list_remove_tail(dats_linked_list_t *self)
 {
     assert(self->length > 0);
 
     if (self->length == 1)
     {
-        _free_node(self->tail);
+        void *data = _free_node(self->tail);
         self->tail = NULL;
         self->head = NULL;
         self->length--;
-        return;
+        return data;
     }
 
     dats_node_t *penultimate = _get_node(self->head, self->length - 2);
 
-    _free_node(penultimate->next_node);
+    void *data = _free_node(penultimate->next_node);
 
     penultimate->next_node = NULL;
     self->tail = penultimate;
     self->length--;
+    return data;
 }
 
-void dats_linked_list_remove_index(dats_linked_list_t *self, uint64_t index)
+void *dats_linked_list_remove_index(dats_linked_list_t *self, uint64_t index)
 {
     assert(index < self->length);
 
     if (index == 0)
     {
-        dats_linked_list_remove_head(self);
+        return dats_linked_list_remove_head(self);
     }
     else if (index == self->length - 1)
     {
-        dats_linked_list_remove_tail(self);
+        return dats_linked_list_remove_tail(self);
     }
-    else
-    {
-        dats_node_t *previous_node_from_index = _get_node(self->head, index-1);
-        dats_node_t *following_node_from_index = previous_node_from_index->next_node->next_node;
-        
-        _free_node(previous_node_from_index->next_node);
-        previous_node_from_index->next_node = following_node_from_index;
-        self->length--;
-    }
+
+    dats_node_t *previous_node_from_index = _get_node(self->head, index-1);
+    dats_node_t *following_node_from_index = previous_node_from_index->next_node->next_node;
+    
+    void *data = _free_node(previous_node_from_index->next_node);
+    previous_node_from_index->next_node = following_node_from_index;
+    self->length--;
+    
+    return data;
 }
 
 void dats_linked_list_map(const dats_linked_list_t *self, void (*func)(const void *data))
@@ -222,12 +224,14 @@ static dats_node_t *_alloc_node(uint64_t data_size)
     return node;
 }
 
-static void _free_node(dats_node_t *node_to_free)
+static void *_free_node(dats_node_t *node_to_free)
 {
-    free(node_to_free->data);
-    node_to_free->data = NULL;
+    // free(node_to_free->data);
+    // node_to_free->data = NULL;
+    void *data = node_to_free->data;
     free(node_to_free);
     node_to_free = NULL;
+    return data;
 }
 
 static dats_node_t *_get_node(dats_node_t *start, uint64_t index)

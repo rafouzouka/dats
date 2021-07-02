@@ -80,8 +80,9 @@ void dats_linked_list_insert_index(dats_linked_list_t *self, uint64_t index, con
  * @details If the Linked List is empty the function will throw a assertion. 
  *
  * @param self Pointer to the existing linked list to perform the function.
+ * @return void* Pointer to the data removed, this data isn't cleared. He must be freed by the user. 
  */
-void dats_linked_list_remove_head(dats_linked_list_t *self);
+void *dats_linked_list_remove_head(dats_linked_list_t *self);
 
 /**
  * @brief Remove and free the last node of the Linked List. Therefore the tail node will be the nth - 1.
@@ -89,8 +90,9 @@ void dats_linked_list_remove_head(dats_linked_list_t *self);
  * @details If the Linked List is empty the function will throw a assertion. 
  * 
  * @param self Pointer to the existing linked list to perform the function. 
+ * @return void* Pointer to the data removed, this data isn't cleared. He must be freed by the user. 
  */
-void dats_linked_list_remove_tail(dats_linked_list_t *self);
+void *dats_linked_list_remove_tail(dats_linked_list_t *self);
 
 /**
  * @brief Remove and free the node at the given index in the Linked List. The Linked List start at index 0.
@@ -99,8 +101,9 @@ void dats_linked_list_remove_tail(dats_linked_list_t *self);
  *
  * @param self Pointer to the existing linked list to perform the function. 
  * @param index The precise index of the node that will be removed and free. 
+ * @return void* Pointer to the data removed, this data isn't cleared. He must be freed by the user. 
  */
-void dats_linked_list_remove_index(dats_linked_list_t *self, uint64_t index);
+void *dats_linked_list_remove_index(dats_linked_list_t *self, uint64_t index);
 
 /**
  * @brief Map through all the nodes in passed the linked list and get back each time the data associated.

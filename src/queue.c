@@ -1,0 +1,30 @@
+#include "queue.h"
+#include "linked_list.h"
+
+dats_queue_t dats_queue_new(uint64_t data_size)
+{
+    dats_queue_t q = {
+        .ll = dats_linked_list_new(data_size),
+    };    
+    return q;
+}
+
+void dats_queue_enqueue(dats_queue_t *self, const void *data)
+{
+    dats_linked_list_insert_head(&self->ll, data);
+}
+
+// void *dats_queue_dequeue(dats_queue_t *self)
+// {
+//     return dats_linked_list_remove_tail(&self->ll);
+// }
+
+void dats_queue_map(const dats_queue_t *self, void (*func)(const void*data))
+{
+    dats_linked_list_map(&self->ll, func);
+}
+
+void dats_queue_free(dats_queue_t *self)
+{
+    dats_linked_list_free(&self->ll);
+}
