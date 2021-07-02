@@ -6,10 +6,11 @@
 
 #include "linked_list.h"
 
-static dats_node_t *_alloc_node(const uint64_t data_size);
+static dats_node_t *_alloc_node(uint64_t data_size);
 static void _free_node(dats_node_t *node_to_free);
+static dats_node_t *_get_node(dats_node_t *start, uint64_t index);
 
-dats_linked_list_t dats_linked_list_new(const uint64_t data_size)
+dats_linked_list_t dats_linked_list_new(uint64_t data_size)
 {
     assert(data_size > 0);
 
@@ -22,18 +23,13 @@ dats_linked_list_t dats_linked_list_new(const uint64_t data_size)
     return ll;
 }
 
-const void *dats_linked_list_get(const dats_linked_list_t *self, const uint64_t index)
+const void *dats_linked_list_get(const dats_linked_list_t *self, uint64_t index)
 {
     assert(index < self->length);
 
-    dats_node_t *current_node = self->head; 
+    dats_node_t *node = _get_node(self->head, index);
 
-    for (uint64_t i = 0; i < index; i++)
-    {
-        current_node = current_node->next_node;
-    }
-
-    return current_node->data;
+    return node->data;
 }
 
 void dats_linked_list_insert_head(dats_linked_list_t *self, const void *data)
@@ -100,18 +96,36 @@ void dats_linked_list_remove_tail(dats_linked_list_t *self)
         return;
     }
 
-    dats_node_t *current_node = self->head;
+    dats_node_t *penultimate = _get_node(self->head, self->length - 2);
 
-    for (uint64_t i = 0; i < self->length - 2; i++)
-    {
-        current_node = current_node->next_node;
-    }
+    _free_node(penultimate->next_node);
 
-    _free_node(current_node->next_node);
-
-    current_node->next_node = NULL;
-    self->tail = current_node;
+    penultimate->next_node = NULL;
+    self->tail = penultimate;
     self->length--;
+}
+
+void dats_linked_list_remove_index(dats_linked_list_t *self, uint64_t index)
+{
+    assert(index < self->length);
+
+    if (index == 0)
+    {
+        dats_linked_list_remove_head(self);
+    }
+    else if (index == self->length - 1)
+    {
+        dats_linked_list_remove_tail(self);
+    }
+    else
+    {
+        dats_node_t *previous_node_from_index = _get_node(self->head, index-1);
+        dats_node_t *following_node_from_index = previous_node_from_index->next_node->next_node;
+        
+        _free_node(previous_node_from_index->next_node);
+        previous_node_from_index->next_node = following_node_from_index;
+        self->length--;
+    }
 }
 
 void dats_linked_list_map(const dats_linked_list_t *self, void (*func)(const void *data))
@@ -122,7 +136,7 @@ void dats_linked_list_map(const dats_linked_list_t *self, void (*func)(const voi
     {
         dats_node_t *next_node = current_node->next_node;
 
-        func(current_node->data);        
+        func(current_node->data);
 
         current_node = next_node;
     }
@@ -174,7 +188,7 @@ void dats_linked_list_free(dats_linked_list_t *self)
     self->length = 0;
 }
 
-static dats_node_t *_alloc_node(const uint64_t data_size)
+static dats_node_t *_alloc_node(uint64_t data_size)
 {
     dats_node_t *node = malloc(sizeof(dats_node_t));
     node->data = malloc(data_size);
@@ -188,4 +202,13 @@ static void _free_node(dats_node_t *node_to_free)
     node_to_free->data = NULL;
     free(node_to_free);
     node_to_free = NULL;
+}
+
+static dats_node_t *_get_node(dats_node_t *start, uint64_t index)
+{
+    for (uint64_t i = 0; i < index; i++)
+    {
+        start = start->next_node;
+    }
+    return start;
 }

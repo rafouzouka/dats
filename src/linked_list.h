@@ -32,7 +32,7 @@ typedef struct _dats_linked_list_t
  * @param data_size Number of bytes of the data that will be stored. 
  * @return dats_linked_list_t The resulting linked list created. 
  */
-dats_linked_list_t dats_linked_list_new(const uint64_t data_size);
+dats_linked_list_t dats_linked_list_new(uint64_t data_size);
 
 /**
  * @brief Getting a const pointer to the data associated to the node described by his index.
@@ -41,7 +41,7 @@ dats_linked_list_t dats_linked_list_new(const uint64_t data_size);
  * @param index The index corresponding to the node position in the linked list, starting from 0.
  * @return const void* Pointer to the heap alocated data. Must not be changed or freed.
  */
-const void *dats_linked_list_get(const dats_linked_list_t *self, const uint64_t index);
+const void *dats_linked_list_get(const dats_linked_list_t *self, uint64_t index);
 
 /**
  * @brief Add a new node heap allocated with data at the first position of the linked list.
@@ -80,6 +80,16 @@ void dats_linked_list_remove_head(dats_linked_list_t *self);
  * @param self Pointer to the existing linked list to perform the function. 
  */
 void dats_linked_list_remove_tail(dats_linked_list_t *self);
+
+/**
+ * @brief Remove and free the node at the given index in the Linked List. The Linked List start at index 0.
+ * 
+ * @details If the given index is higher than the real size of the Linked List an assert will be thrown.
+ *
+ * @param self Pointer to the existing linked list to perform the function. 
+ * @param index The precise index of the node that will be removed and free. 
+ */
+void dats_linked_list_remove_index(dats_linked_list_t *self, uint64_t index);
 
 /**
  * @brief Map through all the nodes in passed the linked list and get back each time the data associated.

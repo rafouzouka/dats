@@ -27,7 +27,7 @@ int main()
     dats_linked_list_insert_tail(&ll, &data2);
     dats_linked_list_insert_head(&ll, &data3);
 
-    dats_linked_list_remove_tail(&ll);
+    dats_linked_list_remove_index(&ll, 1);
 
     dats_linked_list_free(&ll);
     return 0;
