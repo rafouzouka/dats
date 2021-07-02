@@ -28,7 +28,7 @@ val: sandbox
 test: lib 
 	@cmake -S test/ -B test/build
 	@cmake --build test/build
-	ctest --test-dir test/build/
+	ctest --test-dir test/build/ --gtest_color --rerun-failed --output-on-failure
 
 .PHONY: clean folders help
 
