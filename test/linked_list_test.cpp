@@ -195,6 +195,75 @@ TEST(dats_linked_list_insert_tail, InsertToTwoNodesLinkedList)
     dats_linked_list_free(&ll);
 }
 
+TEST(dats_linked_list_insert_index, AssertOutOfRangeIndex)
+{
+    short int data = 128;
+    dats_linked_list_t ll = dats_linked_list_new(sizeof(short int));
+
+    EXPECT_DEATH(dats_linked_list_insert_index(&ll, 1, &data), "Assertion");
+
+    dats_linked_list_free(&ll);
+}
+
+TEST(dats_linked_list_insert_index, InsertToEmptyLinkedList)
+{
+    short int data = 128;
+    dats_linked_list_t ll = dats_linked_list_new(sizeof(short int));
+    EXPECT_EQ(ll.length, 0);
+
+    dats_linked_list_insert_index(&ll, 0, &data);
+
+    EXPECT_EQ(ll.head, ll.tail);
+    EXPECT_EQ(*((short int*)ll.head->data), data);
+    EXPECT_EQ(*((short int*)ll.tail->data), data);
+
+    EXPECT_EQ(ll.length, 1);
+    EXPECT_EQ(ll.data_size, sizeof(short int));
+
+    dats_linked_list_free(&ll);
+}
+
+TEST(dats_linked_list_insert_index, InsertToOneNodeLinkedList)
+{
+    int data1 = 128;
+    int data2 = 256;
+
+    dats_linked_list_t ll = dats_linked_list_new(sizeof(int));
+    dats_linked_list_insert_head(&ll, &data1);
+    EXPECT_EQ(ll.length, 1);
+    EXPECT_EQ(ll.head, ll.tail);
+
+    dats_linked_list_insert_index(&ll, 1, &data2);
+
+    EXPECT_EQ(*((int*)ll.head->data), data1);
+    EXPECT_EQ(*((int*)ll.tail->data), data2);
+
+    EXPECT_EQ(ll.length, 2);
+
+    dats_linked_list_free(&ll);
+}
+
+TEST(dats_linked_list_insert_index, InsertBetweenTwoNodeLinkedList)
+{
+    int data1 = 128;
+    int data2 = 256;
+    int data3 = 397;
+
+    dats_linked_list_t ll = dats_linked_list_new(sizeof(int));
+    dats_linked_list_insert_head(&ll, &data1);
+    dats_linked_list_insert_tail(&ll, &data2);
+    EXPECT_EQ(ll.length, 2);
+
+    dats_linked_list_insert_index(&ll, 1, &data3);
+
+    EXPECT_EQ(*((int*)ll.head->data), data1);
+    EXPECT_EQ(*((int*)ll.tail->data), data2);
+
+    EXPECT_EQ(ll.length, 3);
+
+    dats_linked_list_free(&ll);
+}
+
 TEST(dats_linked_list_remove_head, RemoveEmptyLinkedList)
 {
     dats_linked_list_t ll = dats_linked_list_new(sizeof(float));

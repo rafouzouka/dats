@@ -64,6 +64,30 @@ void dats_linked_list_insert_tail(dats_linked_list_t *self, const void *data)
     self->tail = new_node;
 }
 
+void dats_linked_list_insert_index(dats_linked_list_t *self, uint64_t index, const void *data)
+{
+    assert(index <= self->length);
+
+    if (index == 0)
+    {
+        dats_linked_list_insert_head(self, data);
+    }
+    else if (index == self->length)
+    {
+        dats_linked_list_insert_tail(self, data);
+    }
+    else
+    {
+        dats_node_t *previous_node_from_index = _get_node(self->head, index-1);
+        dats_node_t *following_node_from_index = previous_node_from_index->next_node;
+        
+        dats_node_t *new_node = _alloc_node(self->data_size);
+        previous_node_from_index->next_node = new_node;
+        new_node->next_node = following_node_from_index;
+        self->length++;
+    }
+}
+
 void dats_linked_list_remove_head(dats_linked_list_t *self)
 {
     assert(self->length > 0);
@@ -80,9 +104,6 @@ void dats_linked_list_remove_head(dats_linked_list_t *self)
     self->length--;
 }
 
-// assertion parler dans la doc
-// si ya q'un element faire un truc specifique
-// penser a retirer de 1 la length
 void dats_linked_list_remove_tail(dats_linked_list_t *self)
 {
     assert(self->length > 0);

@@ -64,6 +64,17 @@ void dats_linked_list_insert_head(dats_linked_list_t *self, const void *data);
 void dats_linked_list_insert_tail(dats_linked_list_t *self, const void *data);
 
 /**
+ * @brief Add a new node heap allocated with data at the given index position. If there is already a Node at this index the new one will take his place but point to the previous one.
+ * 
+ * @details It's possible to add a node to the end of the linked list by using the current size + 1 index but you can't insert beyond that limit. It's considered as outside the limit and a assert will raise.
+ *
+ * @param self Pointer to the linked list waiting for the new node.
+ * @param index The corresponding position that the new indew will take. 
+ * @param data Void pointer to the data that will copy to the new node data. You must provide data with the same type that you use for the creation of the linked list.
+ */
+void dats_linked_list_insert_index(dats_linked_list_t *self, uint64_t index, const void *data);
+
+/**
  * @brief Remove the fist node of the Linked List and set the following one as the new head.
  *
  * @details If the Linked List is empty the function will throw a assertion. 
