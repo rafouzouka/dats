@@ -7,6 +7,7 @@
 #include "linked_list.h"
 
 static dats_node_t *_alloc_node(const uint64_t data_size);
+static void _free_node(dats_node_t *node_to_free);
 
 dats_linked_list_t dats_linked_list_new(const uint64_t data_size)
 {
@@ -65,6 +66,22 @@ void dats_linked_list_insert_tail(dats_linked_list_t *self, const void *data)
 
     self->tail->next_node = new_node;
     self->tail = new_node;
+}
+
+void dats_linked_list_remove_head(dats_linked_list_t *self)
+{
+    assert(self->length > 0);
+
+    dats_node_t *next_node = self->head->next_node;
+    _free_node(self->head);
+
+    if (self->length == 1)
+    {
+        self->tail = NULL;
+    }
+
+    self->head = next_node;
+    self->length--;
 }
 
 void dats_linked_list_map(const dats_linked_list_t *self, void (*func)(const void *data))
@@ -133,4 +150,12 @@ static dats_node_t *_alloc_node(const uint64_t data_size)
     node->data = malloc(data_size);
     node->next_node = NULL;
     return node;
+}
+
+static void _free_node(dats_node_t *node_to_free)
+{
+    free(node_to_free->data);
+    node_to_free->data = NULL;
+    free(node_to_free);
+    node_to_free = NULL;
 }

@@ -1,35 +1,59 @@
 #include <assert.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 
 #include "../src/dats.h"
 
+typedef struct {
+    int64_t x;
+    int64_t y;
+} Position;
+
 static void fn(const void* d)
 {
-    const unsigned int *data = d;
-
-    printf("[%u] -> ", *data);
+    const double *data = d;
+    printf("data -> %f\n", *data);
 }
 
 int main()
 {
-    unsigned int data1 = 1111;
-    unsigned int data2 = 2222;
-    unsigned int data3 = 3333;
-    unsigned int data4 = 4444;
-    
-    dats_linked_list_t ll = dats_linked_list_new(sizeof(unsigned int));
-    dats_linked_list_insert_tail(&ll, &data1);
-    dats_linked_list_insert_head(&ll, &data2);
-    dats_linked_list_insert_tail(&ll, &data3);
+    // Position pos1 = { 81, 581 };
+    // Position pos2 = { 89832, 9654232 };
+    // Position pos3 = { 333353, 23 };
 
+    double pos1 = 128.1;
+    double pos2 = 5645.2;
+    double pos3 = 998.3;
+
+    double pos4 = 998.300001;
+
+    dats_linked_list_t ll = dats_linked_list_new(sizeof(double));
+    printf("=====================================\n");
+
+    dats_linked_list_insert_head(&ll, &pos1);
     dats_linked_list_map(&ll, fn);
-    printf("\n");
+    printf("=====================================\n");
 
-    printf("data1: %lu\n", dats_linked_list_find(&ll, &data1));
-    printf("data2: %lu\n", dats_linked_list_find(&ll, &data2));
-    printf("data3: %lu\n", dats_linked_list_find(&ll, &data3));
-    // printf("data4: %lu\n", dats_linked_list_find(&ll, &data4));
+    dats_linked_list_insert_head(&ll, &pos2);
+    dats_linked_list_map(&ll, fn);
+    printf("=====================================\n");
+
+    dats_linked_list_insert_tail(&ll, &pos3);
+    dats_linked_list_map(&ll, fn);
+    printf("=====================================\n");
+
+    dats_linked_list_insert_tail(&ll, &pos4);
+    dats_linked_list_map(&ll, fn);
+    printf("=====================================\n");
+
+    dats_linked_list_remove_head(&ll);
+    dats_linked_list_map(&ll, fn);
+    printf("=====================================\n");
+
+    dats_linked_list_remove_head(&ll);
+    dats_linked_list_map(&ll, fn);
+    printf("=====================================\n");
 
     dats_linked_list_free(&ll);
     return 0;

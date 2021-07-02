@@ -1,9 +1,16 @@
 #include <gtest/gtest-death-test.h>
 #include <gtest/gtest.h>
+#include <stdint.h>
 
 extern "C"
 {
     #include "../src/dats.h"
+
+    typedef struct
+    {
+        uint64_t x;
+        uint64_t y;
+    } _Fake_Position;
 }
 
 // c'est bien de tester les asserts
@@ -88,6 +95,21 @@ TEST(dats_linked_list_get, GetDataFromOneNodeInLinkedList)
     dats_linked_list_free(&ll);
 }
 
+TEST(dats_linked_list_get, GetDataStructFromOneNodeInLinkedList)
+{
+    _Fake_Position data = { 123456, 654321 };
+    dats_linked_list_t ll = dats_linked_list_new(sizeof(_Fake_Position));
+
+    dats_linked_list_insert_head(&ll, &data);
+    const _Fake_Position *ptr = (_Fake_Position*)dats_linked_list_get(&ll, 0);
+
+    EXPECT_EQ(data.x, ptr->x);
+    EXPECT_EQ(data.y, ptr->y);
+    EXPECT_NE(&data, ptr);
+
+    dats_linked_list_free(&ll);
+}
+
 TEST(dats_linked_list_get, IndexParamOutOfRange)
 {
     long long data = 99999;
@@ -113,6 +135,22 @@ TEST(dats_linked_list_insert_tail, InsertToEmptyLinkedList)
 
     EXPECT_EQ(ll.length, 1);
     EXPECT_EQ(ll.data_size, sizeof(short int));
+    dats_linked_list_free(&ll);
+}
+
+TEST(dats_linked_list_insert_tail, InsertDoubleToEmptyLinkedList)
+{
+    double data = 1235.25561;
+    dats_linked_list_t ll = dats_linked_list_new(sizeof(double));
+
+    dats_linked_list_insert_tail(&ll, &data);
+
+    EXPECT_EQ(ll.head, ll.tail);
+    EXPECT_EQ(*((double*)ll.head->data), data);
+    EXPECT_EQ(*((double*)ll.tail->data), data);
+
+    EXPECT_EQ(ll.length, 1);
+    EXPECT_EQ(ll.data_size, sizeof(double));
     dats_linked_list_free(&ll);
 }
 
@@ -154,6 +192,79 @@ TEST(dats_linked_list_insert_tail, InsertToTwoNodesLinkedList)
 
     EXPECT_EQ(ll.length, 3);
     EXPECT_EQ(ll.data_size, sizeof(unsigned int));
+    dats_linked_list_free(&ll);
+}
+
+TEST(dats_linked_list_remove_head, RemoveEmptyLinkedList)
+{
+    dats_linked_list_t ll = dats_linked_list_new(sizeof(float));
+
+    EXPECT_DEATH(dats_linked_list_remove_head(&ll), "Assertion");
+
+    dats_linked_list_free(&ll);
+}
+
+TEST(dats_linked_list_remove_head, RemoveOneNodeLinkedList)
+{
+    float data1 = 128.1;
+
+    dats_linked_list_t ll = dats_linked_list_new(sizeof(float));
+    dats_linked_list_insert_head(&ll, &data1);
+
+    EXPECT_EQ(ll.length, 1);
+
+    dats_linked_list_remove_head(&ll);
+
+    EXPECT_EQ(ll.head, nullptr);
+    EXPECT_EQ(ll.tail, nullptr);
+
+    EXPECT_EQ(ll.length, 0);
+
+    dats_linked_list_free(&ll);
+}
+
+TEST(dats_linked_list_remove_head, RemoveHeadInTwoNodesLinkedList)
+{
+    _Fake_Position data1 = { 1234561, 6543211 };
+    _Fake_Position data2 = { 1234562, 6543212 };
+
+    dats_linked_list_t ll = dats_linked_list_new(sizeof(_Fake_Position));
+    dats_linked_list_insert_head(&ll, &data1);
+    dats_linked_list_insert_tail(&ll, &data2);
+
+    dats_linked_list_remove_head(&ll);
+
+    EXPECT_EQ(ll.tail, ll.head);
+    EXPECT_EQ(((_Fake_Position*)ll.head->data)->x, data2.x);
+    EXPECT_EQ(((_Fake_Position*)ll.head->data)->y, data2.y);
+
+    EXPECT_EQ(((_Fake_Position*)ll.tail->data)->x, data2.x);
+    EXPECT_EQ(((_Fake_Position*)ll.tail->data)->y, data2.y);
+
+    dats_linked_list_free(&ll);
+}
+
+TEST(dats_linked_list_remove_head, RemoveHeadInThreeodesLinkedList)
+{
+    float data1 = 128.1;
+    float data2 = 128.2;
+    float data3 = 128.3;
+
+    dats_linked_list_t ll = dats_linked_list_new(sizeof(float));
+    dats_linked_list_insert_head(&ll, &data1);
+    dats_linked_list_insert_tail(&ll, &data2);
+    dats_linked_list_insert_tail(&ll, &data3);
+
+    EXPECT_EQ(ll.length, 3);
+
+    dats_linked_list_remove_head(&ll);
+
+    EXPECT_NE(ll.tail, ll.head);
+    EXPECT_EQ(*((float*)ll.head->data), data2);
+    EXPECT_EQ(*((float*)ll.tail->data), data3);
+
+    EXPECT_EQ(ll.length, 2);
+
     dats_linked_list_free(&ll);
 }
 
