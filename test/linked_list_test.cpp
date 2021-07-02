@@ -544,3 +544,23 @@ TEST(dats_linked_list_find, ExitWhenUnableToFindData)
 
     dats_linked_list_free(&ll);
 }
+
+TEST(dats_linked_list_length, VariousLengthTest)
+{
+    short data1 = 1111;
+    short data2 = 2222;
+
+    dats_linked_list_t ll = dats_linked_list_new(sizeof(short));
+
+    EXPECT_EQ(0, dats_linked_list_length(&ll));
+
+    dats_linked_list_insert_head(&ll, &data1);
+
+    EXPECT_EQ(1, dats_linked_list_length(&ll));
+
+    dats_linked_list_remove_tail(&ll);
+
+    EXPECT_EQ(0, dats_linked_list_length(&ll));
+
+    dats_linked_list_free(&ll);
+}

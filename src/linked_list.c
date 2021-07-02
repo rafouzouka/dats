@@ -189,6 +189,11 @@ uint64_t dats_linked_list_find(const dats_linked_list_t *self, const void *data)
     exit(EXIT_FAILURE);
 }
 
+uint64_t dats_linked_list_length(const dats_linked_list_t *self)
+{
+    return self->length;
+}
+
 void dats_linked_list_free(dats_linked_list_t *self)
 {
     dats_node_t *current_node = self->head;

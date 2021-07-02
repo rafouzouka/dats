@@ -122,6 +122,14 @@ void dats_linked_list_map(const dats_linked_list_t *self, void (*func)(const voi
 uint64_t dats_linked_list_find(const dats_linked_list_t *self, const void *data);
 
 /**
+ * @brief Get back the precise size of the current Linked List.
+ * 
+ * @param self Pointer to the existing linked list to perform the function.
+ * @return uint64_t Size of the Linked List. Each node count as 1 element.
+ */
+uint64_t dats_linked_list_length(const dats_linked_list_t *self);
+
+/**
  * @brief Free an already existing linked_list. Freeing the every nodes and each correspondig data.
  * 
  * @param self Pointer to existing Linked List already created with the dats_linked_list_new function.
