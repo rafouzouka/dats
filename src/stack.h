@@ -36,7 +36,15 @@ void dats_stack_push(dats_stack_t *self, const void *data);
  */
 void *dats_stack_pop(dats_stack_t *self);
 
-// peek
+/**
+ * @brief Get a pointer to the first data to be removed using pop but without removing it.
+ *
+ * @details Peeking a data doesn't remove it at all in the stack. You must not altered or trying to free the pointer returned. 
+ *
+ * @param self Pointer to the existing stack to perform the function.
+ * @return const void* Pointer to the data that need to be casted. You must not freeing it.
+ */
+const void *dats_stack_peek(const dats_stack_t *self);
 
 /**
  * @brief Get back a const void pointer to the data at the given index position in the stack. You must not try to modify this data nor freeing it.
@@ -49,7 +57,11 @@ const void *dats_stack_get(const dats_stack_t *self, uint64_t index);
 
 // contains
 
-// free
+/**
+ * @brief Automaticaly freeing all data and the stack passed as parameter.
+ * 
+ * @param self The stack that will be freed.
+ */
 void dats_stack_free(dats_stack_t *self);
 
 #endif

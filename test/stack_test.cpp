@@ -110,6 +110,49 @@ TEST(dats_stack_pop, MultiplePopInThreeItemsStack)
 //     dats_stack_free(&s);
 // }
 
+TEST(dats_stack_peek, PeekOneItemStack)
+{
+    _Fake_Position data1 = { 111, 222 };
+    dats_stack_t q = dats_stack_new(sizeof(_Fake_Position));
+
+    dats_stack_push(&q, &data1);
+
+    const _Fake_Position *pos =  (const _Fake_Position *)dats_stack_peek(&q);
+
+    EXPECT_EQ(q.ll.length, 1);
+    EXPECT_EQ(pos->x, data1.x);
+    EXPECT_EQ(pos->y, data1.y);
+
+    dats_stack_free(&q);
+}
+
+TEST(dats_stack_peek, PeekTwoItemStack)
+{
+    _Fake_Position data1 = { 111, 222 };
+    _Fake_Position data2 = { 444, 666 };
+    dats_stack_t q = dats_stack_new(sizeof(_Fake_Position));
+
+    dats_stack_push(&q, &data1);
+    dats_stack_push(&q, &data2);
+
+    const _Fake_Position *pos1 =  (const _Fake_Position *)dats_stack_peek(&q);
+    EXPECT_EQ(pos1->x, data2.x);
+    EXPECT_EQ(pos1->y, data2.y);
+
+    const _Fake_Position *pos2 =  (const _Fake_Position *)dats_stack_peek(&q);
+    EXPECT_EQ(pos2->x, data2.x);
+    EXPECT_EQ(pos2->y, data2.y);
+
+    void *ptr = dats_stack_pop(&q);
+    free(ptr);
+
+    const _Fake_Position *pos3 =  (const _Fake_Position *)dats_stack_peek(&q);
+    EXPECT_EQ(pos3->x, data1.x);
+    EXPECT_EQ(pos3->y, data1.y);
+
+    dats_stack_free(&q);
+}
+
 TEST(dats_stack_get, GetOneItemStack)
 {
     _Fake_Position data1 = { 11, 22 };   
@@ -122,4 +165,31 @@ TEST(dats_stack_get, GetOneItemStack)
     EXPECT_EQ(pos->y, data1.y);
 
     dats_stack_free(&s);
+}
+
+TEST(dats_stack_free, FreeingEmptyStack)
+{
+    dats_stack_t q = dats_stack_new(sizeof(_Fake_Position));
+
+    dats_stack_free(&q);
+
+    EXPECT_EQ(q.ll.head, nullptr);
+    EXPECT_EQ(q.ll.tail, nullptr);
+    EXPECT_EQ(q.ll.length, 0);
+    EXPECT_EQ(q.ll.data_size, sizeof(_Fake_Position));
+}
+
+TEST(dats_stack_free, FreeingAOneItemStack)
+{
+    _Fake_Position data = { 111, 222 };
+    dats_stack_t q = dats_stack_new(sizeof(_Fake_Position));
+
+    dats_stack_push(&q, &data);
+
+    dats_stack_free(&q);
+
+    EXPECT_EQ(q.ll.head, nullptr);
+    EXPECT_EQ(q.ll.tail, nullptr);
+    EXPECT_EQ(q.ll.length, 0);
+    EXPECT_EQ(q.ll.data_size, sizeof(_Fake_Position));
 }

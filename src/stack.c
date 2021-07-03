@@ -19,6 +19,11 @@ void *dats_stack_pop(dats_stack_t *self)
     return dats_linked_list_remove_head(&self->ll);
 }
 
+const void *dats_stack_peek(const dats_stack_t *self)
+{
+    return dats_linked_list_get_head(&self->ll);
+}
+
 const void *dats_stack_get(const dats_stack_t *self, uint64_t index)
 {
     return dats_linked_list_get(&self->ll, index);
