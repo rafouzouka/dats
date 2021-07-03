@@ -29,6 +29,11 @@ const void *dats_stack_get(const dats_stack_t *self, uint64_t index)
     return dats_linked_list_get(&self->ll, index);
 }
 
+bool dats_stack_contains(const dats_stack_t *self, const void *data)
+{
+    return dats_linked_list_contains(&self->ll, data);
+}
+
 void dats_stack_free(dats_stack_t *self)
 {
     dats_linked_list_free(&self->ll);

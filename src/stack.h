@@ -2,6 +2,7 @@
 #define STACK_H
 
 #include <stdint.h>
+#include <stdbool.h>
 
 #include "linked_list.h"
 
@@ -55,7 +56,15 @@ const void *dats_stack_peek(const dats_stack_t *self);
  */
 const void *dats_stack_get(const dats_stack_t *self, uint64_t index);
 
-// contains
+/**
+ * @brief Check if the given data exist in at least once in the stack.
+ * 
+ * @param self Pointer to the existing stack to perform the function.
+ * @param data The data we are trying to find in the data structure. 
+ * @return true The data exist at least once.
+ * @return false The data isn't in the given stack.
+ */
+bool dats_stack_contains(const dats_stack_t *self, const void *data);
 
 /**
  * @brief Automaticaly freeing all data and the stack passed as parameter.

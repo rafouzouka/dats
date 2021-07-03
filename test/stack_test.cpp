@@ -167,6 +167,51 @@ TEST(dats_stack_get, GetOneItemStack)
     dats_stack_free(&s);
 }
 
+TEST(dats_stack_contains, EmptyStack)
+{
+    _Fake_Position data = { 111, 222 };
+    dats_stack_t q = dats_stack_new(sizeof(_Fake_Position));
+
+    EXPECT_EQ(dats_stack_contains(&q, &data), false);
+
+    dats_stack_free(&q);
+}
+
+TEST(dats_stack_contains, DoesNotContain)
+{
+    _Fake_Position data = { 111, 222 };
+    _Fake_Position data2 = { 333, 444 };
+
+    dats_stack_t q = dats_stack_new(sizeof(_Fake_Position));
+    dats_stack_push(&q, &data);
+
+    EXPECT_EQ(dats_stack_contains(&q, &data2), false);
+
+    dats_stack_free(&q);
+}
+
+TEST(dats_stack_contains, ManagedStackAndContain)
+{
+    _Fake_Position data = { 333, 222 };
+    _Fake_Position data2 = { 333, 444 };
+    _Fake_Position data3 = { 333, 888 };
+
+    dats_stack_t q = dats_stack_new(sizeof(_Fake_Position));
+
+    dats_stack_push(&q, &data);
+    dats_stack_push(&q, &data2);
+    dats_stack_push(&q, &data3);
+
+    EXPECT_EQ(dats_stack_contains(&q, &data), true);
+
+    void *ptr = dats_stack_pop(&q);
+    free(ptr);
+
+    EXPECT_EQ(dats_stack_contains(&q, &data3), false);
+
+    dats_stack_free(&q);
+}
+
 TEST(dats_stack_free, FreeingEmptyStack)
 {
     dats_stack_t q = dats_stack_new(sizeof(_Fake_Position));
