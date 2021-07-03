@@ -203,6 +203,99 @@ TEST(dats_queue_get, GetTwoItemFromQueue)
     dats_queue_free(&q);
 }
 
+static void _test_MapOneItemQueue(const void* d)
+{
+    const _Fake_Position *data = (const _Fake_Position *)d;
+    EXPECT_EQ(data->x, 111);
+    EXPECT_EQ(data->y, 222);
+}
+
+TEST(dats_queue_map, MapOneItemQueue)
+{
+    _Fake_Position data = { 111, 222 };
+    dats_queue_t q = dats_queue_new(sizeof(_Fake_Position));
+
+    dats_queue_enqueue(&q, &data);
+
+    dats_queue_map(&q, _test_MapOneItemQueue);
+
+    dats_queue_free(&q);
+}
+
+TEST(dats_queue_contains, EmptyQueue)
+{
+    _Fake_Position data = { 111, 222 };
+    dats_queue_t q = dats_queue_new(sizeof(_Fake_Position));
+
+    EXPECT_EQ(dats_queue_contains(&q, &data), false);
+
+    dats_queue_free(&q);
+}
+
+TEST(dats_queue_contains, DoesNotContain)
+{
+    _Fake_Position data = { 111, 222 };
+    _Fake_Position data2 = { 333, 444 };
+    dats_queue_t q = dats_queue_new(sizeof(_Fake_Position));
+    dats_queue_enqueue(&q, &data);
+
+    EXPECT_EQ(dats_queue_contains(&q, &data2), false);
+
+    dats_queue_free(&q);
+}
+
+TEST(dats_queue_contains, ManagedQueueAndContain)
+{
+    _Fake_Position data = { 333, 222 };
+    _Fake_Position data2 = { 333, 444 };
+    _Fake_Position data3 = { 333, 888 };
+
+    dats_queue_t q = dats_queue_new(sizeof(_Fake_Position));
+
+    dats_queue_enqueue(&q, &data);
+    dats_queue_enqueue(&q, &data2);
+    dats_queue_enqueue(&q, &data3);
+
+    EXPECT_EQ(dats_queue_contains(&q, &data), true);
+
+    void *ptr = dats_queue_dequeue(&q);
+    free(ptr);
+
+    EXPECT_EQ(dats_queue_contains(&q, &data), false);
+
+    dats_queue_free(&q);
+}
+
+TEST(dats_queue_length, EmptyQueue)
+{
+    dats_queue_t q = dats_queue_new(sizeof(double));
+
+    EXPECT_EQ(0, dats_queue_length(&q));
+
+    dats_queue_free(&q);
+}
+
+TEST(dats_queue_length, ManipulatedQueue)
+{
+    _Fake_Position data = { 111, 222 };
+    _Fake_Position data2 = { 333, 444 };
+    dats_queue_t q = dats_queue_new(sizeof(_Fake_Position));
+
+    EXPECT_EQ(0, dats_queue_length(&q));
+
+    dats_queue_enqueue(&q, &data);
+    dats_queue_enqueue(&q, &data2);
+
+    EXPECT_EQ(2, dats_queue_length(&q));
+
+    void *ptr = dats_queue_dequeue(&q);
+    free(ptr);
+
+    EXPECT_EQ(1, dats_queue_length(&q));
+
+    dats_queue_free(&q);
+}
+
 TEST(dats_queue_free, FreeingAnEmptyQueue)
 {
     dats_queue_t q = dats_queue_new(sizeof(double));
@@ -228,23 +321,4 @@ TEST(dats_queue_free, FreeingAOneItemQueue)
     EXPECT_EQ(q.ll.tail, nullptr);
     EXPECT_EQ(q.ll.length, 0);
     EXPECT_EQ(q.ll.data_size, sizeof(_Fake_Position));
-}
-
-static void _test_MapOneItemQueue(const void* d)
-{
-    const _Fake_Position *data = (const _Fake_Position *)d;
-    EXPECT_EQ(data->x, 111);
-    EXPECT_EQ(data->y, 222);
-}
-
-TEST(dats_queue_map, MapOneItemQueue)
-{
-    _Fake_Position data = { 111, 222 };
-    dats_queue_t q = dats_queue_new(sizeof(_Fake_Position));
-
-    dats_queue_enqueue(&q, &data);
-
-    dats_queue_map(&q, _test_MapOneItemQueue);
-
-    dats_queue_free(&q);
 }

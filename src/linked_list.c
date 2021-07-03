@@ -205,6 +205,24 @@ uint64_t dats_linked_list_find(const dats_linked_list_t *self, const void *data)
     exit(EXIT_FAILURE);
 }
 
+bool dats_linked_list_contains(const dats_linked_list_t *self, const void *data)
+{
+    dats_node_t *current_node = self->head;
+
+    while (current_node != NULL)
+    {
+        dats_node_t *next_node = current_node->next_node;
+
+        if (memcmp(current_node->data, data, self->data_size) == 0)
+        {
+            return true;
+        }
+
+        current_node = next_node;
+    }
+    return false;
+}
+
 uint64_t dats_linked_list_length(const dats_linked_list_t *self)
 {
     return self->length;

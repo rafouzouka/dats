@@ -35,6 +35,16 @@ void dats_queue_map(const dats_queue_t *self, void (*func)(const void*data))
     dats_linked_list_map(&self->ll, func);
 }
 
+bool dats_queue_contains(const dats_queue_t *self, const void *data)
+{
+    return dats_linked_list_contains(&self->ll, data);
+}
+
+uint64_t dats_queue_length(const dats_queue_t *self)
+{
+    return dats_linked_list_length(&self->ll);
+}
+
 void dats_queue_free(dats_queue_t *self)
 {
     dats_linked_list_free(&self->ll);

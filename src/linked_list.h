@@ -1,6 +1,7 @@
 #ifndef LINKED_LIST_H
 #define LINKED_LIST_H
 
+#include <stdbool.h>
 #include <stdint.h>
 
 typedef struct _dats_node_t dats_node_t;
@@ -143,6 +144,16 @@ void dats_linked_list_map(const dats_linked_list_t *self, void (*func)(const voi
  * @return uint64_t Index position, starting by 0, of the first node which the data associated match with the one provided in the params.
  */
 uint64_t dats_linked_list_find(const dats_linked_list_t *self, const void *data);
+
+/**
+ * @brief Check if the given data exist in at least on node in the linked list.
+ * 
+ * @param self Pointer to the existing linked list to perform the function.
+ * @param data The data we are trying to find in the data structure. 
+ * @return true The data exist at least once.
+ * @return false The data isn't in the given linked list.
+ */
+bool dats_linked_list_contains(const dats_linked_list_t *self, const void *data);
 
 /**
  * @brief Get back the precise size of the current Linked List.

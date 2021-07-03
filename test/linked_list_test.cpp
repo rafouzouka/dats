@@ -627,6 +627,55 @@ TEST(dats_linked_list_find, ExitWhenUnableToFindData)
     dats_linked_list_free(&ll);
 }
 
+TEST(dats_linked_list_contains, EmptyList)
+{
+    short data3 = 3333;
+    dats_linked_list_t ll = dats_linked_list_new(sizeof(short));
+
+    bool isIn = dats_linked_list_contains(&ll, &data3);
+
+    EXPECT_EQ(isIn, false);
+    dats_linked_list_free(&ll);
+}
+
+TEST(dats_linked_list_contains, ItemThatDoesIsNotIn)
+{
+    short data1 = 1111;
+    short data2 = 2222;
+    short data3 = 3333;
+
+    dats_linked_list_t ll = dats_linked_list_new(sizeof(short));
+    dats_linked_list_insert_tail(&ll, &data1);
+    dats_linked_list_insert_tail(&ll, &data2);
+    dats_linked_list_insert_tail(&ll, &data3);
+
+    bool isIn1 = dats_linked_list_contains(&ll, &data2);
+    EXPECT_EQ(isIn1, true);
+
+    dats_linked_list_remove_index(&ll, 1);
+
+    bool isIn2 = dats_linked_list_contains(&ll, &data2);
+    EXPECT_EQ(isIn2, false);
+
+    dats_linked_list_free(&ll);
+}
+
+TEST(dats_linked_list_contains, FindOneItemThatExist)
+{
+    short data1 = 1111;
+    short data2 = 2222;
+
+    dats_linked_list_t ll = dats_linked_list_new(sizeof(short));
+    dats_linked_list_insert_tail(&ll, &data1);
+    dats_linked_list_insert_tail(&ll, &data2);
+
+    bool isIn = dats_linked_list_contains(&ll, &data2);
+
+    EXPECT_EQ(isIn, true);
+
+    dats_linked_list_free(&ll);
+}
+
 TEST(dats_linked_list_length, VariousLengthTest)
 {
     short data1 = 1111;

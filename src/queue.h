@@ -1,6 +1,7 @@
 #ifndef QUEUE_H
 #define QUEUE_H
 
+#include <stdbool.h>
 #include <stdint.h>
 
 #include "linked_list.h"
@@ -66,6 +67,24 @@ const void *dats_queue_get(const dats_queue_t *self, uint64_t index);
  * @param func A function pointer to a real function that the user can provide. It must respect the definition of the function.
  */
 void dats_queue_map(const dats_queue_t *self, void (*func)(const void*data));
+
+/**
+ * @brief Check if the given data exist in at least once in the queue.
+ * 
+ * @param self Pointer to the existing queue to perform the function.
+ * @param data The data we are trying to find in the data structure. 
+ * @return true The data exist at least once.
+ * @return false The data isn't in the given queue.
+ */
+bool dats_queue_contains(const dats_queue_t *self, const void *data);
+
+/**
+ * @brief Get the number of elements in the queue. This function does not change the queue.
+ * 
+ * @param self Pointer to the existing queue to perform the function.
+ * @return uint64_t Number of elements in the queue.
+ */
+uint64_t dats_queue_length(const dats_queue_t *self);
 
 /**
  * @brief Automaticaly freeing all data and the queue passed as parameter.
