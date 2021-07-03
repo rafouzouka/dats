@@ -15,10 +15,10 @@ void dats_queue_enqueue(dats_queue_t *self, const void *data)
     dats_linked_list_insert_head(&self->ll, data);
 }
 
-// void *dats_queue_dequeue(dats_queue_t *self)
-// {
-//     return dats_linked_list_remove_tail(&self->ll);
-// }
+void *dats_queue_dequeue(dats_queue_t *self)
+{
+    return dats_linked_list_remove_tail(&self->ll);
+}
 
 const void *dats_queue_get(const dats_queue_t *self, uint64_t index)
 {

@@ -23,13 +23,21 @@ typedef struct
 dats_queue_t dats_queue_new(uint64_t data_size);
 
 /**
- * @brief Enqueue any data in the queue at the first position shifting every already existing data to the right.
+ * @brief Add any data in the queue at the first position shifting every already existing data.
  * 
  * @param self Pointer to the existing queue to perform the function.
  * @param data A pointer to the data that will be copied into the queue. It's a const void pointer, there will be no alteration to given the paramater data.
  */
 void dats_queue_enqueue(dats_queue_t *self, const void *data);
 
+/**
+ * @brief Remove any data in the queue at the last position (or the one that has been added the fisrt).
+ *
+ * @details The data given back isn't free and will not be automaticly by the Queue datastrucutre. You must free the data by calling free() on the pointer returned.
+ * 
+ * @param self Pointer to the existing queue to perform the function.
+ * @return void* Pointer to the data that has been removed from the queue. This data must be free by the user.
+ */
 void *dats_queue_dequeue(dats_queue_t *self);
 
 /**
