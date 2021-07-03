@@ -18,32 +18,17 @@ typedef struct {
 
 int main()
 {
-    // Position data1 = { 1234561, 6543211 };
+    Position data1 = { 1234561, 6543211 };
     // // Position data2 = { 1234562, 6543212 };
     // // Position data3 = { 33, 33333 };
 
-    // dats_queue_t queue = dats_queue_new(sizeof(Position));
+    dats_queue_t queue = dats_queue_new(sizeof(Position));
 
-    // dats_queue_enqueue(&queue, &data1);
+    dats_queue_enqueue(&queue, &data1);
 
     // Position *dataptr = dats_queue_dequeue(&queue);
 
-    // dats_queue_free(&queue);
+    dats_queue_free(&queue);
 
-    int data1 = 1;
-    dats_linked_list_t ll = dats_linked_list_new(sizeof(int));
-
-    dats_linked_list_insert_head(&ll, &data1);
-    dats_linked_list_insert_head(&ll, &data1);
-    dats_linked_list_insert_head(&ll, &data1);
-    dats_linked_list_insert_head(&ll, &data1);
-
-    int *dataptr = dats_linked_list_remove_index(&ll, 2); 
-
-    printf("int: %d\n", *dataptr);
-
-    free(dataptr);
-
-    dats_linked_list_free(&ll);
     return EXIT_SUCCESS;
 }

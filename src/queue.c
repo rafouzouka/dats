@@ -1,4 +1,5 @@
 #include "queue.h"
+
 #include "linked_list.h"
 
 dats_queue_t dats_queue_new(uint64_t data_size)
@@ -19,10 +20,15 @@ void dats_queue_enqueue(dats_queue_t *self, const void *data)
 //     return dats_linked_list_remove_tail(&self->ll);
 // }
 
-void dats_queue_map(const dats_queue_t *self, void (*func)(const void*data))
+const void *dats_queue_get(const dats_queue_t *self, uint64_t index)
 {
-    dats_linked_list_map(&self->ll, func);
+    return dats_linked_list_get(&self->ll, index);
 }
+
+// void dats_queue_map(const dats_queue_t *self, void (*func)(const void*data))
+// {
+//     dats_linked_list_map(&self->ll, func);
+// }
 
 void dats_queue_free(dats_queue_t *self)
 {

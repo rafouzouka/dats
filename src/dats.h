@@ -6,6 +6,7 @@
 #include "linked_list.h"
 #include "queue.h"
 
-// peut être faire une assert qu'en mode debug
+// ajouter des tests pour les valeurs de retour pour
+// les méthodes remove etc...
 
 #endif
