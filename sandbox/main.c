@@ -19,20 +19,27 @@ typedef struct {
 
 int main()
 {
-    Position data1 = { 1234561, 6543211 };
-    Position data2 = { 1234562, 6543212 };
-    Position data3 = { 33, 33333 };
+    Position data1 = { 11, 22 };
+    Position data2 = { 444, 888 };
+    Position data3 = { 99, 999 };
 
-    dats_queue_t queue = dats_queue_new(sizeof(Position));
+    dats_stack_t s = dats_stack_new(sizeof(Position));
+    dats_stack_push(&s, &data1);
+    dats_stack_push(&s, &data2);
+    dats_stack_push(&s, &data3);
 
-    dats_queue_enqueue(&queue, &data1);
-    dats_queue_enqueue(&queue, &data2);
+    Position *res = dats_stack_pop(&s);
+    printf("Position -> x: %ld, y: %ld\n", res->x, res->y);
+    free(res);
 
-    dats_queue_contains(&queue, &data2);
-    dats_queue_contains(&queue, &data1);
-    dats_queue_contains(&queue, &data3);
+    Position *res2 = dats_stack_pop(&s);
+    printf("Position -> x: %ld, y: %ld\n", res2->x, res2->y);
+    free(res2);
 
-    dats_queue_free(&queue);
+    Position *res3 = dats_stack_pop(&s);
+    printf("Position -> x: %ld, y: %ld\n", res3->x, res3->y);
+    free(res3);
 
+    dats_stack_free(&s);
     return EXIT_SUCCESS;
 }

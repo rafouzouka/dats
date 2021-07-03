@@ -24,7 +24,7 @@ typedef struct
 dats_queue_t dats_queue_new(uint64_t data_size);
 
 /**
- * @brief Add any data in the queue at the first position shifting every already existing data.
+ * @brief Add any data in the queue at the last position.
  * 
  * @param self Pointer to the existing queue to perform the function.
  * @param data A pointer to the data that will be copied into the queue. It's a const void pointer, there will be no alteration to given the paramater data.
@@ -52,7 +52,7 @@ void *dats_queue_dequeue(dats_queue_t *self);
 const void *dats_queue_peek(const dats_queue_t *self);
 
 /**
- * @brief Get back a const void pointer to the that at the given index position in the queue. You must not try to modify this data nor freeing it.
+ * @brief Get back a const void pointer to the data at the given index position in the queue. You must not try to modify this data nor freeing it.
  * 
  * @param self Pointer to the existing queue to perform the function.
  * @param index The position in the queue starting from 0 to get the data from. The first element is considered as index 0.
