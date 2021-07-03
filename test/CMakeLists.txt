@@ -22,6 +22,7 @@ add_executable(
   linked_list_test.cpp
   queue_test.cpp
   stack_test.cpp
+  dynamic_array_test.cpp
 )
 
 target_link_libraries(

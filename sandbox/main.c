@@ -19,27 +19,12 @@ typedef struct {
 
 int main()
 {
-    Position data1 = { 11, 22 };
-    Position data2 = { 444, 888 };
-    Position data3 = { 99, 999 };
+    // Position data1 = { 11, 22 };
+    // Position data2 = { 444, 888 };
+    // Position data3 = { 99, 999 };
 
-    dats_stack_t s = dats_stack_new(sizeof(Position));
-    dats_stack_push(&s, &data1);
-    dats_stack_push(&s, &data2);
-    dats_stack_push(&s, &data3);
+    dats_dynamic_array_t da = dats_dynamic_array_new(4, sizeof(double));
 
-    Position *res = dats_stack_pop(&s);
-    printf("Position -> x: %ld, y: %ld\n", res->x, res->y);
-    free(res);
-
-    Position *res2 = dats_stack_pop(&s);
-    printf("Position -> x: %ld, y: %ld\n", res2->x, res2->y);
-    free(res2);
-
-    Position *res3 = dats_stack_pop(&s);
-    printf("Position -> x: %ld, y: %ld\n", res3->x, res3->y);
-    free(res3);
-
-    dats_stack_free(&s);
+    dats_dynamic_array_free(&da);
     return EXIT_SUCCESS;
 }
