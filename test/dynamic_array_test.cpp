@@ -12,14 +12,26 @@ extern "C"
     } _Fake_Position;
 }
 
-// TEST(dats_queue_new, CreateAnEmptyQueue)
-// {
-//     dats_queue_t q = dats_queue_new(sizeof(_Fake_Position));
+TEST(dats_dynamic_array_new, CreateADynamicArray)
+{
+    dats_dynamic_array_t da = dats_dynamic_array_new(4, sizeof(double));
 
-//     EXPECT_EQ(q.ll.data_size, sizeof(_Fake_Position));
-//     EXPECT_EQ(q.ll.head, nullptr);
-//     EXPECT_EQ(q.ll.tail, nullptr);
-//     EXPECT_EQ(q.ll.length, 0);
+    EXPECT_EQ(da.capacity, 4);
+    EXPECT_EQ(da.length, 0);
+    EXPECT_EQ(da.data_size, sizeof(double));
+    EXPECT_NE(da.buffer, nullptr);
 
-//     dats_queue_free(&q);
-// }
+    dats_dynamic_array_free(&da);
+}
+
+TEST(dats_dynamic_array_free, FreeEmptyDynamicArray)
+{
+    dats_dynamic_array_t da = dats_dynamic_array_new(4, sizeof(int));
+
+    dats_dynamic_array_free(&da);
+
+    EXPECT_EQ(da.capacity, 0);
+    EXPECT_EQ(da.length, 0);
+    EXPECT_EQ(da.buffer, nullptr);
+    EXPECT_EQ(da.data_size, sizeof(int));
+}

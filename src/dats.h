@@ -9,5 +9,7 @@
 
 // ajouter des tests pour les valeurs de retour pour
 // les méthodes remove etc...
+// ajouter des OOM guard pour être sur que la memoire est 
+// bien require a chaque fois
 
 #endif
