@@ -27,7 +27,7 @@ This various data structures are designed with reading simplicity in mind first.
 **Abstract Data Types:**
 
 - [ ] Stack
-- [ ] Queue 
+- [X] Queue 
 - [ ] PriorityQueue
 - [ ] Hash Table
 - [ ] Sparse Table
