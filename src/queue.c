@@ -25,10 +25,10 @@ const void *dats_queue_get(const dats_queue_t *self, uint64_t index)
     return dats_linked_list_get(&self->ll, index);
 }
 
-// void dats_queue_map(const dats_queue_t *self, void (*func)(const void*data))
-// {
-//     dats_linked_list_map(&self->ll, func);
-// }
+void dats_queue_map(const dats_queue_t *self, void (*func)(const void*data))
+{
+    dats_linked_list_map(&self->ll, func);
+}
 
 void dats_queue_free(dats_queue_t *self)
 {

@@ -177,3 +177,22 @@ TEST(dats_queue_free, FreeingAOneItemQueue)
     EXPECT_EQ(q.ll.length, 0);
     EXPECT_EQ(q.ll.data_size, sizeof(_Fake_Position));
 }
+
+static void _test_MapOneItemQueue(const void* d)
+{
+    const _Fake_Position *data = (const _Fake_Position *)d;
+    EXPECT_EQ(data->x, 111);
+    EXPECT_EQ(data->y, 222);
+}
+
+TEST(dats_queue_map, MapOneItemQueue)
+{
+    _Fake_Position data = { 111, 222 };
+    dats_queue_t q = dats_queue_new(sizeof(_Fake_Position));
+
+    dats_queue_enqueue(&q, &data);
+
+    dats_queue_map(&q, _test_MapOneItemQueue);
+
+    dats_queue_free(&q);
+}

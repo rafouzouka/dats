@@ -49,6 +49,12 @@ void *dats_queue_dequeue(dats_queue_t *self);
  */
 const void *dats_queue_get(const dats_queue_t *self, uint64_t index);
 
+/**
+ * @brief Invoke the function passed as paramater for each item in the queue. It's start from the last item added and go throught the first item previously added. You must not try to modify or free the data passed to the function.
+ * 
+ * @param self Pointer to the existing queue to perform the function.
+ * @param func A function pointer to a real function that the user can provide. It must respect the definition of the function.
+ */
 void dats_queue_map(const dats_queue_t *self, void (*func)(const void*data));
 
 /**
