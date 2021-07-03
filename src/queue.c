@@ -20,6 +20,11 @@ void *dats_queue_dequeue(dats_queue_t *self)
     return dats_linked_list_remove_tail(&self->ll);
 }
 
+const void *dats_queue_peek(const dats_queue_t *self)
+{
+    return dats_linked_list_get_tail(&self->ll);
+}
+
 const void *dats_queue_get(const dats_queue_t *self, uint64_t index)
 {
     return dats_linked_list_get(&self->ll, index);

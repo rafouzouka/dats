@@ -44,6 +44,26 @@ dats_linked_list_t dats_linked_list_new(uint64_t data_size);
 const void *dats_linked_list_get(const dats_linked_list_t *self, uint64_t index);
 
 /**
+ * @brief Get a const void pointer to the head node data (the first one). It's a O(1) operation.
+ *
+ * @details You must call this function on a Linked List with at least a length of 1. The data must not be altered or even freed.
+ *
+ * @param self Pointer to the existing linked list to perform the function.
+ * @return const void* Poiter to the data that exist in the first node.
+ */
+const void *dats_linked_list_get_head(const dats_linked_list_t *self);
+
+/**
+ * @brief Get a const void pointer to the tail node data (the last one). It's a O(1) operation.
+ * 
+ * @details You must call this function on a Linked List with at least a length of 1. The data must not be altered or even freed.
+ *
+ * @param self Pointer to the existing linked list to perform the function.
+ * @return const void* Poiter to the data that exist in the last node.
+ */
+const void *dats_linked_list_get_tail(const dats_linked_list_t *self);
+
+/**
  * @brief Add a new node heap allocated with data at the first position of the linked list.
  * 
  * @details If you append to an empty linked list the head and the tail will point to the same new node.

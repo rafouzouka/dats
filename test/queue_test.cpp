@@ -109,6 +109,58 @@ TEST(dats_queue_dequeue, DequeueTwoItemQueue)
     dats_queue_free(&q);
 }
 
+TEST(dats_queue_peek, EmptyQueue)
+{
+    dats_queue_t q = dats_queue_new(sizeof(_Fake_Position));
+
+    EXPECT_DEATH(dats_queue_peek(&q), "Assertion");
+
+    dats_queue_free(&q);
+}
+
+TEST(dats_queue_dequeue, PeekOneItemQueue)
+{
+    _Fake_Position data1 = { 111, 222 };
+    dats_queue_t q = dats_queue_new(sizeof(_Fake_Position));
+
+    dats_queue_enqueue(&q, &data1);
+
+    const _Fake_Position *pos =  (const _Fake_Position *)dats_queue_peek(&q);
+
+    EXPECT_EQ(pos->x, data1.x);
+    EXPECT_EQ(pos->y, data1.y);
+
+    dats_queue_free(&q);
+}
+
+TEST(dats_queue_dequeue, PeekTwoItemQueue)
+{
+    _Fake_Position data1 = { 111, 222 };
+    _Fake_Position data2 = { 444, 666 };
+    dats_queue_t q = dats_queue_new(sizeof(_Fake_Position));
+
+    dats_queue_enqueue(&q, &data1);
+    dats_queue_enqueue(&q, &data2);
+
+    const _Fake_Position *pos1 =  (const _Fake_Position *)dats_queue_peek(&q);
+    EXPECT_EQ(pos1->x, data1.x);
+    EXPECT_EQ(pos1->y, data1.y);
+
+    const _Fake_Position *pos2 =  (const _Fake_Position *)dats_queue_peek(&q);
+    EXPECT_EQ(pos2->x, data1.x);
+    EXPECT_EQ(pos2->y, data1.y);
+
+    void *ptr = dats_queue_dequeue(&q);
+    free(ptr);
+
+    const _Fake_Position *pos3 =  (const _Fake_Position *)dats_queue_peek(&q);
+    EXPECT_EQ(pos3->x, data2.x);
+    EXPECT_EQ(pos3->y, data2.y);
+
+    dats_queue_free(&q);
+}
+
+
 TEST(dats_queue_get, GetAnEmptyQueue)
 {
     dats_queue_t q = dats_queue_new(sizeof(_Fake_Position));

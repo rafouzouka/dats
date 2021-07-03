@@ -41,6 +41,16 @@ void dats_queue_enqueue(dats_queue_t *self, const void *data);
 void *dats_queue_dequeue(dats_queue_t *self);
 
 /**
+ * @brief Get a pointer to the first data to be removed using dequeue but without removing it.
+ *
+ * @details Peeking a data doesn't remove it at all in the queue. You must not altered or trying to free the pointer returned. 
+ *
+ * @param self Pointer to the existing queue to perform the function.
+ * @return const void* Pointer to the data that need to be casted. You must not freeing it.
+ */
+const void *dats_queue_peek(const dats_queue_t *self);
+
+/**
  * @brief Get back a const void pointer to the that at the given index position in the queue. You must not try to modify this data nor freeing it.
  * 
  * @param self Pointer to the existing queue to perform the function.

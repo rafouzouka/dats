@@ -10,12 +10,12 @@ typedef struct {
     int64_t y;
 } Position;
 
-static void fn(const void* d)
-{
-    const Position *data = d;
+// static void fn(const void* d)
+// {
+//     const Position *data = d;
 
-    printf("Position -> x: %ld, y: %ld\n", data->x, data->y);
-}
+//     printf("Position -> x: %ld, y: %ld\n", data->x, data->y);
+// }
 
 int main()
 {
@@ -25,11 +25,10 @@ int main()
 
     dats_queue_t queue = dats_queue_new(sizeof(Position));
 
-    // dats_queue_enqueue(&queue, &data1);
-    // dats_queue_enqueue(&queue, &data2);
-
-    dats_queue_map(&queue, fn);
+    dats_queue_enqueue(&queue, &data1);
+    dats_queue_enqueue(&queue, &data2);
 
     dats_queue_free(&queue);
+
     return EXIT_SUCCESS;
 }

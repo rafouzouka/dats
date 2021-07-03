@@ -122,6 +122,88 @@ TEST(dats_linked_list_get, IndexParamOutOfRange)
     dats_linked_list_free(&ll);
 }
 
+TEST(dats_linked_list_get_head, AssertOnEmptyLinkedList)
+{
+    dats_linked_list_t ll = dats_linked_list_new(sizeof(long long));
+
+    EXPECT_DEATH(dats_linked_list_get_head(&ll), "Assertion");
+
+    dats_linked_list_free(&ll);
+}
+
+TEST(dats_linked_list_get_head, GetOneItemLinkedList)
+{
+    long long data = 99999;
+    dats_linked_list_t ll = dats_linked_list_new(sizeof(long long));
+
+    dats_linked_list_insert_head(&ll, &data);
+
+    const long long *res = (const long long *)dats_linked_list_get_head(&ll);
+
+    EXPECT_EQ(*res, data);
+    EXPECT_EQ(ll.length, 1);
+
+    dats_linked_list_free(&ll);
+}
+
+TEST(dats_linked_list_get_head, GetTwotemLinkedList)
+{
+    long long data = 99999;
+    long long data2 = 11111;
+    dats_linked_list_t ll = dats_linked_list_new(sizeof(long long));
+
+    dats_linked_list_insert_tail(&ll, &data);
+    dats_linked_list_insert_tail(&ll, &data2);
+
+    const long long *res = (const long long *)dats_linked_list_get_head(&ll);
+
+    EXPECT_EQ(*res, data);
+    EXPECT_EQ(ll.length, 2);
+
+    dats_linked_list_free(&ll);
+}
+
+TEST(dats_linked_list_get_tail, AssertOnEmptyLinkedList)
+{
+    dats_linked_list_t ll = dats_linked_list_new(sizeof(unsigned char));
+
+    EXPECT_DEATH(dats_linked_list_get_tail(&ll), "Assertion");
+
+    dats_linked_list_free(&ll);
+}
+
+TEST(dats_linked_list_get_tail, GetOneItemLinkedList)
+{
+    long long data = 99999;
+    dats_linked_list_t ll = dats_linked_list_new(sizeof(long long));
+
+    dats_linked_list_insert_head(&ll, &data);
+
+    const long long *res = (const long long *)dats_linked_list_get_tail(&ll);
+
+    EXPECT_EQ(*res, data);
+    EXPECT_EQ(ll.length, 1);
+
+    dats_linked_list_free(&ll);
+}
+
+TEST(dats_linked_list_get_tail, GetTwotemLinkedList)
+{
+    int data = 99999;
+    int data2 = 11111;
+    dats_linked_list_t ll = dats_linked_list_new(sizeof(int));
+
+    dats_linked_list_insert_tail(&ll, &data);
+    dats_linked_list_insert_tail(&ll, &data2);
+
+    const int *res = (const int *)dats_linked_list_get_tail(&ll);
+
+    EXPECT_EQ(*res, data2);
+    EXPECT_EQ(ll.length, 2);
+
+    dats_linked_list_free(&ll);
+}
+
 TEST(dats_linked_list_insert_tail, InsertToEmptyLinkedList)
 {
     short int data = 128;

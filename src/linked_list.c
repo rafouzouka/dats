@@ -31,6 +31,20 @@ const void *dats_linked_list_get(const dats_linked_list_t *self, uint64_t index)
     return node->data;
 }
 
+const void *dats_linked_list_get_head(const dats_linked_list_t *self)
+{
+    assert(self->length > 0);
+
+    return self->head->data;
+}
+
+const void *dats_linked_list_get_tail(const dats_linked_list_t *self)
+{
+    assert(self->length > 0);
+
+    return self->tail->data;
+}
+
 void dats_linked_list_insert_head(dats_linked_list_t *self, const void *data)
 {
     dats_node_t *node = _alloc_node(self->data_size);
