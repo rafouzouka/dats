@@ -1,3 +1,5 @@
 /bin
 /obj
 test/build
+/sandbox
+compile_flags.txt

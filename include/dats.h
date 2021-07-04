@@ -6,5 +6,6 @@
 
 #include "queue.h"
 #include "stack.h"
+#include "dense_array.h"
 
 #endif

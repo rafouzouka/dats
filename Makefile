@@ -1,9 +1,10 @@
 # -*- MakeFile -*-
 
 CC = gcc
-CFLAGS = -Wall -Wextra -std=c11 -g # -DNDEBUG
+CFLAGS = -Wall -Wextra -std=c11 -g -I./include/  # -DNDEBUG
 INC = 
 EXEC = prog
+PREFIX = /usr/local
 
 SRC = $(wildcard src/*.c)
 OBJ = $(SRC:src/%.c=obj/%.o)
@@ -15,8 +16,8 @@ DELETE_FOLDER = rm -rf
 lib: $(OBJ)
 	ar rcs bin/libdats.a $^
 
-debug: sandbox/main.c src/dats.h lib
-	$(CC) $< -L/home/radam/repos/dats/bin -ldats -o bin/$@ $(CFLAGS)
+debug: sandbox/main.c include/dats.h lib
+	$(CC) $< -ldats -o bin/$@ $(CFLAGS)
 	./bin/$@
 
 obj/%.o: src/%.c folders
@@ -30,7 +31,17 @@ test: lib
 	cmake --build test/build
 	ctest --test-dir test/build/ --output-on-failure
 
-.PHONY: clean folders help
+.PHONY: clean folders help uninstall
+
+install: lib
+	$(CREATE_FOLDER) $(DESTDIR)$(PREFIX)/lib
+	$(CREATE_FOLDER) $(DESTDIR)$(PREFIX)/include/dats/
+	cp bin/libdats.a $(DESTDIR)$(PREFIX)/lib/
+	cp include/*.h $(DESTDIR)$(PREFIX)/include/dats/
+
+uninstall:
+	rm -f $(DESTDIR)$(PREFIX)/lib/libdats.a
+	rm -rf $(DESTDIR)$(PREFIX)/include/dats/
 
 help:
 	@$(PRINT) "make debug : building the lib and execute and debug program for experimenting."
@@ -47,9 +58,3 @@ clean:
 	$(DELETE_FOLDER) bin
 	$(DELETE_FOLDER) obj
 	$(DELETE_FOLDER) test/build
-
-# $(EXEC): $(OBJ)
-# 	$(CC) $^ -o bin/$@ $(CFLAGS)
-
-# lib: $(OBJ)
-# 	$(CC) $(CFLAGS) -fPIC -shared -o bin/libents.so $(OBJ) -lc

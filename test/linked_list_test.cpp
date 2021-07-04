@@ -4,7 +4,7 @@
 
 extern "C"
 {
-    #include "../src/dats.h"
+    #include <dats/dats.h>
 
     typedef struct
     {

@@ -1,5 +1,4 @@
 #include "queue.h"
-
 #include "linked_list.h"
 
 dats_queue_t dats_queue_new(uint64_t data_size)
