@@ -206,6 +206,24 @@ TEST(dats_dynamic_array_get, GetTwoItemData)
     dats_dynamic_array_free(&da);
 }
 
+TEST(dats_dynamic_array_contains, FindIndexWithDataThatExists)
+{
+    _Fake_Position data1 = { 111, 1111 };
+    _Fake_Position data2 = { 222, 2222 };
+    _Fake_Position data3 = { 333, 333 };
+
+    dats_dynamic_array_t da = dats_dynamic_array_new(1, sizeof(_Fake_Position));
+
+    dats_dynamic_array_add(&da, &data1);
+    dats_dynamic_array_add(&da, &data2);
+
+    EXPECT_EQ(true, dats_dynamic_array_contains(&da, &data2));
+    EXPECT_EQ(false, dats_dynamic_array_contains(&da, &data3));
+    EXPECT_EQ(true, dats_dynamic_array_contains(&da, &data1));
+
+    dats_dynamic_array_free(&da);
+}
+
 TEST(dats_dynamic_array_find_index, FindIndexWithDataThatExists)
 {
     _Fake_Position data1 = { 111, 1111 };

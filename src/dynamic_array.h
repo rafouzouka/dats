@@ -2,6 +2,7 @@
 #define DYNAMIC_ARRAY_H
 
 #include <stdint.h>
+#include <stdbool.h>
 
 typedef struct
 {
@@ -62,7 +63,15 @@ void dats_dynamic_array_map(const dats_dynamic_array_t *self, void (*func)(const
  */
 const void* dats_dynamic_array_get(const dats_dynamic_array_t *self, uint64_t index);
 
-// contains
+/**
+ * @brief Check if the given data exist in at least once in the dynamic array.
+ * 
+ * @param self Pointer to the existing dynamic array to perform the function.
+ * @param data The data we are trying to find in the data structure. 
+ * @return true The data exist at least once.
+ * @return false The data isn't in the given dynamic array.
+ */
+bool dats_dynamic_array_contains(const dats_dynamic_array_t *self, const void *data);
 
 /**
  * @brief Find the index position of the first matching data in the dynamic array. It starts at position 0.

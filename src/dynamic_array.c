@@ -65,15 +65,30 @@ const void* dats_dynamic_array_get(const dats_dynamic_array_t *self, uint64_t in
     return _get_data_ptr(self, index);
 }
 
+bool dats_dynamic_array_contains(const dats_dynamic_array_t *self, const void *data)
+{
+    uint8_t *buffer = self->buffer; 
+
+    for (uint64_t i = 0; i < self->length; i++)
+    {
+        if (memcmp(&buffer[i * self->data_size], data, self->data_size) == 0)
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 uint64_t dats_dynamic_array_find_index(const dats_dynamic_array_t *self, const void *data)
 {
     assert(self->length > 0);
 
+    uint8_t *buffer = self->buffer; 
+
     for (uint64_t i = 0; i < self->length; i++)
     {
-        const void *item = _get_data_ptr(self, i);
-
-        if (memcmp(item, data, self->data_size) == 0)
+        if (memcmp(&buffer[i * self->data_size], data, self->data_size) == 0)
         {
             return i;
         }
