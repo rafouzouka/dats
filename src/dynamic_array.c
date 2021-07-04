@@ -15,7 +15,7 @@ dats_dynamic_array_t dats_dynamic_array_new(uint64_t capacity, uint64_t data_siz
         .data_size = data_size,
         .length = 0,
         .capacity = capacity,
-        .buffer = calloc(capacity, data_size)
+        .buffer = malloc(capacity * data_size)
     };
     return da;
 }
@@ -33,7 +33,6 @@ void dats_dynamic_array_add(dats_dynamic_array_t *self, const void *data)
     self->length++;
 }
 
-// voir ce que ça donne quand l'array est de taille 1
 void dats_dynamic_array_remove(dats_dynamic_array_t *self, const void *data)
 {
     assert(self->length > 0);
@@ -101,8 +100,6 @@ static void _ensure_capacity(dats_dynamic_array_t *self, uint64_t asked_capacity
     }
 
     self->buffer = realloc(self->buffer, self->capacity * 2 * self->data_size);
-
-    memset(_get_data_ptr(self, self->capacity), 0, self->capacity * self->data_size);
     self->capacity *= 2;
 }
 
