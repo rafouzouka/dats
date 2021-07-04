@@ -24,18 +24,32 @@ dats_dynamic_array_t dats_dynamic_array_new(uint64_t capacity, uint64_t data_siz
 
 // insert
 
-// add
+/**
+ * @brief Create a new slot at the end of the dynamic array and insert the given data in it.
+ * 
+ * @details If the capacity isn't enought in the dynamic array internally for adding the data a new bigger will be created and populated with the previous data. 
+ *
+ * @param self Pointer to the existing dynamic array to perform the function.
+ * @param data Data we want to insert in the Dynamic Array.
+ */
 void dats_dynamic_array_add(dats_dynamic_array_t *self, const void *data);
 
 // remove
 
-// map
+/**
+ * @brief Invoke the function passed as paramater for each slots in the dynamic array.
+ * 
+ * @details You must not try to modify or free the data passed to the function.
+ *
+ * @param self Pointer to the existing dynamic array to perform the function.
+ * @param func A function pointer to a real function that the user can provide. It must respect the definition of the function.
+ */
 void dats_dynamic_array_map(const dats_dynamic_array_t *self, void (*func)(const void*));
 
 /**
  * @brief Get a const pointer to the data at a given index in the Dynamic Array. You must not try to free or modify the value.
  * 
- * @param self Pointer to the existing queue to perform the function.
+ * @param self Pointer to the existing dynamic array to perform the function.
  * @param index The position of the data in the Dynamic Array you want to get back a pointer from.  
  * @return const void* Direct access to the wanted data in the memory. Don't modify it.
  */

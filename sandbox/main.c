@@ -30,12 +30,13 @@ int main()
     dats_dynamic_array_add(&da, &data2);
     dats_dynamic_array_add(&da, &data2);
     dats_dynamic_array_add(&da, &data1);
-    
+
     dats_dynamic_array_add(&da, &data2);
     dats_dynamic_array_add(&da, &data2);
 
     dats_dynamic_array_map(&da, fn);
 
     dats_dynamic_array_free(&da);
+    
     return EXIT_SUCCESS;
 }

@@ -74,6 +74,24 @@ TEST(dats_dynamic_array_add, AddEmptyWithoutEnoughCapacity)
     dats_dynamic_array_free(&da);
 }
 
+static void _test_MapOneItemArray(const void *data)
+{
+    const _Fake_Position *res = (const _Fake_Position*)data;
+    EXPECT_EQ(res->x, 111);
+    EXPECT_EQ(res->y, 1111);
+}
+
+TEST(dats_dynamic_array_map, MapOneItemArray)
+{
+    _Fake_Position data1 = { 111, 1111 };
+    dats_dynamic_array_t da = dats_dynamic_array_new(1, sizeof(_Fake_Position));
+    dats_dynamic_array_add(&da, &data1);
+
+    dats_dynamic_array_map(&da, _test_MapOneItemArray);
+
+    dats_dynamic_array_free(&da);
+}
+
 TEST(dats_dynamic_array_get, GetTwoItemData)
 {
     _Fake_Position data1 = { 111, 1111 };

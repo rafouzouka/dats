@@ -69,5 +69,5 @@ static void _ensure_capacity(dats_dynamic_array_t *self, uint64_t asked_capacity
 static void *_get_data_ptr(const dats_dynamic_array_t *self, uint64_t index)
 {
     uint8_t *buffer = self->buffer;
-    return &self->buffer[index * self->data_size];
+    return &buffer[index * self->data_size];
 }
