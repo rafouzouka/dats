@@ -222,6 +222,66 @@ TEST(dats_dynamic_array_find_index, FindIndexWithDataThatExists)
     dats_dynamic_array_free(&da);
 }
 
+TEST(dats_dynamic_array_length, EmptyArray)
+{
+    dats_dynamic_array_t da = dats_dynamic_array_new(1, sizeof(_Fake_Position));
+
+    EXPECT_EQ(0, dats_dynamic_array_length(&da));
+
+    dats_dynamic_array_free(&da);
+}
+
+TEST(dats_dynamic_array_length, TwoItemArray)
+{
+    _Fake_Position data1 = { 111, 1111 };
+    _Fake_Position data2 = { 222, 2222 };
+
+    dats_dynamic_array_t da = dats_dynamic_array_new(1, sizeof(_Fake_Position));
+
+    dats_dynamic_array_add(&da, &data1);
+    dats_dynamic_array_add(&da, &data2);
+
+    EXPECT_EQ(2, dats_dynamic_array_length(&da));
+
+    dats_dynamic_array_remove(&da, &data2);
+
+    EXPECT_EQ(1, dats_dynamic_array_length(&da));
+
+    dats_dynamic_array_free(&da);
+}
+
+TEST(dats_dynamic_array_clear, ClearEmptyArray)
+{
+    dats_dynamic_array_t da = dats_dynamic_array_new(1, sizeof(_Fake_Position));
+    EXPECT_EQ(0, da.length);
+    EXPECT_EQ(1, da.capacity);
+
+    dats_dynamic_array_clear(&da);
+    EXPECT_EQ(0, da.length);
+    EXPECT_EQ(1, da.capacity);
+
+    dats_dynamic_array_free(&da);
+}
+
+TEST(dats_dynamic_array_clear, ClearMultipleOperationArray)
+{
+    _Fake_Position data1 = { 111, 1111 };
+    _Fake_Position data2 = { 222, 2222 };
+
+    dats_dynamic_array_t da = dats_dynamic_array_new(4, sizeof(_Fake_Position));
+
+    dats_dynamic_array_add(&da, &data1);
+    dats_dynamic_array_add(&da, &data2);
+    EXPECT_EQ(2, da.length);
+    EXPECT_EQ(4, da.capacity);
+
+    dats_dynamic_array_clear(&da);
+    EXPECT_EQ(0, da.length);
+    EXPECT_EQ(4, da.capacity);
+
+    dats_dynamic_array_free(&da);
+}
+
 TEST(dats_dynamic_array_free, FreeEmptyDynamicArray)
 {
     dats_dynamic_array_t da = dats_dynamic_array_new(4, sizeof(int));

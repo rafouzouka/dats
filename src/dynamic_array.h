@@ -75,9 +75,20 @@ const void* dats_dynamic_array_get(const dats_dynamic_array_t *self, uint64_t in
  */
 uint64_t dats_dynamic_array_find_index(const dats_dynamic_array_t *self, const void *data);
 
-// length
+/**
+ * @brief Get the number of elements in the dynamic array. This function does not change the dynamic array.
+ * 
+ * @param self Pointer to the existing dynamic array to perform the function.
+ * @return uint64_t Number of elements in the dynamic array.
+ */
+uint64_t dats_dynamic_array_length(const dats_dynamic_array_t *self);
 
-// clear
+/**
+ * @brief Emptying all data in the dynamic array but still keeping original capacity. This is clearing the data inside the dynamic array but this is not the way to free it.
+ * 
+ * @param self Pointer to the existing dynamic array to perform the function.
+ */
+void dats_dynamic_array_clear(dats_dynamic_array_t *self);
 
 /**
  * @brief Free all the memory used by the data structure.

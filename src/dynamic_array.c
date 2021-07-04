@@ -83,6 +83,16 @@ uint64_t dats_dynamic_array_find_index(const dats_dynamic_array_t *self, const v
     exit(EXIT_FAILURE);
 }
 
+uint64_t dats_dynamic_array_length(const dats_dynamic_array_t *self)
+{
+    return self->length;
+}
+
+void dats_dynamic_array_clear(dats_dynamic_array_t *self)
+{
+    self->length = 0;
+}
+
 void dats_dynamic_array_free(dats_dynamic_array_t *self)
 {
     self->capacity = 0;

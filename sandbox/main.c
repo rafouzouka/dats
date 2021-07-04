@@ -38,7 +38,7 @@ int main()
     dats_dynamic_array_map(&da, fn);
     printf("\n");
 
-    dats_dynamic_array_remove(&da, &data3);
+    dats_dynamic_array_clear(&da);
 
     dats_dynamic_array_map(&da, fn);
     printf("\n");
