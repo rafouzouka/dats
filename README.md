@@ -20,7 +20,7 @@ This various data structures are designed with reading simplicity in mind first.
 
 **Data Structures:**
 
-- [ ] Dynamic Array 
+- [x] Dynamic Array 
 - [x] Linked List   
 - [ ] Binary Tree   
 
@@ -31,7 +31,7 @@ This various data structures are designed with reading simplicity in mind first.
 - [ ] PriorityQueue
 - [ ] Hash Table
 - [ ] Sparse Table
-- [ ] DenseVec
+- [ ] DenseArray
 
 ## Examples
 

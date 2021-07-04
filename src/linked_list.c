@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "utils.h"
 #include "linked_list.h"
 
 static dats_node_t *_alloc_node(uint64_t data_size);
@@ -179,8 +180,6 @@ void dats_linked_list_map(const dats_linked_list_t *self, void (*func)(const voi
     }
 }
 
-// voir si y'a pas moyen de quitter de façon plus stylé
-// avec genre un enum 
 uint64_t dats_linked_list_find(const dats_linked_list_t *self, const void *data)
 {
     assert(self->length > 0);
@@ -201,7 +200,7 @@ uint64_t dats_linked_list_find(const dats_linked_list_t *self, const void *data)
         index++;
     }
 
-    fprintf(stderr, "[ERROR]: Unable to find the data in file: %s at line: %d.\n", __FILE__, __LINE__);
+    DATS_RAISE_ERROR("Unable to find data");
     exit(EXIT_FAILURE);
 }
 
@@ -250,8 +249,8 @@ void dats_linked_list_free(dats_linked_list_t *self)
 
 static dats_node_t *_alloc_node(uint64_t data_size)
 {
-    dats_node_t *node = malloc(sizeof(dats_node_t));
-    node->data = malloc(data_size);
+    dats_node_t *node = DATS_OOM_GUARD(malloc(sizeof(dats_node_t)));
+    node->data = DATS_OOM_GUARD(malloc(data_size));
     node->next_node = NULL;
     return node;
 }

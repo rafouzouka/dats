@@ -76,15 +76,6 @@ TEST(dats_queue_enqueue, EnqueueAlreadyOneItemQueue)
     dats_queue_free(&q);
 }
 
-// TEST(dats_queue_dequeue, DequeueEmptyQueue)
-// {
-//     dats_queue_t q = dats_queue_new(sizeof(_Fake_Position));
-
-//     EXPECT_DEATH(dats_queue_dequeue(&q), "Assertion");
-
-//     dats_queue_free(&q);
-// }
-
 TEST(dats_queue_dequeue, DequeueTwoItemQueue)
 {
     _Fake_Position data1 = { 111, 222 };
@@ -102,21 +93,10 @@ TEST(dats_queue_dequeue, DequeueTwoItemQueue)
     EXPECT_EQ(data2.x, pos2->x);
     EXPECT_EQ(data2.y, pos2->y);
 
-    // EXPECT_DEATH(dats_queue_dequeue(&q), "Assertion");
-
     free(pos1);
     free(pos2);
     dats_queue_free(&q);
 }
-
-// TEST(dats_queue_peek, EmptyQueue)
-// {
-//     dats_queue_t q = dats_queue_new(sizeof(_Fake_Position));
-
-//     EXPECT_DEATH(dats_queue_peek(&q), "Assertion");
-
-//     dats_queue_free(&q);
-// }
 
 TEST(dats_queue_peek, PeekOneItemQueue)
 {
@@ -159,28 +139,6 @@ TEST(dats_queue_peek, PeekTwoItemQueue)
 
     dats_queue_free(&q);
 }
-
-
-// TEST(dats_queue_get, GetAnEmptyQueue)
-// {
-//     dats_queue_t q = dats_queue_new(sizeof(_Fake_Position));
-
-//     EXPECT_DEATH(dats_queue_get(&q, 0), "Assertion");
-
-//     dats_queue_free(&q);
-// }
-
-// TEST(dats_queue_get, GetIndexOutOfRange)
-// {
-//     _Fake_Position data = { 111, 222 };
-//     dats_queue_t q = dats_queue_new(sizeof(_Fake_Position));
-
-//     dats_queue_enqueue(&q, &data);
-
-//     EXPECT_DEATH(dats_queue_get(&q, 1), "Assertion");
-
-//     dats_queue_free(&q);
-// }
 
 TEST(dats_queue_get, GetTwoItemFromQueue)
 {

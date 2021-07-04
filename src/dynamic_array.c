@@ -5,8 +5,9 @@
 #include <stdio.h>
 
 #include "dynamic_array.h"
+#include "utils.h"
 
-static void *_get_data_ptr(const dats_dynamic_array_t *self, uint64_t index);
+static void *_get_data_ptr(dats_dynamic_array_t *self, uint64_t index);
 static void _ensure_capacity(dats_dynamic_array_t *self, uint64_t asked_capacity);
 
 dats_dynamic_array_t dats_dynamic_array_new(uint64_t capacity, uint64_t data_size)
@@ -15,15 +16,18 @@ dats_dynamic_array_t dats_dynamic_array_new(uint64_t capacity, uint64_t data_siz
         .data_size = data_size,
         .length = 0,
         .capacity = capacity,
-        .buffer = malloc(capacity * data_size)
+        .buffer = DATS_OOM_GUARD(malloc(capacity * data_size))
     };
     return da;
 }
 
-// void dats_dynamic_array_insert(dats_dynamic_array_t *self, uint64_t index, const void *data)
-// {
+void dats_dynamic_array_insert(dats_dynamic_array_t *self, uint64_t index, const void *data)
+{
+    assert(index < self->length);
 
-// }
+    void *place_to_put_data = _get_data_ptr(self, index);
+    memcpy(place_to_put_data, data, self->data_size);
+}
 
 void dats_dynamic_array_add(dats_dynamic_array_t *self, const void *data)
 {
@@ -62,7 +66,8 @@ const void* dats_dynamic_array_get(const dats_dynamic_array_t *self, uint64_t in
 {
     assert(self->length > index);
 
-    return _get_data_ptr(self, index);
+    uint8_t *buffer = self->buffer;
+    return &buffer[index * self->data_size];
 }
 
 bool dats_dynamic_array_contains(const dats_dynamic_array_t *self, const void *data)
@@ -94,7 +99,7 @@ uint64_t dats_dynamic_array_find_index(const dats_dynamic_array_t *self, const v
         }
     }
 
-    fprintf(stderr, "[ERROR]: Unable to find the data in file: %s at line: %d.\n", __FILE__, __LINE__);
+    DATS_RAISE_ERROR("Unable to find the data");
     exit(EXIT_FAILURE);
 }
 
@@ -124,11 +129,11 @@ static void _ensure_capacity(dats_dynamic_array_t *self, uint64_t asked_capacity
         return;
     }
 
-    self->buffer = realloc(self->buffer, self->capacity * 2 * self->data_size);
+    self->buffer = DATS_OOM_GUARD(realloc(self->buffer, self->capacity * 2 * self->data_size));
     self->capacity *= 2;
 }
 
-static void *_get_data_ptr(const dats_dynamic_array_t *self, uint64_t index)
+static void *_get_data_ptr(dats_dynamic_array_t *self, uint64_t index)
 {
     uint8_t *buffer = self->buffer;
     return &buffer[index * self->data_size];

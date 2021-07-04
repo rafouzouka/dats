@@ -13,10 +13,6 @@ extern "C"
     } _Fake_Position;
 }
 
-// c'est bien de tester les asserts
-
-// faudrait aussi tester pour les types floattant double et float
-// mais aussi les structs ou voir les unions
 TEST(dats_linked_list_new, CreateAnEmptyLinkedList) {
   
     dats_linked_list_t ll = dats_linked_list_new(sizeof(int));
@@ -67,7 +63,6 @@ TEST(dats_linked_list_insert_head, InsertNodeToAlreadyOneNodeLinkedList)
     dats_linked_list_free(&ll);
 }
 
-// essayer de chopper une valeur avant puis apr_s
 TEST(dats_linked_list_free, FreeingOneItemLinkedList)
 {
     long data = 5555;
@@ -110,27 +105,6 @@ TEST(dats_linked_list_get, GetDataStructFromOneNodeInLinkedList)
     dats_linked_list_free(&ll);
 }
 
-// TEST(dats_linked_list_get, IndexParamOutOfRange)
-// {
-//     long long data = 99999;
-//     dats_linked_list_t ll = dats_linked_list_new(sizeof(long long));
-
-//     dats_linked_list_insert_head(&ll, &data);
-
-//     EXPECT_DEATH(dats_linked_list_get(&ll, 10), "Assertion");
-
-//     dats_linked_list_free(&ll);
-// }
-
-// TEST(dats_linked_list_get_head, AssertOnEmptyLinkedList)
-// {
-//     dats_linked_list_t ll = dats_linked_list_new(sizeof(long long));
-
-//     EXPECT_DEATH(dats_linked_list_get_head(&ll), "Assertion");
-
-//     dats_linked_list_free(&ll);
-// }
-
 TEST(dats_linked_list_get_head, GetOneItemLinkedList)
 {
     long long data = 99999;
@@ -162,15 +136,6 @@ TEST(dats_linked_list_get_head, GetTwotemLinkedList)
 
     dats_linked_list_free(&ll);
 }
-
-// TEST(dats_linked_list_get_tail, AssertOnEmptyLinkedList)
-// {
-//     dats_linked_list_t ll = dats_linked_list_new(sizeof(unsigned char));
-
-//     EXPECT_DEATH(dats_linked_list_get_tail(&ll), "Assertion");
-
-//     dats_linked_list_free(&ll);
-// }
 
 TEST(dats_linked_list_get_tail, GetOneItemLinkedList)
 {
@@ -277,16 +242,6 @@ TEST(dats_linked_list_insert_tail, InsertToTwoNodesLinkedList)
     dats_linked_list_free(&ll);
 }
 
-// TEST(dats_linked_list_insert_index, AssertOutOfRangeIndex)
-// {
-//     short int data = 128;
-//     dats_linked_list_t ll = dats_linked_list_new(sizeof(short int));
-
-//     EXPECT_DEATH(dats_linked_list_insert_index(&ll, 1, &data), "Assertion");
-
-//     dats_linked_list_free(&ll);
-// }
-
 TEST(dats_linked_list_insert_index, InsertToEmptyLinkedList)
 {
     short int data = 128;
@@ -346,15 +301,6 @@ TEST(dats_linked_list_insert_index, InsertBetweenTwoNodeLinkedList)
     dats_linked_list_free(&ll);
 }
 
-// TEST(dats_linked_list_remove_head, RemoveEmptyLinkedList)
-// {
-//     dats_linked_list_t ll = dats_linked_list_new(sizeof(float));
-
-//     EXPECT_DEATH(dats_linked_list_remove_head(&ll), "Assertion");
-
-//     dats_linked_list_free(&ll);
-// }
-
 TEST(dats_linked_list_remove_head, RemoveOneNodeLinkedList)
 {
     float data1 = 128.1;
@@ -364,7 +310,9 @@ TEST(dats_linked_list_remove_head, RemoveOneNodeLinkedList)
 
     EXPECT_EQ(ll.length, 1);
 
-    dats_linked_list_remove_head(&ll);
+    float *data1ptr = (float*)dats_linked_list_remove_head(&ll);
+    EXPECT_EQ(*data1ptr, data1);
+    free(data1ptr);
 
     EXPECT_EQ(ll.head, nullptr);
     EXPECT_EQ(ll.tail, nullptr);
@@ -383,7 +331,10 @@ TEST(dats_linked_list_remove_head, RemoveHeadInTwoNodesLinkedList)
     dats_linked_list_insert_head(&ll, &data1);
     dats_linked_list_insert_tail(&ll, &data2);
 
-    dats_linked_list_remove_head(&ll);
+    _Fake_Position *data1ptr = (_Fake_Position*)dats_linked_list_remove_head(&ll);
+    EXPECT_EQ(data1ptr->x, data1.x);
+    EXPECT_EQ(data1ptr->y, data1.y);
+    free(data1ptr);
 
     EXPECT_EQ(ll.tail, ll.head);
     EXPECT_EQ(((_Fake_Position*)ll.head->data)->x, data2.x);
@@ -408,7 +359,9 @@ TEST(dats_linked_list_remove_head, RemoveHeadInThreeodesLinkedList)
 
     EXPECT_EQ(ll.length, 3);
 
-    dats_linked_list_remove_head(&ll);
+    float *data1ptr = (float*)dats_linked_list_remove_head(&ll);
+    EXPECT_EQ(*data1ptr, data1);
+    free(data1ptr);
 
     EXPECT_NE(ll.tail, ll.head);
     EXPECT_EQ(*((float*)ll.head->data), data2);
@@ -419,15 +372,6 @@ TEST(dats_linked_list_remove_head, RemoveHeadInThreeodesLinkedList)
     dats_linked_list_free(&ll);
 }
 
-// TEST(dats_linked_list_remove_tail, RemoveTailEmptyLinkedList)
-// {
-//     dats_linked_list_t ll = dats_linked_list_new(sizeof(char));
-
-//     EXPECT_DEATH(dats_linked_list_remove_head(&ll), "Assertion");
-
-//     dats_linked_list_free(&ll);
-// }
-
 TEST(dats_linked_list_remove_tail, RemoveOneNodeLinkedList)
 {
     float data1 = 128.1;
@@ -437,7 +381,9 @@ TEST(dats_linked_list_remove_tail, RemoveOneNodeLinkedList)
 
     EXPECT_EQ(ll.length, 1);
 
-    dats_linked_list_remove_tail(&ll);
+    float *data1ptr = (float*)dats_linked_list_remove_tail(&ll);
+    EXPECT_EQ(*data1ptr, data1);
+    free(data1ptr);
 
     EXPECT_EQ(ll.head, nullptr);
     EXPECT_EQ(ll.tail, nullptr);
@@ -456,7 +402,10 @@ TEST(dats_linked_list_remove_tail, RemoveHeadInTwoNodesLinkedList)
     dats_linked_list_insert_head(&ll, &data1);
     dats_linked_list_insert_tail(&ll, &data2);
 
-    dats_linked_list_remove_tail(&ll);
+    _Fake_Position *data2ptr = (_Fake_Position*)dats_linked_list_remove_tail(&ll);
+    EXPECT_EQ(data2ptr->x, data2.x);
+    EXPECT_EQ(data2ptr->y, data2.y);
+    free(data2ptr);
 
     EXPECT_EQ(ll.tail, ll.head);
     EXPECT_EQ(ll.length, 1);
@@ -481,7 +430,10 @@ TEST(dats_linked_list_remove_tail, RemoveHeadInThreeNodesLinkedList)
     dats_linked_list_insert_head(&ll, &data3);
     EXPECT_EQ(ll.length, 3);
 
-    dats_linked_list_remove_tail(&ll);
+    _Fake_Position *data2ptr = (_Fake_Position*)dats_linked_list_remove_tail(&ll);
+    EXPECT_EQ(data2ptr->x, data2.x);
+    EXPECT_EQ(data2ptr->y, data2.y);
+    free(data2ptr);
 
     EXPECT_NE(ll.tail, ll.head);
     EXPECT_EQ(ll.length, 2);
@@ -494,15 +446,6 @@ TEST(dats_linked_list_remove_tail, RemoveHeadInThreeNodesLinkedList)
     dats_linked_list_free(&ll);
 }
 
-// TEST(dats_linked_list_remove_index, RemoveIndexEmptyLinkedList)
-// {
-//     dats_linked_list_t ll = dats_linked_list_new(sizeof(long));
-
-//     EXPECT_DEATH(dats_linked_list_remove_index(&ll, 0), "Assertion");
-
-//     dats_linked_list_free(&ll);
-// }
-
 TEST(dats_linked_list_remove_index, RemoveOneNodeLinkedList)
 {
     float data1 = 128.1;
@@ -512,7 +455,9 @@ TEST(dats_linked_list_remove_index, RemoveOneNodeLinkedList)
 
     EXPECT_EQ(ll.length, 1);
 
-    dats_linked_list_remove_index(&ll, 0);
+    float *data1ptr = (float*)dats_linked_list_remove_index(&ll, 0);
+    EXPECT_EQ(*data1ptr, data1);
+    free(data1ptr);
 
     EXPECT_EQ(ll.head, nullptr);
     EXPECT_EQ(ll.tail, nullptr);
@@ -533,7 +478,10 @@ TEST(dats_linked_list_remove_index, RemoveHeadInTwoNodesLinkedList)
 
     EXPECT_EQ(ll.length, 2);
 
-    dats_linked_list_remove_index(&ll, 1);
+    _Fake_Position *data2ptr = (_Fake_Position*)dats_linked_list_remove_index(&ll, 1);
+    EXPECT_EQ(data2ptr->x, data2.x);
+    EXPECT_EQ(data2ptr->y, data2.y);
+    free(data2ptr);
 
     EXPECT_EQ(ll.tail, ll.head);
     EXPECT_EQ(ll.length, 1);
@@ -558,7 +506,10 @@ TEST(dats_linked_list_remove_index, RemoveHeadInThreeNodesLinkedList)
     dats_linked_list_insert_head(&ll, &data3);
     EXPECT_EQ(ll.length, 3);
 
-    dats_linked_list_remove_index(&ll, 1);
+    _Fake_Position *data1ptr = (_Fake_Position*)dats_linked_list_remove_index(&ll, 1);
+    EXPECT_EQ(data1ptr->x, data1.x);
+    EXPECT_EQ(data1ptr->y, data1.y);
+    free(data1ptr);
 
     EXPECT_NE(ll.tail, ll.head);
     EXPECT_EQ(ll.length, 2);
@@ -603,29 +554,6 @@ TEST(dats_linked_list_find, FindOneItemThatExist)
 
     dats_linked_list_free(&ll);
 }
-
-// TEST(dats_linked_list_find, AssertWhenLinkedListIsEmpty)
-// {
-//     short data1 = 1111;
-//     dats_linked_list_t ll = dats_linked_list_new(sizeof(short));
-
-//     EXPECT_DEATH(dats_linked_list_find(&ll, &data1), "Assertion");
-
-//     dats_linked_list_free(&ll);
-// }
-
-// TEST(dats_linked_list_find, ExitWhenUnableToFindData)
-// {
-//     short data1 = 1111;
-//     short data2 = 2222;
-
-//     dats_linked_list_t ll = dats_linked_list_new(sizeof(short));
-//     dats_linked_list_insert_head(&ll, &data1);
-
-//     EXPECT_DEATH(dats_linked_list_find(&ll, &data2), "ERROR");
-
-//     dats_linked_list_free(&ll);
-// }
 
 TEST(dats_linked_list_contains, EmptyList)
 {

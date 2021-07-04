@@ -23,7 +23,13 @@ typedef struct
  */
 dats_dynamic_array_t dats_dynamic_array_new(uint64_t capacity, uint64_t data_size);
 
-// insert
+/**
+ * @brief Insert data in the index position replacing data previously in there. This method does not change the length or the capacity.
+ * 
+ * @param self Pointer to the existing dynamic array to perform the function.
+ * @param index Position you want to insert th data. 
+ * @param data Data we want to insert in the Dynamic Array.
+ */
 void dats_dynamic_array_insert(dats_dynamic_array_t *self, uint64_t index, const void *data);
 
 /**

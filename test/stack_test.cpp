@@ -62,15 +62,6 @@ TEST(dats_stack_push, PushToTwoItemStack)
     dats_stack_free(&s);
 }
 
-// TEST(dats_stack_pop, AssertEmptyStack)
-// {
-//     dats_stack_t s = dats_stack_new(sizeof(_Fake_Position));
-
-//     ASSERT_DEATH(dats_stack_pop(&s), "Assertion");
-
-//     dats_stack_free(&s);
-// }
-
 TEST(dats_stack_pop, MultiplePopInThreeItemsStack)
 {
     _Fake_Position data1 = { 11, 22 };
@@ -99,16 +90,6 @@ TEST(dats_stack_pop, MultiplePopInThreeItemsStack)
 
     dats_stack_free(&s);
 }
-
-// TEST(dats_stack_get, AssertEmptyStack)
-// {
-//     _Fake_Position data1 = { 11, 22 };   
-//     dats_stack_t s = dats_stack_new(sizeof(_Fake_Position));
-
-//     EXPECT_DEATH(dats_stack_get(&s, 0), "Assertion");
-
-//     dats_stack_free(&s);
-// }
 
 TEST(dats_stack_peek, PeekOneItemStack)
 {

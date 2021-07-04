@@ -25,6 +25,47 @@ TEST(dats_dynamic_array_new, CreateADynamicArray)
     dats_dynamic_array_free(&da);
 }
 
+TEST(dats_dynamic_array_insert, InsertInOneItemArray)
+{
+    _Fake_Position data1 = { 111, 1111 };
+    _Fake_Position data2 = { 222, 2222 };
+
+    dats_dynamic_array_t da = dats_dynamic_array_new(4, sizeof(_Fake_Position));
+    dats_dynamic_array_add(&da, &data1);
+
+    dats_dynamic_array_insert(&da, 0, &data2);
+
+    const _Fake_Position *res = (const _Fake_Position*)dats_dynamic_array_get(&da, 0);
+    EXPECT_EQ(res->x, data2.x);
+    EXPECT_EQ(res->y, data2.y);
+    EXPECT_EQ(da.length, 1);
+
+    dats_dynamic_array_free(&da);
+}
+
+TEST(dats_dynamic_array_insert, InsertInThreeItemArray)
+{
+    _Fake_Position data1 = { 111, 1111 };
+    _Fake_Position data2 = { 222, 2222 };
+    _Fake_Position data3 = { 333, 3333 };
+    _Fake_Position data4 = { 444, 4444 };
+
+    dats_dynamic_array_t da = dats_dynamic_array_new(15, sizeof(_Fake_Position));
+
+    dats_dynamic_array_add(&da, &data1);
+    dats_dynamic_array_add(&da, &data2);
+    dats_dynamic_array_add(&da, &data3);
+
+    dats_dynamic_array_insert(&da, 1, &data4);
+
+    const _Fake_Position *res = (const _Fake_Position*)dats_dynamic_array_get(&da, 1);
+    EXPECT_EQ(res->x, data4.x);
+    EXPECT_EQ(res->y, data4.y);
+    EXPECT_EQ(da.length, 3);
+
+    dats_dynamic_array_free(&da);
+}
+
 TEST(dats_dynamic_array_add, AddEmptyWithEnoughCapacity)
 {
     _Fake_Position data1 = { 111, 1111 };
