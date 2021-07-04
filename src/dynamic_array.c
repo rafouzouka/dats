@@ -19,6 +19,11 @@ dats_dynamic_array_t dats_dynamic_array_new(uint64_t capacity, uint64_t data_siz
     return da;
 }
 
+// void dats_dynamic_array_insert(dats_dynamic_array_t *self, uint64_t index, const void *data)
+// {
+
+// }
+
 void dats_dynamic_array_add(dats_dynamic_array_t *self, const void *data)
 {
     _ensure_capacity(self, self->length + 1);
@@ -60,10 +65,10 @@ static void _ensure_capacity(dats_dynamic_array_t *self, uint64_t asked_capacity
         return;
     }
 
-    self->buffer = realloc(self->buffer, asked_capacity * self->data_size);
+    self->buffer = realloc(self->buffer, self->capacity * 2 * self->data_size);
 
-    memset(_get_data_ptr(self, self->capacity), 0, (asked_capacity - self->capacity) * self->data_size);
-    self->capacity = asked_capacity;
+    memset(_get_data_ptr(self, self->capacity), 0, self->capacity * self->data_size);
+    self->capacity *= 2;
 }
 
 static void *_get_data_ptr(const dats_dynamic_array_t *self, uint64_t index)

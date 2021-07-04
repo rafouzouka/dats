@@ -74,6 +74,34 @@ TEST(dats_dynamic_array_add, AddEmptyWithoutEnoughCapacity)
     dats_dynamic_array_free(&da);
 }
 
+TEST(dats_dynamic_array_add, TestAutomaticCapacityGrowth)
+{
+    _Fake_Position data1 = { 111, 1111 };
+    _Fake_Position data2 = { 222, 2222 };
+    _Fake_Position data3 = { 333, 3333 };
+    _Fake_Position data4 = { 444, 4444 };
+
+    dats_dynamic_array_t da = dats_dynamic_array_new(3, sizeof(_Fake_Position));
+
+    EXPECT_EQ(da.capacity, 3);
+    EXPECT_EQ(da.length, 0);
+    EXPECT_NE(da.buffer, nullptr);
+
+    dats_dynamic_array_add(&da, &data1);
+    dats_dynamic_array_add(&da, &data2);
+    dats_dynamic_array_add(&da, &data3);
+
+    EXPECT_EQ(da.capacity, 3);
+    EXPECT_EQ(da.length, 3);
+
+    dats_dynamic_array_add(&da, &data4);
+
+    EXPECT_EQ(da.capacity, 6);
+    EXPECT_EQ(da.length, 4);
+
+    dats_dynamic_array_free(&da);
+}
+
 static void _test_MapOneItemArray(const void *data)
 {
     const _Fake_Position *res = (const _Fake_Position*)data;

@@ -23,6 +23,7 @@ typedef struct
 dats_dynamic_array_t dats_dynamic_array_new(uint64_t capacity, uint64_t data_size);
 
 // insert
+void dats_dynamic_array_insert(dats_dynamic_array_t *self, uint64_t index, const void *data);
 
 /**
  * @brief Create a new slot at the end of the dynamic array and insert the given data in it.
