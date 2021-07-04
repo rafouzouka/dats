@@ -25,17 +25,31 @@ dats_dynamic_array_t dats_dynamic_array_new(uint64_t capacity, uint64_t data_siz
 // insert
 
 // add
-
+void dats_dynamic_array_add(dats_dynamic_array_t *self, const void *data);
 
 // remove
 
 // map
+void dats_dynamic_array_map(const dats_dynamic_array_t *self, void (*func)(const void*));
+
+/**
+ * @brief Get a const pointer to the data at a given index in the Dynamic Array. You must not try to free or modify the value.
+ * 
+ * @param self Pointer to the existing queue to perform the function.
+ * @param index The position of the data in the Dynamic Array you want to get back a pointer from.  
+ * @return const void* Direct access to the wanted data in the memory. Don't modify it.
+ */
+const void* dats_dynamic_array_get(const dats_dynamic_array_t *self, uint64_t index);
 
 // contains
 
-// reverse
+// find
+
+// length
 
 // clear
+
+// reverse
 
 /**
  * @brief Free all the memory used by the data structure.

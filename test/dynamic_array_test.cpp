@@ -1,5 +1,6 @@
 #include <gtest/gtest-death-test.h>
 #include <gtest/gtest.h>
+#include <stdint.h>
 
 extern "C"
 {
@@ -20,6 +21,86 @@ TEST(dats_dynamic_array_new, CreateADynamicArray)
     EXPECT_EQ(da.length, 0);
     EXPECT_EQ(da.data_size, sizeof(double));
     EXPECT_NE(da.buffer, nullptr);
+
+    dats_dynamic_array_free(&da);
+}
+
+TEST(dats_dynamic_array_add, AddEmptyWithEnoughCapacity)
+{
+    _Fake_Position data1 = { 111, 1111 };
+
+    dats_dynamic_array_t da = dats_dynamic_array_new(1, sizeof(_Fake_Position));
+
+    EXPECT_EQ(da.capacity, 1);
+    EXPECT_EQ(da.length, 0);
+    EXPECT_NE(da.buffer, nullptr);
+
+    dats_dynamic_array_add(&da, &data1);
+
+    const _Fake_Position *res = (const _Fake_Position*)dats_dynamic_array_get(&da, 0);
+    EXPECT_EQ(res->x, data1.x);
+    EXPECT_EQ(res->y, data1.y);
+    EXPECT_EQ(da.capacity, 1);
+    EXPECT_EQ(da.length, 1);
+
+    dats_dynamic_array_free(&da);
+}
+
+TEST(dats_dynamic_array_add, AddEmptyWithoutEnoughCapacity)
+{
+    _Fake_Position data1 = { 111, 1111 };
+    _Fake_Position data2 = { 222, 2222 };
+
+    dats_dynamic_array_t da = dats_dynamic_array_new(1, sizeof(_Fake_Position));
+
+    EXPECT_EQ(da.capacity, 1);
+    EXPECT_EQ(da.length, 0);
+    EXPECT_NE(da.buffer, nullptr);
+
+    dats_dynamic_array_add(&da, &data1);
+    dats_dynamic_array_add(&da, &data2);
+
+    const _Fake_Position *res = (const _Fake_Position*)dats_dynamic_array_get(&da, 0);
+    EXPECT_EQ(res->x, data1.x);
+    EXPECT_EQ(res->y, data1.y);
+
+    const _Fake_Position *res2 = (const _Fake_Position*)dats_dynamic_array_get(&da, 1);
+    EXPECT_EQ(res2->x, data2.x);
+    EXPECT_EQ(res2->y, data2.y);
+
+    EXPECT_EQ(da.capacity, 2);
+    EXPECT_EQ(da.length, 2);
+
+    dats_dynamic_array_free(&da);
+}
+
+TEST(dats_dynamic_array_get, GetTwoItemData)
+{
+    _Fake_Position data1 = { 111, 1111 };
+    _Fake_Position data2 = { 222, 2222 };
+
+    dats_dynamic_array_t da = dats_dynamic_array_new(1, sizeof(_Fake_Position));
+
+    dats_dynamic_array_add(&da, &data1);
+    dats_dynamic_array_add(&da, &data2);
+
+    EXPECT_EQ(da.capacity, 2);
+    EXPECT_EQ(da.length, 2);
+
+    const _Fake_Position *res = (const _Fake_Position*)dats_dynamic_array_get(&da, 0);
+    EXPECT_EQ(res->x, data1.x);
+    EXPECT_EQ(res->y, data1.y);
+    EXPECT_EQ(res, da.buffer);
+
+    const _Fake_Position *res2 = (const _Fake_Position*)dats_dynamic_array_get(&da, 1);
+    EXPECT_EQ(res2->x, data2.x);
+    EXPECT_EQ(res2->y, data2.y);
+
+    uint8_t *buffer = (uint8_t *)da.buffer; 
+    EXPECT_EQ((const void *)res2, (const void *)&buffer[1 * da.data_size]);
+
+    EXPECT_EQ(da.capacity, 2);
+    EXPECT_EQ(da.length, 2);
 
     dats_dynamic_array_free(&da);
 }
