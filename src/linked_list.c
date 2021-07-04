@@ -258,8 +258,6 @@ static dats_node_t *_alloc_node(uint64_t data_size)
 
 static void *_free_node(dats_node_t *node_to_free)
 {
-    // free(node_to_free->data);
-    // node_to_free->data = NULL;
     void *data = node_to_free->data;
     free(node_to_free);
     node_to_free = NULL;

@@ -35,7 +35,13 @@ void dats_dynamic_array_insert(dats_dynamic_array_t *self, uint64_t index, const
  */
 void dats_dynamic_array_add(dats_dynamic_array_t *self, const void *data);
 
-// remove
+/**
+ * @brief Remove the first occurence of the specified data. This will shift every next item following the data to the left. 
+ * 
+ * @param self Pointer to the existing dynamic array to perform the function.
+ * @param data Data we want to remove in the Dynamic Array.
+ */
+void dats_dynamic_array_remove(dats_dynamic_array_t *self, const void *data);
 
 /**
  * @brief Invoke the function passed as paramater for each slots in the dynamic array.
@@ -58,13 +64,20 @@ const void* dats_dynamic_array_get(const dats_dynamic_array_t *self, uint64_t in
 
 // contains
 
-// find
+/**
+ * @brief Find the index position of the first matching data in the dynamic array. It starts at position 0.
+ *
+ * @details If you provide an empty dynamic list the function will assert. Else if the data don't match with anything the program exits and writes the error to stderr.  
+ *
+ * @param self Pointer to the existing dynamic list to perform the function.
+ * @param data The data that must match with at least one data in the dynamic list. We are not comparing the pointers but the real memory that is pointed.
+ * @return uint64_t Index position, starting by 0, of the first match with the data provided in the params.
+ */
+uint64_t dats_dynamic_array_find_index(const dats_dynamic_array_t *self, const void *data);
 
 // length
 
 // clear
-
-// reverse
 
 /**
  * @brief Free all the memory used by the data structure.

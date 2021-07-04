@@ -102,6 +102,61 @@ TEST(dats_dynamic_array_add, TestAutomaticCapacityGrowth)
     dats_dynamic_array_free(&da);
 }
 
+TEST(dats_dynamic_array_remove, RemoveOneItemArray)
+{
+    _Fake_Position data1 = { 111, 1111 };
+
+    dats_dynamic_array_t da = dats_dynamic_array_new(4, sizeof(_Fake_Position));
+
+    dats_dynamic_array_add(&da, &data1);
+    EXPECT_EQ(da.capacity, 4);
+    EXPECT_EQ(da.length, 1);
+
+    dats_dynamic_array_remove(&da, &data1);
+    EXPECT_EQ(da.capacity, 4);
+    EXPECT_EQ(da.length, 0);
+
+    dats_dynamic_array_add(&da, &data1);
+    EXPECT_EQ(da.capacity, 4);
+    EXPECT_EQ(da.length, 1);
+
+    const _Fake_Position *res = (const _Fake_Position *)dats_dynamic_array_get(&da, 0);
+    EXPECT_EQ(res->x, data1.x);
+    EXPECT_EQ(res->y, data1.y);
+
+    dats_dynamic_array_free(&da);
+}
+
+TEST(dats_dynamic_array_remove, RemoveOneItemInThreeSlotArray)
+{
+    _Fake_Position data1 = { 111, 1111 };
+    _Fake_Position data2 = { 222, 2222 };
+    _Fake_Position data3 = { 333, 3333 };
+
+    dats_dynamic_array_t da = dats_dynamic_array_new(2, sizeof(_Fake_Position));
+
+    dats_dynamic_array_add(&da, &data1);
+    dats_dynamic_array_add(&da, &data2);
+    dats_dynamic_array_add(&da, &data3);
+    EXPECT_EQ(da.capacity, 4);
+    EXPECT_EQ(da.length, 3);
+
+
+    dats_dynamic_array_remove(&da, &data2);
+    EXPECT_EQ(da.capacity, 4);
+    EXPECT_EQ(da.length, 2);
+
+    const _Fake_Position *res1 = (const _Fake_Position *)dats_dynamic_array_get(&da, 0);
+    EXPECT_EQ(res1->x, data1.x);
+    EXPECT_EQ(res1->y, data1.y);
+
+    const _Fake_Position *res2 = (const _Fake_Position *)dats_dynamic_array_get(&da, 1);
+    EXPECT_EQ(res2->x, data3.x);
+    EXPECT_EQ(res2->y, data3.y);
+
+    dats_dynamic_array_free(&da);
+}
+
 static void _test_MapOneItemArray(const void *data)
 {
     const _Fake_Position *res = (const _Fake_Position*)data;
@@ -147,6 +202,22 @@ TEST(dats_dynamic_array_get, GetTwoItemData)
 
     EXPECT_EQ(da.capacity, 2);
     EXPECT_EQ(da.length, 2);
+
+    dats_dynamic_array_free(&da);
+}
+
+TEST(dats_dynamic_array_find_index, FindIndexWithDataThatExists)
+{
+    _Fake_Position data1 = { 111, 1111 };
+    _Fake_Position data2 = { 222, 2222 };
+
+    dats_dynamic_array_t da = dats_dynamic_array_new(1, sizeof(_Fake_Position));
+
+    dats_dynamic_array_add(&da, &data1);
+    dats_dynamic_array_add(&da, &data2);
+
+    EXPECT_EQ(1, dats_dynamic_array_find_index(&da, &data2));
+    EXPECT_EQ(0, dats_dynamic_array_find_index(&da, &data1));
 
     dats_dynamic_array_free(&da);
 }

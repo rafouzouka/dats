@@ -135,7 +135,7 @@ void *dats_linked_list_remove_index(dats_linked_list_t *self, uint64_t index);
 void dats_linked_list_map(const dats_linked_list_t *self, void (*func)(const void *data));
 
 /**
- * @brief Find the index position of the  first node in the linked list that match the corresponding given data. It starts at position 0.
+ * @brief Find the index position of the first node in the linked list that match the corresponding given data. It starts at position 0.
  *
  * @details If you provide an empty linked list the function will assert. Else if the data don't match with any node the program exits and writes the error to stderr.  
  *
