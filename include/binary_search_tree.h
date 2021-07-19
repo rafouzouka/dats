@@ -15,11 +15,14 @@ typedef struct _dats_node_tree_t
 typedef struct
 {
     dats_node_tree_t *head;
+    int64_t (*compare)(const void *a, const void *b);
     uint64_t length;
     const uint64_t data_size;
 } dats_binary_search_tree_t;
 
-dats_binary_search_tree_t dats_binary_search_tree_new();
+dats_binary_search_tree_t dats_binary_search_tree_new(uint64_t data_size, int64_t (*compare)(const void *a, const void *b));
+
+void dats_binary_search_tree_insert(dats_binary_search_tree_t *self, const void *data);
 
 void dats_binary_search_tree_free(dats_binary_search_tree_t *self);
 
