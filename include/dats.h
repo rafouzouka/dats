@@ -3,6 +3,7 @@
 
 #include "linked_list.h"
 #include "dynamic_array.h"
+#include "binary_search_tree.h"
 
 #include "queue.h"
 #include "stack.h"

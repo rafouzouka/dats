@@ -16,7 +16,7 @@ DELETE_FOLDER = rm -rf
 lib: $(OBJ)
 	ar rcs bin/libdats.a $^
 
-debug: sandbox/main.c include/dats.h lib
+debug: sandbox/main.c include/dats.h install
 	$(CC) $< -ldats -o bin/$@ $(CFLAGS)
 	./bin/$@
 

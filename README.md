@@ -21,13 +21,19 @@ This various data structures are designed with reading simplicity in mind first.
 **Data Structures:**
 
 - [x] Dynamic Array 
-- [x] Linked List   
-- [ ] Binary Tree   
-
-**Abstract Data Types:**
+- [x] Linked List
+- [ ] Binary Search Tree
 
 - [x] Stack
 - [X] Queue 
+ 
+ bitset
+ hibitset
+
+ map
+ hashmap
+
+- [ ] Generational Indexes
 - [ ] PriorityQueue
 - [ ] Hash Table
 - [ ] Sparse Table
