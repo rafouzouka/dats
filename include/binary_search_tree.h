@@ -24,6 +24,8 @@ dats_binary_search_tree_t dats_binary_search_tree_new(uint64_t data_size, int64_
 
 void dats_binary_search_tree_insert(dats_binary_search_tree_t *self, const void *data);
 
+void dats_binary_search_tree_print(const dats_binary_search_tree_t *self);
+
 void dats_binary_search_tree_free(dats_binary_search_tree_t *self);
 
 #endif
