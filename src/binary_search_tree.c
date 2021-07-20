@@ -1,3 +1,4 @@
+#include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
@@ -10,6 +11,9 @@
 static dats_node_tree_t *_alloc_node_tree(uint64_t data_size);
 static dats_node_tree_t *_create_node_tree(uint64_t data_size, const void *data);
 static dats_node_tree_t *_insert_node_tree(const dats_binary_search_tree_t *self, dats_node_tree_t *node, const void *data);
+static dats_node_tree_t *_dig_left_node_tree(dats_node_tree_t *node);
+static dats_node_tree_t *_remove_node_tree(const dats_binary_search_tree_t *self, dats_node_tree_t *node, const void *data);
+static void _free_node_tree(dats_node_tree_t *node);
 static void _postorder_traversal(dats_node_tree_t *node, void (*func)(dats_node_tree_t *node));
 static void _levelorder_traversal(const dats_node_tree_t *head_node, void (*map)(const void *data));
 
@@ -33,23 +37,15 @@ void dats_binary_search_tree_insert(dats_binary_search_tree_t *self, const void 
     self->length++;
 }
 
+void dats_binary_search_tree_remove(dats_binary_search_tree_t *self, const void *data)
+{
+    self->head = _remove_node_tree(self, self->head, data);
+    self->length--;
+}
+
 void dats_binary_search_tree_map_lot(const dats_binary_search_tree_t *self, void (*map)(const void *data))
 {
     _levelorder_traversal(self->head, map);
-}
-
-// void *dats_binary_search_tree_to_array(const dats_binary_search_tree_t *self)
-// {
-//     _levelorder_traversal(self->head, void (*map)(const void *))
-// }
-
-static void _free_node_tree(dats_node_tree_t *node)
-{
-    free(node->data);
-    node->left = NULL;
-    node->right = NULL;
-    node->data = NULL;
-    free(node);
 }
 
 void dats_binary_search_tree_free(dats_binary_search_tree_t *self)
@@ -75,6 +71,15 @@ static dats_node_tree_t *_alloc_node_tree(uint64_t data_size)
     nt->left = NULL;
     nt->right = NULL;
     return nt;
+}
+
+static void _free_node_tree(dats_node_tree_t *node)
+{
+    free(node->data);
+    node->left = NULL;
+    node->right = NULL;
+    node->data = NULL;
+    free(node);
 }
 
 static void _postorder_traversal(dats_node_tree_t *node, void (*func)(dats_node_tree_t *node))
@@ -141,3 +146,97 @@ static void _levelorder_traversal(const dats_node_tree_t *head_node, void (*map)
 
     dats_queue_free(&queue);
 }
+
+// static dats_node_tree_t *_dig_right_node_tree(dats_node_tree_t *node)
+// {
+//     assert(node != NULL);
+
+//     while (node->right != NULL)
+//     {
+//         node = node->right;
+//     }
+
+//     return node;
+// }
+
+static dats_node_tree_t *_dig_left_node_tree(dats_node_tree_t *node)
+{
+    assert(node != NULL);
+
+    while (node->left != NULL)
+    {
+        node = node->left;
+    }
+
+    return node;
+}
+
+static dats_node_tree_t *_remove_node_tree(const dats_binary_search_tree_t *self, dats_node_tree_t *node, const void *data)
+{
+    if (node == NULL)
+    {
+        return NULL;
+    }
+
+    int64_t compare_value = self->compare(data, node->data); 
+
+    if (compare_value == -1)
+    {
+        node->left = _remove_node_tree(self, node->left, data);
+    }
+    else if (compare_value == 1)
+    {
+        node->right = _remove_node_tree(self, node->right, data);
+    }
+    else if (compare_value == 0)
+    {
+        if (node->left == NULL)
+        {
+            void *right_node = node->right; 
+            _free_node_tree(node);
+            return right_node;
+        }
+        else if (node->right == NULL)
+        {
+            void *left_node = node->left; 
+            _free_node_tree(node);
+            return left_node;
+        }
+        else
+        {
+            dats_node_tree_t *node_to_swap = _dig_left_node_tree(node->right);
+            memcpy(node->data, node_to_swap->data, self->data_size); 
+            node->right = _remove_node_tree(self, node->right, node->data);
+        }
+    }
+    else
+    {
+        DATS_RAISE_ERROR("Compare function isn't implemented correctly.");
+    }
+
+    return node;
+}
+
+// static dats_node_tree_t *_find_node(const dats_binary_search_tree_t *self, dats_node_tree_t *node, const void *data)
+// {
+//     if (node == NULL)
+//     {
+//         return NULL;
+//     }
+
+//     switch (self->compare(data, node->data))
+//     {
+//         case -1:
+//             return _find_node(self, node->left, data);
+
+//         case 1:
+//             return _find_node(self, node->right, data);
+
+//         case 0:
+//             return node;
+
+//         default:
+//             DATS_RAISE_ERROR("Compare function isn't implemented correctly.");
+//             exit(EXIT_FAILURE);
+//     }
+// }

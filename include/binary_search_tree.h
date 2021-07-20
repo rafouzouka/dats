@@ -24,9 +24,13 @@ dats_binary_search_tree_t dats_binary_search_tree_new(uint64_t data_size, int64_
 
 void dats_binary_search_tree_insert(dats_binary_search_tree_t *self, const void *data);
 
+void dats_binary_search_tree_remove(dats_binary_search_tree_t *self, const void *data);
+
 // level order traversal
 void dats_binary_search_tree_map_lot(const dats_binary_search_tree_t *self, void (*map)(const void *data));
 
+// ça serait bien de la passer en array avec lot pour
+// pouvoir bien verifier l'ordre des items
 void *dats_binary_search_tree_to_array(const dats_binary_search_tree_t *self);
 
 void dats_binary_search_tree_free(dats_binary_search_tree_t *self);
