@@ -23,6 +23,7 @@ add_executable(
   queue_test.cpp
   stack_test.cpp
   dynamic_array_test.cpp
+  binary_search_tree_test.cpp
 )
 
 target_link_libraries(

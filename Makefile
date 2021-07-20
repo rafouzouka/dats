@@ -26,7 +26,7 @@ obj/%.o: src/%.c folders
 val: debug
 	valgrind --leak-check=full --track-origins=yes ./bin/debug
  
-test: lib 
+test: install 
 	cmake -S test/ -B test/build
 	cmake --build test/build
 	ctest --test-dir test/build/ --output-on-failure

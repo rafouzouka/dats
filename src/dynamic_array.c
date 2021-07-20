@@ -12,6 +12,8 @@ static void _ensure_capacity(dats_dynamic_array_t *self, uint64_t asked_capacity
 
 dats_dynamic_array_t dats_dynamic_array_new(uint64_t capacity, uint64_t data_size)
 {
+    assert(data_size > 0);
+
     dats_dynamic_array_t da = {
         .data_size = data_size,
         .length = 0,

@@ -21,6 +21,8 @@ TEST(dats_linked_list_new, CreateAnEmptyLinkedList) {
     EXPECT_EQ(ll.tail, nullptr);
     EXPECT_EQ(ll.data_size, sizeof(int));
     EXPECT_EQ(ll.length, 0);
+
+    dats_linked_list_free(&ll);
 }
 
 TEST(dats_linked_list_insert_head, InsertNodeToEmptyLinkedList)
