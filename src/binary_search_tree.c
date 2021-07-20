@@ -15,7 +15,6 @@ static dats_node_tree_t *_dig_left_node_tree(dats_node_tree_t *node);
 static dats_node_tree_t *_remove_node_tree(const dats_binary_search_tree_t *self, dats_node_tree_t *node, const void *data);
 static void _free_node_tree(dats_node_tree_t *node);
 static void _postorder_traversal(dats_node_tree_t *node, void (*func)(dats_node_tree_t *node));
-static void _levelorder_traversal(const dats_node_tree_t *head_node, void (*map)(const void *data));
 
 dats_binary_search_tree_t dats_binary_search_tree_new(uint64_t data_size, int64_t (*compare)(const void *a, const void *b))
 {
@@ -39,13 +38,43 @@ void dats_binary_search_tree_insert(dats_binary_search_tree_t *self, const void 
 
 void dats_binary_search_tree_remove(dats_binary_search_tree_t *self, const void *data)
 {
+    assert(self->length > 0);
+
     self->head = _remove_node_tree(self, self->head, data);
     self->length--;
 }
 
-void dats_binary_search_tree_map_lot(const dats_binary_search_tree_t *self, void (*map)(const void *data))
+void dats_binary_search_tree_to_array(const dats_binary_search_tree_t *self, void **arr)
 {
-    _levelorder_traversal(self->head, map);
+    assert(self->head != NULL);
+
+    dats_queue_t queue = dats_queue_new(sizeof(dats_node_tree_t));
+    dats_queue_enqueue(&queue, self->head);
+
+    for (uint64_t i = 0; dats_queue_length(&queue) > 0; i++)
+    {
+        dats_node_tree_t *node = dats_queue_dequeue(&queue);
+
+        arr[i] = node->data;
+
+        if (node->left != NULL)
+        {
+            dats_queue_enqueue(&queue, node->left);
+        }
+        if (node->right != NULL)
+        {
+            dats_queue_enqueue(&queue, node->right);
+        }
+
+        free(node);
+    }    
+
+    dats_queue_free(&queue);
+}
+
+uint64_t dats_binary_search_tree_length(const dats_binary_search_tree_t *self)
+{
+    return self->length;
 }
 
 void dats_binary_search_tree_free(dats_binary_search_tree_t *self)
@@ -119,34 +148,6 @@ static dats_node_tree_t *_insert_node_tree(const dats_binary_search_tree_t *self
     return node;
 }
 
-static void _levelorder_traversal(const dats_node_tree_t *head_node, void (*map)(const void *data))
-{
-    assert(head_node != NULL);
-
-    dats_queue_t queue = dats_queue_new(sizeof(dats_node_tree_t));
-    dats_queue_enqueue(&queue, head_node);
-
-    while (dats_queue_length(&queue) > 0)
-    {
-        dats_node_tree_t *node = dats_queue_dequeue(&queue);
-
-        map(node->data);
-
-        if (node->left != NULL)
-        {
-            dats_queue_enqueue(&queue, node->left);
-        }
-        if (node->right != NULL)
-        {
-            dats_queue_enqueue(&queue, node->right);
-        }
-
-        free(node);
-    }    
-
-    dats_queue_free(&queue);
-}
-
 // static dats_node_tree_t *_dig_right_node_tree(dats_node_tree_t *node)
 // {
 //     assert(node != NULL);
@@ -175,6 +176,7 @@ static dats_node_tree_t *_remove_node_tree(const dats_binary_search_tree_t *self
 {
     if (node == NULL)
     {
+        DATS_RAISE_ERROR("Unable to find the node to remove.");
         return NULL;
     }
 
