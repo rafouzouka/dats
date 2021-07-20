@@ -22,22 +22,16 @@ This various data structures are designed with reading simplicity in mind first.
 
 - [x] Dynamic Array 
 - [x] Linked List
-- [ ] Binary Search Tree
-
+- [X] Binary Search Tree
 - [x] Stack
 - [X] Queue 
- 
- bitset
- hibitset
-
- map
- hashmap
-
 - [ ] Generational Indexes
 - [ ] PriorityQueue
 - [ ] Hash Table
 - [ ] Sparse Table
 - [ ] DenseArray
+- [ ] Bitset
+- [ ] Hibitset
 
 ## Examples
 
