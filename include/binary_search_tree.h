@@ -6,6 +6,14 @@
 
 typedef struct _dats_node_tree_t dats_node_tree_t;
 
+typedef enum
+{
+    DATS_BINARY_SEARCH_TREE_PRE_ORDER = 0,
+    DATS_BINARY_SEARCH_TREE_IN_ORDER,
+    DATS_BINARY_SEARCH_TREE_POST_ORDER,
+    DATS_BINARY_SEARCH_TREE_LEVEL_ORDER,
+} dats_binary_search_tree_traversal;
+
 typedef struct _dats_node_tree_t
 {
     void *data;
@@ -57,6 +65,15 @@ void dats_binary_search_tree_remove(dats_binary_search_tree_t *self, const void 
  * @param arr Array that will be appened with the BST data in level order traversal.  
  */
 void dats_binary_search_tree_to_array(const dats_binary_search_tree_t *self, const void **arr);
+
+/**
+ * @brief Enable to traverse through the BST data in different ways.
+ * 
+ * @param self Pointer to the existing BST to perform the function.
+ * @param way Enum that described the way the data will be traversed.
+ * @param traverse Function that will be called with the data.
+ */
+void dats_binary_search_tree_traverse(const dats_binary_search_tree_t *self, dats_binary_search_tree_traversal way, void (*traverse)(const void * data));
 
 /**
  * @brief Check if the given data already exists in the BST.

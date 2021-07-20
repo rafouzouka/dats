@@ -73,6 +73,69 @@ void dats_binary_search_tree_to_array(const dats_binary_search_tree_t *self, con
     dats_queue_free(&queue);
 }
 
+static void _preorder_traverse_data(dats_node_tree_t *node, void (*func)(const void *data))
+{
+    if (node == NULL)
+    {
+        return;
+    }
+    func(node->data);
+    _preorder_traverse_data(node->left, func);
+    _preorder_traverse_data(node->right, func);
+}
+
+static void _inorder_traverse_data(dats_node_tree_t *node, void (*func)(const void *data))
+{
+    if (node == NULL)
+    {
+        return;
+    }
+    _inorder_traverse_data(node->left, func);
+    func(node->data);
+    _inorder_traverse_data(node->right, func);
+}
+
+static void _postorder_traverse_data(dats_node_tree_t *node, void (*func)(const void *data))
+{
+    if (node == NULL)
+    {
+        return;
+    }
+    _postorder_traverse_data(node->left, func);
+    _postorder_traverse_data(node->right, func);
+    func(node->data);
+}
+
+void dats_binary_search_tree_traverse(const dats_binary_search_tree_t *self, dats_binary_search_tree_traversal way, void (*traverse)(const void * data))
+{
+    switch (way)
+    {
+        case DATS_BINARY_SEARCH_TREE_PRE_ORDER:
+            _preorder_traverse_data(self->head, traverse);
+            break;
+
+        case DATS_BINARY_SEARCH_TREE_IN_ORDER:
+            _inorder_traverse_data(self->head, traverse);
+            break;
+        
+        case DATS_BINARY_SEARCH_TREE_POST_ORDER:
+            _postorder_traverse_data(self->head, traverse);
+            break;
+
+        case DATS_BINARY_SEARCH_TREE_LEVEL_ORDER:
+        {
+            const void *arr[self->length];
+            dats_binary_search_tree_to_array(self, arr);
+            
+            for (uint64_t i = 0; i < self->length; i++)
+            {
+                traverse(arr[i]);
+            }
+            break;
+        }
+    }
+}
+
 bool dats_binary_search_tree_contains(const dats_binary_search_tree_t *self, const void *data)
 {
     if (_find_node(self, self->head, data) != NULL)
