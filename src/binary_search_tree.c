@@ -13,6 +13,7 @@ static dats_node_tree_t *_create_node_tree(uint64_t data_size, const void *data)
 static dats_node_tree_t *_insert_node_tree(const dats_binary_search_tree_t *self, dats_node_tree_t *node, const void *data);
 static dats_node_tree_t *_dig_left_node_tree(dats_node_tree_t *node);
 static dats_node_tree_t *_remove_node_tree(const dats_binary_search_tree_t *self, dats_node_tree_t *node, const void *data);
+static dats_node_tree_t *_find_node(const dats_binary_search_tree_t *self, dats_node_tree_t *node, const void *data);
 static void _free_node_tree(dats_node_tree_t *node);
 static void _postorder_traversal(dats_node_tree_t *node, void (*func)(dats_node_tree_t *node));
 
@@ -44,7 +45,7 @@ void dats_binary_search_tree_remove(dats_binary_search_tree_t *self, const void 
     self->length--;
 }
 
-void dats_binary_search_tree_to_array(const dats_binary_search_tree_t *self, void **arr)
+void dats_binary_search_tree_to_array(const dats_binary_search_tree_t *self, const void **arr)
 {
     assert(self->head != NULL);
 
@@ -70,6 +71,18 @@ void dats_binary_search_tree_to_array(const dats_binary_search_tree_t *self, voi
     }    
 
     dats_queue_free(&queue);
+}
+
+bool dats_binary_search_tree_contains(const dats_binary_search_tree_t *self, const void *data)
+{
+    if (_find_node(self, self->head, data) != NULL)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }
 
 uint64_t dats_binary_search_tree_length(const dats_binary_search_tree_t *self)
@@ -148,18 +161,6 @@ static dats_node_tree_t *_insert_node_tree(const dats_binary_search_tree_t *self
     return node;
 }
 
-// static dats_node_tree_t *_dig_right_node_tree(dats_node_tree_t *node)
-// {
-//     assert(node != NULL);
-
-//     while (node->right != NULL)
-//     {
-//         node = node->right;
-//     }
-
-//     return node;
-// }
-
 static dats_node_tree_t *_dig_left_node_tree(dats_node_tree_t *node)
 {
     assert(node != NULL);
@@ -219,26 +220,26 @@ static dats_node_tree_t *_remove_node_tree(const dats_binary_search_tree_t *self
     return node;
 }
 
-// static dats_node_tree_t *_find_node(const dats_binary_search_tree_t *self, dats_node_tree_t *node, const void *data)
-// {
-//     if (node == NULL)
-//     {
-//         return NULL;
-//     }
+static dats_node_tree_t *_find_node(const dats_binary_search_tree_t *self, dats_node_tree_t *node, const void *data)
+{
+    if (node == NULL)
+    {
+        return NULL;
+    }
 
-//     switch (self->compare(data, node->data))
-//     {
-//         case -1:
-//             return _find_node(self, node->left, data);
+    switch (self->compare(data, node->data))
+    {
+        case -1:
+            return _find_node(self, node->left, data);
 
-//         case 1:
-//             return _find_node(self, node->right, data);
+        case 1:
+            return _find_node(self, node->right, data);
 
-//         case 0:
-//             return node;
+        case 0:
+            return node;
 
-//         default:
-//             DATS_RAISE_ERROR("Compare function isn't implemented correctly.");
-//             exit(EXIT_FAILURE);
-//     }
-// }
+        default:
+            DATS_RAISE_ERROR("Compare function isn't implemented correctly.");
+            exit(EXIT_FAILURE);
+    }
+}

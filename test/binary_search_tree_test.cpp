@@ -83,7 +83,7 @@ TEST(dats_binary_search_tree_insert, InsertInEmptyBST)
     EXPECT_NE(bst.head, nullptr);
     EXPECT_EQ(bst.length, 1);
 
-    void *arr[dats_binary_search_tree_length(&bst)];
+    const void *arr[dats_binary_search_tree_length(&bst)];
     dats_binary_search_tree_to_array(&bst, arr);
 
     EXPECT_EQ(data.x, ((_Fake_Position*)arr[0])->x);
@@ -148,7 +148,7 @@ TEST(dats_binary_search_tree_insert, VerifyPositionOfNodesInBST)
     dats_binary_search_tree_insert(&bst, &arr[5]);
     dats_binary_search_tree_insert(&bst, &arr[4]);
 
-    void *arr_result[dats_binary_search_tree_length(&bst)];
+    const void *arr_result[dats_binary_search_tree_length(&bst)];
     dats_binary_search_tree_to_array(&bst, arr_result);
 
     EXPECT_EQ(arr[0], *((int*)arr_result[0]));
@@ -253,7 +253,7 @@ TEST(dats_binary_search_tree_to_array, TwoNodesBST)
     dats_binary_search_tree_insert(&bst, &data);
     dats_binary_search_tree_insert(&bst, &data2);
 
-    void *arr[dats_binary_search_tree_length(&bst)];
+    const void *arr[dats_binary_search_tree_length(&bst)];
     dats_binary_search_tree_to_array(&bst, arr);
 
     EXPECT_EQ(bst.length, 2);
@@ -262,6 +262,46 @@ TEST(dats_binary_search_tree_to_array, TwoNodesBST)
 
     EXPECT_EQ(data2.x, ((_Fake_Position*)arr[1])->x);
     EXPECT_EQ(data2.y, ((_Fake_Position*)arr[1])->y);
+
+    dats_binary_search_tree_free(&bst);
+}
+
+TEST(dats_binary_search_tree_contains, EmptyBST)
+{
+    _Fake_Position data1 = { .x = 10, .y = 15 };
+
+    dats_binary_search_tree_t bst = dats_binary_search_tree_new(sizeof(_Fake_Position), _compare_fake_position);
+
+    EXPECT_FALSE(dats_binary_search_tree_contains(&bst, &data1));
+
+    dats_binary_search_tree_free(&bst);
+}
+
+TEST(dats_binary_search_tree_contains, DoesNotContainNode)
+{
+    _Fake_Position data1 = { .x = 10, .y = 15 };
+    _Fake_Position data2 = { .x = 20, .y = 25 };
+
+    dats_binary_search_tree_t bst = dats_binary_search_tree_new(sizeof(_Fake_Position), _compare_fake_position);
+
+    dats_binary_search_tree_insert(&bst, &data1);
+
+    EXPECT_FALSE(dats_binary_search_tree_contains(&bst, &data2));
+
+    dats_binary_search_tree_free(&bst);
+}
+
+TEST(dats_binary_search_tree_contains, DoesContainNode)
+{
+    _Fake_Position data1 = { .x = 10, .y = 15 };
+    _Fake_Position data2 = { .x = 20, .y = 25 };
+
+    dats_binary_search_tree_t bst = dats_binary_search_tree_new(sizeof(_Fake_Position), _compare_fake_position);
+
+    dats_binary_search_tree_insert(&bst, &data1);
+    dats_binary_search_tree_insert(&bst, &data2);
+
+    EXPECT_TRUE(dats_binary_search_tree_contains(&bst, &data2));
 
     dats_binary_search_tree_free(&bst);
 }
