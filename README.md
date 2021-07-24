@@ -27,11 +27,11 @@ This various data structures are designed with reading simplicity in mind first.
 - [X] Queue 
 - [X] Hash Table
 - [ ] Bitset
+- [ ] Hibitset
 - [ ] PriorityQueue
 - [ ] Generational Indexes
 - [ ] Sparse Table
 - [ ] DenseArray
-- [ ] Hibitset
 
 ## Examples
 
