@@ -66,6 +66,26 @@ void dats_bitset_flip(dats_bitset_t * self)
     }
 }
 
+bool dats_bitset_is_set(const dats_bitset_t *self, uint64_t position)
+{
+    assert(position > 0);
+    assert(position <= self->size);
+    
+    position--;
+
+    uint64_t complete_bytes = position / 8;
+    uint64_t leftovers = position % 8;
+
+    uint8_t mask = 0b10000000 >> leftovers;
+    uint8_t *bytes = self->buffer; 
+
+    if ((bytes[complete_bytes] & mask) == 0)
+    {
+        return false;
+    }
+    return true;
+}
+
 void dats_bitset_reset(dats_bitset_t *self)
 {
     memset(self->buffer, 0, self->bytes_needed);

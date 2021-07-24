@@ -21,7 +21,9 @@ dats_bitset_t dats_bitset_new(uint64_t size);
 
 void dats_bitset_set(dats_bitset_t *self, uint64_t position, bool state);
 
-void dats_bitset_flip(dats_bitset_t * self);
+void dats_bitset_flip(dats_bitset_t *self);
+
+bool dats_bitset_is_set(const dats_bitset_t *self, uint64_t position);
 
 void dats_bitset_reset(dats_bitset_t *self);
 
