@@ -26,7 +26,8 @@ This various data structures are designed with reading simplicity in mind first.
 - [x] Stack
 - [X] Queue 
 - [X] Hash Table
-- [ ] Bitset
+- [X] Bitset
+
 - [ ] Hibitset
 - [ ] PriorityQueue
 - [ ] Generational Indexes
