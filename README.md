@@ -25,12 +25,12 @@ This various data structures are designed with reading simplicity in mind first.
 - [X] Binary Search Tree
 - [x] Stack
 - [X] Queue 
-- [ ] Generational Indexes
+- [X] Hash Table
+- [ ] Bitset
 - [ ] PriorityQueue
-- [ ] Hash Table
+- [ ] Generational Indexes
 - [ ] Sparse Table
 - [ ] DenseArray
-- [ ] Bitset
 - [ ] Hibitset
 
 ## Examples
