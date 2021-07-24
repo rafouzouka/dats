@@ -26,7 +26,7 @@ dats_bitset_t dats_bitset_new(uint64_t size)
     return bt;
 }
 
-void dats_bitset_set(dats_bitset_t *self, uint64_t position, dats_bitset_state state)
+void dats_bitset_set(dats_bitset_t *self, uint64_t position, bool state)
 {
     assert(position > 0);
     assert(position <= self->size);
@@ -45,7 +45,7 @@ void dats_bitset_set(dats_bitset_t *self, uint64_t position, dats_bitset_state s
         mask = mask >> leftovers;
     }
 
-    if (state == DATS_BITSET_HIGH)
+    if (state == true)
     {
         bytes[complete_bytes] |= mask; 
     }
@@ -53,6 +53,16 @@ void dats_bitset_set(dats_bitset_t *self, uint64_t position, dats_bitset_state s
     {
         mask = ~mask;
         bytes[complete_bytes] &= mask;
+    }
+}
+
+void dats_bitset_flip(dats_bitset_t * self)
+{
+    uint8_t *bytes = self->buffer;
+
+    for (uint64_t i = 0; i < self->bytes_needed; i++)
+    {
+        bytes[i] = ~bytes[i];
     }
 }
 

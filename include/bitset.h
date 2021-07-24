@@ -2,12 +2,7 @@
 #define BITSET_H
 
 #include <stdint.h>
-
-typedef enum
-{
-    DATS_BITSET_LOW = 0,
-    DATS_BITSET_HIGH = 1,
-} dats_bitset_state;
+#include <stdbool.h>
 
 typedef struct
 {
@@ -18,9 +13,9 @@ typedef struct
 
 dats_bitset_t dats_bitset_new(uint64_t size);
 
-void dats_bitset_set(dats_bitset_t *self, uint64_t position, dats_bitset_state state);
+void dats_bitset_set(dats_bitset_t *self, uint64_t position, bool state);
 
-// flip
+void dats_bitset_flip(dats_bitset_t * self);
 
 void dats_bitset_reset(dats_bitset_t *self);
 
