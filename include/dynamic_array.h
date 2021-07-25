@@ -6,7 +6,7 @@
 
 typedef struct
 {
-    const uint64_t data_size;
+    uint64_t data_size;
     uint64_t capacity;
     uint64_t length;
     void *buffer;
@@ -68,6 +68,15 @@ void dats_dynamic_array_map(const dats_dynamic_array_t *self, void (*func)(const
  * @return const void* Direct access to the wanted data in the memory. Don't modify it.
  */
 const void* dats_dynamic_array_get(const dats_dynamic_array_t *self, uint64_t index);
+
+/**
+ * @brief Get a const pointer to the data at a given index in the Dynamic Array. You can modify the value but don't free it.
+ * 
+ * @param self Pointer to the existing dynamic array to perform the function.
+ * @param index The position of the data in the Dynamic Array you want to get back a pointer from.  
+ * @return void* Direct access to the wanted data in the memory. Don't free it.
+ */
+void* dats_dynamic_array_ref(dats_dynamic_array_t *self, uint64_t index);
 
 /**
  * @brief Check if the given data exist in at least once in the dynamic array.

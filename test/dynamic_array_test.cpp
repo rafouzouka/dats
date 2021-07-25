@@ -247,6 +247,43 @@ TEST(dats_dynamic_array_get, GetTwoItemData)
     dats_dynamic_array_free(&da);
 }
 
+TEST(dats_dynamic_array_ref, GetTwoItemData)
+{
+    _Fake_Position data1 = { 111, 1111 };
+    _Fake_Position data2 = { 222, 2222 };
+
+    dats_dynamic_array_t da = dats_dynamic_array_new(1, sizeof(_Fake_Position));
+
+    dats_dynamic_array_add(&da, &data1);
+    dats_dynamic_array_add(&da, &data2);
+
+    EXPECT_EQ(da.capacity, 2);
+    EXPECT_EQ(da.length, 2);
+
+    _Fake_Position *res = (_Fake_Position*)dats_dynamic_array_ref(&da, 0);
+    EXPECT_EQ(res->x, data1.x);
+    EXPECT_EQ(res->y, data1.y);
+    EXPECT_EQ(res, da.buffer);
+    res->x = 3333333;
+    res->y = 4444444;
+
+    _Fake_Position *res2 = (_Fake_Position*)dats_dynamic_array_ref(&da, 1);
+    EXPECT_EQ(res2->x, data2.x);
+    EXPECT_EQ(res2->y, data2.y);
+
+    _Fake_Position *res3 = (_Fake_Position*)dats_dynamic_array_ref(&da, 0);
+    EXPECT_EQ(res->x, 3333333);
+    EXPECT_EQ(res->y, 4444444);
+
+    uint8_t *buffer = (uint8_t *)da.buffer; 
+    EXPECT_EQ((void *)res2, (void *)&buffer[1 * da.data_size]);
+
+    EXPECT_EQ(da.capacity, 2);
+    EXPECT_EQ(da.length, 2);
+
+    dats_dynamic_array_free(&da);
+}
+
 TEST(dats_dynamic_array_contains, FindIndexWithDataThatExists)
 {
     _Fake_Position data1 = { 111, 1111 };

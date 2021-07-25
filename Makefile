@@ -9,12 +9,13 @@ PREFIX = /usr/local
 SRC = $(wildcard src/*.c)
 OBJ = $(SRC:src/%.c=obj/%.o)
 
+LIB = libdats.a
 PRINT = echo
 CREATE_FOLDER = mkdir -p
 DELETE_FOLDER = rm -rf
 
 lib: $(OBJ)
-	ar rcs bin/libdats.a $^
+	ar rcs bin/$(LIB) $^
 
 debug: sandbox/main.c include/dats.h install
 	$(CC) $< -ldats -o bin/$@ $(CFLAGS)
@@ -36,11 +37,11 @@ test: install
 install: lib
 	$(CREATE_FOLDER) $(DESTDIR)$(PREFIX)/lib
 	$(CREATE_FOLDER) $(DESTDIR)$(PREFIX)/include/dats/
-	cp bin/libdats.a $(DESTDIR)$(PREFIX)/lib/
+	cp bin/$(LIB) $(DESTDIR)$(PREFIX)/lib/
 	cp include/*.h $(DESTDIR)$(PREFIX)/include/dats/
 
 uninstall:
-	rm -f $(DESTDIR)$(PREFIX)/lib/libdats.a
+	rm -f $(DESTDIR)$(PREFIX)/lib/$(LIB)
 	rm -rf $(DESTDIR)$(PREFIX)/include/dats/
 
 help:

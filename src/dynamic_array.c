@@ -72,6 +72,14 @@ const void* dats_dynamic_array_get(const dats_dynamic_array_t *self, uint64_t in
     return &buffer[index * self->data_size];
 }
 
+void* dats_dynamic_array_ref(dats_dynamic_array_t *self, uint64_t index)
+{
+    assert(self->length > index);
+
+    uint8_t *buffer = self->buffer;
+    return &buffer[index * self->data_size];
+}
+
 bool dats_dynamic_array_contains(const dats_dynamic_array_t *self, const void *data)
 {
     uint8_t *buffer = self->buffer; 
