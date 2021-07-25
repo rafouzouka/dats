@@ -19,12 +19,37 @@ typedef struct
  */
 dats_bitset_t dats_bitset_new(uint64_t size);
 
+/**
+ * @brief Set the state of a precise bit in the bitset as true for 1 or false for 0. By default all the bit are set to false.
+ * 
+ * @param self Pointer to the existing bitset to perform the function.
+ * @param position Place in the bitset of the bit that will be set. Starting from 1.
+ * @param state true to set to 1 and false to set to 0 the bit.
+ */
 void dats_bitset_set(dats_bitset_t *self, uint64_t position, bool state);
 
+/**
+ * @brief Inverse all the bit state in the bitset.
+ * 
+ * @param self Pointer to the existing bitset to perform the function.
+ */
 void dats_bitset_flip(dats_bitset_t *self);
 
+/**
+ * @brief Test if a bit is set or not at a given position.
+ * 
+ * @param self Pointer to the existing bitset to perform the function.
+ * @param position Place in the bitset of the bit that will be tested. Starting from 1.
+ * @return true Bit is set.
+ * @return false Bit isn't set.
+ */
 bool dats_bitset_is_set(const dats_bitset_t *self, uint64_t position);
 
+/**
+ * @brief Set to 0 all the bit in the bitset and can still be use after this.
+ * 
+ * @param self Pointer to the existing bitset to perform the function.
+ */
 void dats_bitset_reset(dats_bitset_t *self);
 
 void dats_bitset_print(const dats_bitset_t *self);
