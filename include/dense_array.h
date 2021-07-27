@@ -28,6 +28,12 @@ typedef struct
     uint64_t data_size;
 } dats_dense_array_t;
 
+/**
+ * @brief Create a Dense Array that hold generic data type. A Dense array is composed by two dynamic array. One that hold the data and the other a lookup table.
+ * 
+ * @param data_size The number of bytes needed for the data type you want to use with the dense array.
+ * @return dats_dense_array_t The data structure that you will pass through functions. You must not change the values of the struct.
+ */
 dats_dense_array_t dats_dense_array_new(uint64_t data_size);
 
 void dats_dense_array_insert(dats_dense_array_t *self, uint64_t index, const void *data);
@@ -44,6 +50,11 @@ void dats_dense_array_clear(dats_dense_array_t *self);
 
 void dats_dense_array_print(const dats_dense_array_t *self);
 
+/**
+ * @brief Free all the memory used by the data structure.
+ * 
+ * @param self The dense array that will be freed.
+ */
 void dats_dense_array_free(dats_dense_array_t *self);
 
 #endif

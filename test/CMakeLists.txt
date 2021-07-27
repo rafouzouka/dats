@@ -25,6 +25,7 @@ add_executable(
   dynamic_array_test.cpp
   binary_search_tree_test.cpp
   bitset_test.cpp
+  dense_array_test.cpp
 )
 
 target_link_libraries(

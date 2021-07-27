@@ -23,7 +23,6 @@ dats_dense_array_t dats_dense_array_new(uint64_t data_size)
 
 static void _append_lookup_empty_cells(dats_dynamic_array_t *lookup, uint64_t number)
 {
-    // peut etre faire un add range au lieu d'ajouter 1 a 1
     for (uint64_t i = 0; i < number; i++)
     {
         dats_dense_array_lookup_cell_t empty_cell = {
@@ -136,12 +135,10 @@ void dats_dense_array_print(const dats_dense_array_t *self)
         const dats_dense_array_lookup_cell_t *cell = dats_dynamic_array_get(&self->lookup, i);
         if (cell->state == DATS_DENSE_ARRAY_CELL_EMPTY)
         {
-            // printf("[X]:%ld ", cell->data_index);
             printf("[X] ");
         }
         else
         {
-            // printf("[%ld]:%ld ", cell->index, cell->data_index);
             printf("[%ld] ", cell->index);
         }
     }
