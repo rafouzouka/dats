@@ -9,5 +9,6 @@
 #include "stack.h"
 #include "dense_array.h"
 #include "bitset.h"
+#include "dense_array.h"
 
 #endif
