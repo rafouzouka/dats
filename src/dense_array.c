@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+#include <string.h>
 
 #include "utils.h"
 #include "dense_array.h"
@@ -105,6 +106,26 @@ void *dats_dense_array_ref(dats_dense_array_t *self, uint64_t index)
         DATS_RAISE_ERROR("There is no data associated to that cell.");
     }
     return dats_dynamic_array_ref(&self->data, cell->index);
+}
+
+bool dats_dense_array_contains(const dats_dense_array_t *self, const void *data)
+{
+    for (uint64_t i = 0; i < self->data_length; i++)
+    {
+        if (dats_dynamic_array_contains(&self->data, data) == true)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+void dats_dense_array_clear(dats_dense_array_t *self)
+{
+    dats_dynamic_array_clear(&self->lookup);
+    dats_dynamic_array_clear(&self->data);
+    self->data_length = 0;
+    self->lookup_length = 0;
 }
 
 void dats_dense_array_print(const dats_dense_array_t *self)

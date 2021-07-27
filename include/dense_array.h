@@ -2,6 +2,7 @@
 #define DENSE_ARRAY_H
 
 #include <stdint.h>
+#include <stdbool.h>
 
 #include "dynamic_array.h"
 
@@ -37,7 +38,9 @@ const void *dats_dense_array_get(const dats_dense_array_t *self, uint64_t index)
 
 void *dats_dense_array_ref(dats_dense_array_t *self, uint64_t index);
 
-// contains / find / clear / slice
+bool dats_dense_array_contains(const dats_dense_array_t *self, const void *data);
+
+void dats_dense_array_clear(dats_dense_array_t *self);
 
 void dats_dense_array_print(const dats_dense_array_t *self);
 
