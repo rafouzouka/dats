@@ -36,16 +36,58 @@ typedef struct
  */
 dats_dense_array_t dats_dense_array_new(uint64_t data_size);
 
+/**
+ * @brief Insert data in the index position replacing data previously in there if any.
+ * 
+ * @details Only the lookup table will be sparse the dynamic table will automaticly be contiguous. 
+ *
+ * @param self Pointer to the existing dense array to perform the function.
+ * @param index Position you want to insert the data. 
+ * @param data Data we want to insert in the Dense Array.
+ */
 void dats_dense_array_insert(dats_dense_array_t *self, uint64_t index, const void *data);
 
+/**
+ * @brief Remove the data at the specified index. 
+ * 
+ * @param self Pointer to the existing dense array to perform the function.
+ * @param index Position you want to remove the data. 
+ */
 void dats_dense_array_remove(dats_dense_array_t *self, uint64_t index);
 
+/**
+ * @brief Get a const pointer to the data at a given index in the Dense Array. You must not try to free or modify the value.
+ * 
+ * @param self Pointer to the existing dense array to perform the function.
+ * @param index Position you want to get the data in the dense array. 
+ * @return const void* Direct access to the wanted data in the memory. Don't modify it.
+ */
 const void *dats_dense_array_get(const dats_dense_array_t *self, uint64_t index);
 
+/**
+ * @brief Get a pointer to the data at a given index in the Dense Array. You must not try to free the value.
+ * 
+ * @param self Pointer to the existing dense array to perform the function.
+ * @param index Position you want to get the data in the dense array. 
+ * @return void* Direct access to the wanted data in the memory. Don't free it.
+ */
 void *dats_dense_array_ref(dats_dense_array_t *self, uint64_t index);
 
+/**
+ * @brief Check if the given data exist in at least once in the dense array.
+ * 
+ * @param self Pointer to the existing dense array to perform the function.
+ * @param data The data we are trying to find in the data structure. 
+ * @return true The data exist at least once.
+ * @return false The data isn't in the given dense array.
+ */
 bool dats_dense_array_contains(const dats_dense_array_t *self, const void *data);
 
+/**
+ * @brief Emptying all data in the dense array but still keeping original capacity. This is clearing the data inside the dense array but this is not the way to free it.
+ * 
+ * @param self Pointer to the existing dense array to perform the function.
+ */
 void dats_dense_array_clear(dats_dense_array_t *self);
 
 void dats_dense_array_print(const dats_dense_array_t *self);

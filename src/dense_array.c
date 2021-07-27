@@ -1,3 +1,5 @@
+#include <dats/dense_array.h>
+#include <dats/dynamic_array.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -111,7 +113,7 @@ bool dats_dense_array_contains(const dats_dense_array_t *self, const void *data)
 {
     for (uint64_t i = 0; i < self->data_length; i++)
     {
-        if (dats_dynamic_array_contains(&self->data, data) == true)
+        if (memcmp(dats_dynamic_array_get(&self->data, i), data, self->data_size) == 0)
         {
             return true;
         }
@@ -147,8 +149,8 @@ void dats_dense_array_print(const dats_dense_array_t *self)
     printf("DATA l: %ld:\n", self->data_length);
     for (uint64_t i = 0; i < self->data_length; i++)
     {
-        const int *data = dats_dynamic_array_get(&self->data, i);
-        printf("[%d] ", *data);
+        const double *data = dats_dynamic_array_get(&self->data, i);
+        printf("[%f] ", *data);
     }
     printf("\n\n");
 }
