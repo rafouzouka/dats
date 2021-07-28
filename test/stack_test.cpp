@@ -193,6 +193,94 @@ TEST(dats_stack_contains, ManagedStackAndContain)
     dats_stack_free(&q);
 }
 
+TEST(dats_stack_length, EmptyStack)
+{
+    dats_stack_t q = dats_stack_new(sizeof(double));
+
+    EXPECT_EQ(0, dats_stack_length(&q));
+
+    dats_stack_free(&q);
+}
+
+TEST(dats_stack_length, Manipulatedstack)
+{
+    _Fake_Position data = { 111, 222 };
+    _Fake_Position data2 = { 333, 444 };
+    dats_stack_t q = dats_stack_new(sizeof(_Fake_Position));
+
+    EXPECT_EQ(0, dats_stack_length(&q));
+
+    dats_stack_push(&q, &data);
+    dats_stack_push(&q, &data2);
+
+    EXPECT_EQ(2, dats_stack_length(&q));
+
+    void *ptr = dats_stack_pop(&q);
+    free(ptr);
+
+    EXPECT_EQ(1, dats_stack_length(&q));
+
+    dats_stack_free(&q);
+}
+
+TEST(dats_stack_clear, ClearingOneItemStack)
+{
+    _Fake_Position data = { 111, 222 };
+    dats_stack_t q = dats_stack_new(sizeof(_Fake_Position));
+
+    dats_stack_push(&q, &data);
+
+    dats_stack_clear(&q);
+
+    EXPECT_EQ(q.ll.head, nullptr);
+    EXPECT_EQ(q.ll.tail, nullptr);
+    EXPECT_EQ(q.ll.length, 0);
+    EXPECT_EQ(q.ll.data_size, sizeof(_Fake_Position));
+
+    dats_stack_push(&q, &data);
+
+    EXPECT_NE(q.ll.head, nullptr);
+    EXPECT_NE(q.ll.tail, nullptr);
+    EXPECT_EQ(q.ll.length, 1);
+
+    dats_stack_free(&q);
+}
+
+TEST(dats_stack_clear, ClearingMultipleItemStack)
+{
+    _Fake_Position data = { 111, 222 };
+    _Fake_Position data2 = { 222, 333 };
+    _Fake_Position data3 = { 333, 222 };
+    _Fake_Position data4 = { 444, 222 };
+    dats_stack_t q = dats_stack_new(sizeof(_Fake_Position));
+
+    dats_stack_push(&q, &data);
+    dats_stack_push(&q, &data2);
+    dats_stack_push(&q, &data3);
+    dats_stack_push(&q, &data4);
+
+    dats_stack_clear(&q);
+
+    EXPECT_EQ(q.ll.head, nullptr);
+    EXPECT_EQ(q.ll.tail, nullptr);
+    EXPECT_EQ(q.ll.length, 0);
+    EXPECT_EQ(q.ll.data_size, sizeof(_Fake_Position));
+
+    dats_stack_push(&q, &data2);
+    dats_stack_push(&q, &data4);
+
+    const _Fake_Position *pos2 = (const _Fake_Position*)dats_stack_get(&q, 1);
+    const _Fake_Position *pos4 = (const _Fake_Position*)dats_stack_get(&q, 0);
+    EXPECT_EQ(pos2->x, data2.x);
+    EXPECT_EQ(pos4->x, data4.x);
+
+    EXPECT_NE(q.ll.head, nullptr);
+    EXPECT_NE(q.ll.tail, nullptr);
+    EXPECT_EQ(q.ll.length, 2);
+
+    dats_stack_free(&q);
+}
+
 TEST(dats_stack_free, FreeingEmptyStack)
 {
     dats_stack_t q = dats_stack_new(sizeof(_Fake_Position));

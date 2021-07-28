@@ -44,6 +44,11 @@ uint64_t dats_queue_length(const dats_queue_t *self)
     return dats_linked_list_length(&self->ll);
 }
 
+void dats_queue_clear(dats_queue_t *self)
+{
+    dats_linked_list_clear(&self->ll);
+}
+
 void dats_queue_free(dats_queue_t *self)
 {
     dats_linked_list_free(&self->ll);

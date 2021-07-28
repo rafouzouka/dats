@@ -67,6 +67,21 @@ const void *dats_stack_get(const dats_stack_t *self, uint64_t index);
 bool dats_stack_contains(const dats_stack_t *self, const void *data);
 
 /**
+ * @brief Get the number of elements in the stack. This function does not change the stack.
+ * 
+ * @param self Pointer to the existing stack to perform the function.
+ * @return uint64_t Number of elements in the stack.
+ */
+uint64_t dats_stack_length(const dats_stack_t *self);
+
+/**
+ * @brief Automaticaly clearing all data and the stack passed as parameter. It can be reuse after this.
+ * 
+ * @param self The stack that will be clear.
+ */
+void dats_stack_clear(dats_stack_t *self);
+
+/**
  * @brief Automaticaly freeing all data and the stack passed as parameter.
  * 
  * @param self The stack that will be freed.

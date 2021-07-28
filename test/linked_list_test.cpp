@@ -65,19 +65,6 @@ TEST(dats_linked_list_insert_head, InsertNodeToAlreadyOneNodeLinkedList)
     dats_linked_list_free(&ll);
 }
 
-TEST(dats_linked_list_free, FreeingOneItemLinkedList)
-{
-    long data = 5555;
-    dats_linked_list_t ll = dats_linked_list_new(sizeof(long));
-    dats_linked_list_insert_head(&ll, &data);
-
-    dats_linked_list_free(&ll);
-
-    EXPECT_EQ(ll.head, nullptr);
-    EXPECT_EQ(ll.tail, nullptr);
-    EXPECT_EQ(ll.length, 0);
-}
-
 TEST(dats_linked_list_get, GetDataFromOneNodeInLinkedList)
 {
     long long data = 99999;
@@ -624,4 +611,73 @@ TEST(dats_linked_list_length, VariousLengthTest)
     EXPECT_EQ(0, dats_linked_list_length(&ll));
 
     dats_linked_list_free(&ll);
+}
+
+TEST(dats_linked_list_clear, ClearOneItemLinkedList)
+{
+    long data = 5555;
+    dats_linked_list_t ll = dats_linked_list_new(sizeof(long));
+    dats_linked_list_insert_head(&ll, &data);
+
+    dats_linked_list_clear(&ll);
+
+    EXPECT_EQ(ll.head, nullptr);
+    EXPECT_EQ(ll.tail, nullptr);
+    EXPECT_EQ(ll.length, 0);
+
+    dats_linked_list_insert_head(&ll, &data);
+
+    EXPECT_NE(ll.head, nullptr);
+    EXPECT_NE(ll.tail, nullptr);
+    EXPECT_EQ(ll.length, 1);
+    EXPECT_EQ(*((const long*)dats_linked_list_get(&ll, 0)), data);
+
+    dats_linked_list_free(&ll);
+}
+
+TEST(dats_linked_list_clear, ClearMultipleItemLinkedList)
+{
+    long data = 1111;
+    long data2 = 2222;
+    long data3 = 3333;
+    long data4 = 4444;
+
+    dats_linked_list_t ll = dats_linked_list_new(sizeof(long));
+
+    dats_linked_list_insert_head(&ll, &data);
+    dats_linked_list_insert_head(&ll, &data2);
+    dats_linked_list_insert_head(&ll, &data3);
+    dats_linked_list_insert_head(&ll, &data4);
+
+    EXPECT_NE(ll.head, nullptr);
+    EXPECT_NE(ll.tail, nullptr);
+    EXPECT_EQ(ll.length, 4);
+
+    dats_linked_list_clear(&ll);
+
+    EXPECT_EQ(ll.head, nullptr);
+    EXPECT_EQ(ll.tail, nullptr);
+    EXPECT_EQ(ll.length, 0);
+
+    dats_linked_list_insert_tail(&ll, &data);
+
+    EXPECT_NE(ll.head, nullptr);
+    EXPECT_NE(ll.tail, nullptr);
+    EXPECT_EQ(ll.length, 1);
+    EXPECT_EQ(*((const long*)dats_linked_list_get(&ll, 0)), data);
+
+    dats_linked_list_free(&ll);
+}
+
+TEST(dats_linked_list_free, FreeingOneItemLinkedList)
+{
+    long data = 5555;
+    dats_linked_list_t ll = dats_linked_list_new(sizeof(long));
+    dats_linked_list_insert_head(&ll, &data);
+
+    dats_linked_list_free(&ll);
+
+    EXPECT_EQ(ll.head, nullptr);
+    EXPECT_EQ(ll.tail, nullptr);
+    EXPECT_EQ(ll.length, 0);
 }

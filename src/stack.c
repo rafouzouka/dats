@@ -34,6 +34,16 @@ bool dats_stack_contains(const dats_stack_t *self, const void *data)
     return dats_linked_list_contains(&self->ll, data);
 }
 
+uint64_t dats_stack_length(const dats_stack_t *self)
+{
+    return dats_linked_list_length(&self->ll);
+}
+
+void dats_stack_clear(dats_stack_t *self)
+{
+    dats_linked_list_clear(&self->ll);
+}
+
 void dats_stack_free(dats_stack_t *self)
 {
     dats_linked_list_free(&self->ll);

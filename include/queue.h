@@ -87,6 +87,13 @@ bool dats_queue_contains(const dats_queue_t *self, const void *data);
 uint64_t dats_queue_length(const dats_queue_t *self);
 
 /**
+ * @brief Automaticaly clearing all data and the queue passed as parameter. It can be reuse after this.
+ * 
+ * @param self The queue that will be clear.
+ */
+void dats_queue_clear(dats_queue_t *self);
+
+/**
  * @brief Automaticaly freeing all data and the queue passed as parameter.
  * 
  * @param self The queue that will be freed.

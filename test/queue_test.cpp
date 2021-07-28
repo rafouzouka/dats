@@ -254,6 +254,64 @@ TEST(dats_queue_length, ManipulatedQueue)
     dats_queue_free(&q);
 }
 
+TEST(dats_queue_clear, ClearingOneItemQueue)
+{
+    _Fake_Position data = { 111, 222 };
+    dats_queue_t q = dats_queue_new(sizeof(_Fake_Position));
+
+    dats_queue_enqueue(&q, &data);
+
+    dats_queue_clear(&q);
+
+    EXPECT_EQ(q.ll.head, nullptr);
+    EXPECT_EQ(q.ll.tail, nullptr);
+    EXPECT_EQ(q.ll.length, 0);
+    EXPECT_EQ(q.ll.data_size, sizeof(_Fake_Position));
+
+    dats_queue_enqueue(&q, &data);
+
+    EXPECT_NE(q.ll.head, nullptr);
+    EXPECT_NE(q.ll.tail, nullptr);
+    EXPECT_EQ(q.ll.length, 1);
+
+    dats_queue_free(&q);
+}
+
+TEST(dats_queue_clear, ClearingMultipleItemQueue)
+{
+    _Fake_Position data = { 111, 222 };
+    _Fake_Position data2 = { 222, 333 };
+    _Fake_Position data3 = { 333, 222 };
+    _Fake_Position data4 = { 444, 222 };
+    dats_queue_t q = dats_queue_new(sizeof(_Fake_Position));
+
+    dats_queue_enqueue(&q, &data);
+    dats_queue_enqueue(&q, &data2);
+    dats_queue_enqueue(&q, &data3);
+    dats_queue_enqueue(&q, &data4);
+
+    dats_queue_clear(&q);
+
+    EXPECT_EQ(q.ll.head, nullptr);
+    EXPECT_EQ(q.ll.tail, nullptr);
+    EXPECT_EQ(q.ll.length, 0);
+    EXPECT_EQ(q.ll.data_size, sizeof(_Fake_Position));
+
+    dats_queue_enqueue(&q, &data2);
+    dats_queue_enqueue(&q, &data4);
+
+    const _Fake_Position *pos2 = (const _Fake_Position*)dats_queue_get(&q, 1);
+    const _Fake_Position *pos4 = (const _Fake_Position*)dats_queue_get(&q, 0);
+    EXPECT_EQ(pos2->x, data2.x);
+    EXPECT_EQ(pos4->x, data4.x);
+
+    EXPECT_NE(q.ll.head, nullptr);
+    EXPECT_NE(q.ll.tail, nullptr);
+    EXPECT_EQ(q.ll.length, 2);
+
+    dats_queue_free(&q);
+}
+
 TEST(dats_queue_free, FreeingAnEmptyQueue)
 {
     dats_queue_t q = dats_queue_new(sizeof(double));

@@ -164,6 +164,13 @@ bool dats_linked_list_contains(const dats_linked_list_t *self, const void *data)
 uint64_t dats_linked_list_length(const dats_linked_list_t *self);
 
 /**
+ * @brief Clear an already existing linked_list to be reuse direclty after this. If you want to FREE all the datasctruture you should use dats_linked_list_free instead.
+ * 
+ * @param self Pointer to existing Linked List already created with the dats_linked_list_new function.
+ */
+void dats_linked_list_clear(dats_linked_list_t *self);
+
+/**
  * @brief Free an already existing linked_list. Freeing the every nodes and each correspondig data.
  * 
  * @param self Pointer to existing Linked List already created with the dats_linked_list_new function.
