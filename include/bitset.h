@@ -46,6 +46,16 @@ void dats_bitset_flip(dats_bitset_t *self);
 bool dats_bitset_is_set(const dats_bitset_t *self, uint64_t position);
 
 /**
+ * @brief Test if a all the bits in the other bitset are also set in the self bitset.
+ * 
+ * @param self Pointer to the existing bitset to perform the function.
+ * @param other Other already initializes bitset that must be the same size.
+ * @return true Bits are set.
+ * @return false Bits are set.
+ */
+bool dats_bitset_is_set_bitset(const dats_bitset_t *self, const dats_bitset_t *other);
+
+/**
  * @brief Set to 0 all the bit in the bitset and can still be use after this.
  * 
  * @param self Pointer to the existing bitset to perform the function.

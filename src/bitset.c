@@ -86,6 +86,25 @@ bool dats_bitset_is_set(const dats_bitset_t *self, uint64_t position)
     return true;
 }
 
+bool dats_bitset_is_set_bitset(const dats_bitset_t *self, const dats_bitset_t *other)
+{
+    assert(self->size == other->size);
+
+    uint8_t *self_bytes = self->buffer;
+    uint8_t *other_bytes = other->buffer;
+
+    for (uint64_t i = 0; i < self->bytes_needed; i++)
+    {
+        uint8_t byte = self_bytes[i] & other_bytes[i];
+
+        if (byte != other_bytes[i])
+        {
+            return false;
+        }  
+    }
+    return true;
+}
+
 void dats_bitset_reset(dats_bitset_t *self)
 {
     memset(self->buffer, 0, self->bytes_needed);

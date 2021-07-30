@@ -106,6 +106,84 @@ TEST(dats_bitset_is_set, ManipulatedBitset)
     dats_bitset_free(&bt);
 }
 
+TEST(dats_bitset_is_set_bitset, OneSizeBitsetToTest)
+{
+    dats_bitset_t bitset = dats_bitset_new(1);
+    dats_bitset_t other_bitset = dats_bitset_new(1);
+
+    dats_bitset_set(&bitset, 1, false);
+
+    dats_bitset_set(&other_bitset, 1, true);
+
+    EXPECT_FALSE(dats_bitset_is_set_bitset(&bitset, &other_bitset));
+
+    dats_bitset_set(&bitset, 1, true);
+
+    EXPECT_TRUE(dats_bitset_is_set_bitset(&bitset, &other_bitset));
+
+    dats_bitset_free(&bitset);
+    dats_bitset_free(&other_bitset);
+}
+
+TEST(dats_bitset_is_set_bitset, BitsetIsSetMustReturnTrue)
+{
+    dats_bitset_t bitset = dats_bitset_new(4);
+    dats_bitset_t other_bitset = dats_bitset_new(4);
+
+    dats_bitset_set(&bitset, 1, true);
+    dats_bitset_set(&bitset, 2, true);
+    dats_bitset_set(&bitset, 3, true);
+
+    dats_bitset_set(&other_bitset, 1, true);
+    dats_bitset_set(&other_bitset, 3, true);
+
+    EXPECT_TRUE(dats_bitset_is_set_bitset(&bitset, &other_bitset));
+
+    dats_bitset_set(&other_bitset, 4, true);
+
+    EXPECT_FALSE(dats_bitset_is_set_bitset(&bitset, &other_bitset));
+
+    dats_bitset_set(&other_bitset, 4, false);
+
+    EXPECT_TRUE(dats_bitset_is_set_bitset(&bitset, &other_bitset));
+
+    dats_bitset_set(&other_bitset, 2, true);
+
+    EXPECT_TRUE(dats_bitset_is_set_bitset(&bitset, &other_bitset));
+
+    dats_bitset_set(&bitset, 1, false);
+
+    EXPECT_FALSE(dats_bitset_is_set_bitset(&bitset, &other_bitset));
+
+    dats_bitset_free(&bitset);
+    dats_bitset_free(&other_bitset);
+}
+
+TEST(dats_bitset_is_set_bitset, MutipleBytesBitsetToTest)
+{
+    dats_bitset_t bitset = dats_bitset_new(35);
+    dats_bitset_t other_bitset = dats_bitset_new(35);
+
+    dats_bitset_set(&bitset, 1, true);
+    dats_bitset_set(&bitset, 28, true);
+    dats_bitset_set(&bitset, 35, true);
+
+    dats_bitset_set(&other_bitset, 34, true);
+
+    EXPECT_FALSE(dats_bitset_is_set_bitset(&bitset, &other_bitset));
+
+    dats_bitset_set(&bitset, 34, true);
+
+    dats_bitset_set(&other_bitset, 1, true);
+    dats_bitset_set(&other_bitset, 28, true);
+    dats_bitset_set(&other_bitset, 35, true);
+
+    EXPECT_TRUE(dats_bitset_is_set_bitset(&bitset, &other_bitset));
+
+    dats_bitset_free(&bitset);
+    dats_bitset_free(&other_bitset);
+}
+
 TEST(dats_bitset_reset, ResetAllSetBit)
 {
     dats_bitset_t bt = dats_bitset_new(10);
